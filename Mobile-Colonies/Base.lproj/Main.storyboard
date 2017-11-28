@@ -22,6 +22,7 @@
                         <subviews>
                             <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0nU-cE-SFD" customClass="ColonyView" customModule="Mobile_Colonies" customModuleProvider="target">
                                 <rect key="frame" x="20" y="83" width="1072" height="645"/>
+                                <gestureRecognizers/>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Colony 1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a6h-a6-Nts">
                                 <rect key="frame" x="64" y="22" width="89" height="27"/>
@@ -50,8 +51,15 @@
                                 <color key="textColor" red="1" green="0.96798796865874226" blue="0.95180312554594693" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="redraw" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Live-Body.png" translatesAutoresizingMaskIntoConstraints="NO" id="Anj-hP-bxW">
+                            <imageView clearsContextBeforeDrawing="NO" multipleTouchEnabled="YES" contentMode="redraw" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Live-Body.png" translatesAutoresizingMaskIntoConstraints="NO" id="Anj-hP-bxW">
                                 <rect key="frame" x="20" y="83" width="1072" height="645"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="ujt-nm-6Iq" appends="YES" id="SbO-le-tWZ"/>
+                                    <outletCollection property="gestureRecognizers" destination="V60-6Y-ujq" appends="YES" id="eol-2M-lCa"/>
+                                    <outletCollection property="gestureRecognizers" destination="QPL-D0-3CF" appends="YES" id="Eib-vN-nuf"/>
+                                    <outletCollection property="gestureRecognizers" destination="5Ye-Wd-D2R" appends="YES" id="NbC-su-VuF"/>
+                                </connections>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nnx-NB-UOp">
                                 <rect key="frame" x="20" y="748" width="1072" height="66"/>
@@ -153,10 +161,10 @@
                                     <constraint firstAttribute="width" constant="23" id="ER3-0y-HRO"/>
                                     <constraint firstAttribute="height" constant="31" id="eDz-vo-MmM"/>
                                 </constraints>
-                                <state key="normal" title="Button" backgroundImage="White-Menu.png"/>
+                                <state key="normal" backgroundImage="White-Menu.png"/>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" red="0.15116583548312978" green="0.39905915413028509" blue="0.71919527202072531" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.15294117647058825" green="0.40000000000000002" blue="0.71764705882352942" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="a6h-a6-Nts" firstAttribute="leading" secondItem="SUR-5I-PM1" secondAttribute="trailing" constant="21" id="8Hp-sq-AZq"/>
                             <constraint firstItem="rs3-L2-JlI" firstAttribute="baseline" secondItem="ymD-PC-4mT" secondAttribute="baseline" id="DkF-pV-YSv"/>
@@ -171,7 +179,7 @@
                             <constraint firstItem="a6h-a6-Nts" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="2" id="RLQ-3g-pda"/>
                             <constraint firstItem="Anj-hP-bxW" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="TT1-c6-zYx"/>
                             <constraint firstItem="Nnx-NB-UOp" firstAttribute="leading" secondItem="Anj-hP-bxW" secondAttribute="leading" id="TeJ-5L-9lO"/>
-                            <constraint firstAttribute="bottom" secondItem="Nnx-NB-UOp" secondAttribute="bottom" symbolic="YES" id="UJ6-cP-IEc"/>
+                            <constraint firstAttribute="bottom" secondItem="Nnx-NB-UOp" secondAttribute="bottom" constant="20" symbolic="YES" id="UJ6-cP-IEc"/>
                             <constraint firstItem="SUR-5I-PM1" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="WUi-Dk-mCP"/>
                             <constraint firstItem="ymD-PC-4mT" firstAttribute="leading" secondItem="rs3-L2-JlI" secondAttribute="trailing" constant="8" symbolic="YES" id="aEF-cw-1Kk"/>
                             <constraint firstItem="0nU-cE-SFD" firstAttribute="trailing" secondItem="Anj-hP-bxW" secondAttribute="trailing" id="b9A-pg-V8V"/>
@@ -196,6 +204,26 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <pinchGestureRecognizer id="ujt-nm-6Iq">
+                    <connections>
+                        <action selector="zoom:" destination="BYZ-38-t0r" id="7iB-qb-Omw"/>
+                    </connections>
+                </pinchGestureRecognizer>
+                <panGestureRecognizer minimumNumberOfTouches="2" id="V60-6Y-ujq">
+                    <connections>
+                        <action selector="pan:" destination="BYZ-38-t0r" id="doF-lP-OD9"/>
+                    </connections>
+                </panGestureRecognizer>
+                <tapGestureRecognizer id="QPL-D0-3CF">
+                    <connections>
+                        <action selector="singleToggle:" destination="BYZ-38-t0r" id="4qn-yd-zWa"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <panGestureRecognizer maximumNumberOfTouches="1" id="5Ye-Wd-D2R">
+                    <connections>
+                        <action selector="multiToggle:" destination="BYZ-38-t0r" id="NCa-e6-T7G"/>
+                    </connections>
+                </panGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="137.58992805755395" y="133.81294964028777"/>
         </scene>

@@ -46,6 +46,14 @@ class Colony: CustomStringConvertible{
     
     func setCellDead(X: Int, Y: Int){ Cells.remove(Cell(X:X,Y:Y)) }
     
+    func toggleCellAlive(X:Int,Y:Int){
+        if isCellAlive(X:X,Y:Y){
+            setCellDead(X:X,Y:Y);
+        }else{
+            setCellAlive(X: X, Y: Y);
+        }
+    }
+    
     func isCellAlive(X: Int, Y: Int)-> Bool{
         return Cells.contains(Cell(X:X,Y:Y))
     }

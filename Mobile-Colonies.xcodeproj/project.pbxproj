@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2896D80C1FCE174E009CD8EF /* border.png in Resources */ = {isa = PBXBuildFile; fileRef = 2896D80B1FCE174E009CD8EF /* border.png */; };
+		2896D80E1FCE1884009CD8EF /* Live-Body copy.png in Resources */ = {isa = PBXBuildFile; fileRef = 2896D80D1FCE1884009CD8EF /* Live-Body copy.png */; };
 		28BB50401FCC7B9F00B78CF2 /* colony.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BB503F1FCC7B9F00B78CF2 /* colony.swift */; };
 		28BB50421FCC972600B78CF2 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BB50411FCC972600B78CF2 /* MainView.swift */; };
 		28EC929B1FBC8EC6006BE2F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EC929A1FBC8EC6006BE2F1 /* AppDelegate.swift */; };
@@ -44,6 +46,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2896D80B1FCE174E009CD8EF /* border.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = border.png; sourceTree = "<group>"; };
+		2896D80D1FCE1884009CD8EF /* Live-Body copy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Live-Body copy.png"; sourceTree = "<group>"; };
 		28BB503F1FCC7B9F00B78CF2 /* colony.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = colony.swift; sourceTree = "<group>"; };
 		28BB50411FCC972600B78CF2 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		28EC92971FBC8EC6006BE2F1 /* Mobile-Colonies.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Mobile-Colonies.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -151,10 +155,12 @@
 		28EC92C81FBC9000006BE2F1 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				2896D80B1FCE174E009CD8EF /* border.png */,
 				28EC92C91FBC90D4006BE2F1 /* Menu.png */,
 				28EC92CF1FBCA435006BE2F1 /* White-Menu.png */,
 				28EC92CB1FBC93A6006BE2F1 /* Drop.png */,
 				28EC92CD1FBC943D006BE2F1 /* Gradient-Body.png */,
+				2896D80D1FCE1884009CD8EF /* Live-Body copy.png */,
 				28EC92D31FBCA531006BE2F1 /* Live-Body.png */,
 				28EC92D51FBCB02A006BE2F1 /* settings.png */,
 				28EC92DB1FBCBF28006BE2F1 /* upload copy.png */,
@@ -277,6 +283,8 @@
 				28EC92CC1FBC93A6006BE2F1 /* Drop.png in Resources */,
 				28EC92A21FBC8EC6006BE2F1 /* Assets.xcassets in Resources */,
 				28EC92E01FBCC08C006BE2F1 /* save.png in Resources */,
+				2896D80E1FCE1884009CD8EF /* Live-Body copy.png in Resources */,
+				2896D80C1FCE174E009CD8EF /* border.png in Resources */,
 				28EC92D61FBCB02B006BE2F1 /* settings.png in Resources */,
 				28EC92DC1FBCBF29006BE2F1 /* upload copy.png in Resources */,
 				28EC92A01FBC8EC6006BE2F1 /* Main.storyboard in Resources */,
