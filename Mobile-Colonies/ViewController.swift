@@ -63,17 +63,20 @@ class ViewController: UIViewController {
         let topy = self.colony_topy;
         let zoom = self.colony_box_zoom;
         
-        let spacing = 200.0 / Double(zoom);
+        let spacing = 0.0;//20.0 / Double(zoom);
         let size = ((colony_width - 20) - (spacing * Double(zoom - 1))) / Double(zoom)
         print(size)
-        for x in 1...zoom{
-            for y in 1...zoom{
+        for x in 0...zoom+1{
+            for y in 0...zoom+1{
                 let truex = x + topx;
-                let truey = x + topy;
+                let truey = y + topy;
                 
                 let cell = CGRect(x: 10 + ((spacing + size) * Double(x - 1)), y:10 + ((spacing + size) * Double(y - 1)), width: size, height:size);
                 let path:UIBezierPath = UIBezierPath(rect: cell);
                 UIColor.black.setStroke();
+                if truex == 1 && truey == 1 || truex < 1 || truey < 1{
+                    UIColor.red.setStroke();
+                }
                 path.lineWidth = 4;
                 path.stroke();
                 
