@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		28BB50401FCC7B9F00B78CF2 /* colony.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BB503F1FCC7B9F00B78CF2 /* colony.swift */; };
+		28BB50421FCC972600B78CF2 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BB50411FCC972600B78CF2 /* MainView.swift */; };
 		28EC929B1FBC8EC6006BE2F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EC929A1FBC8EC6006BE2F1 /* AppDelegate.swift */; };
 		28EC929D1FBC8EC6006BE2F1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EC929C1FBC8EC6006BE2F1 /* ViewController.swift */; };
 		28EC92A01FBC8EC6006BE2F1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28EC929E1FBC8EC6006BE2F1 /* Main.storyboard */; };
@@ -14,6 +16,14 @@
 		28EC92A51FBC8EC6006BE2F1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28EC92A31FBC8EC6006BE2F1 /* LaunchScreen.storyboard */; };
 		28EC92B01FBC8EC6006BE2F1 /* Mobile_ColoniesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EC92AF1FBC8EC6006BE2F1 /* Mobile_ColoniesTests.swift */; };
 		28EC92BB1FBC8EC6006BE2F1 /* Mobile_ColoniesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EC92BA1FBC8EC6006BE2F1 /* Mobile_ColoniesUITests.swift */; };
+		28EC92CA1FBC90D4006BE2F1 /* Menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 28EC92C91FBC90D4006BE2F1 /* Menu.png */; };
+		28EC92CC1FBC93A6006BE2F1 /* Drop.png in Resources */ = {isa = PBXBuildFile; fileRef = 28EC92CB1FBC93A6006BE2F1 /* Drop.png */; };
+		28EC92CE1FBC943D006BE2F1 /* Gradient-Body.png in Resources */ = {isa = PBXBuildFile; fileRef = 28EC92CD1FBC943D006BE2F1 /* Gradient-Body.png */; };
+		28EC92D01FBCA435006BE2F1 /* White-Menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 28EC92CF1FBCA435006BE2F1 /* White-Menu.png */; };
+		28EC92D41FBCA531006BE2F1 /* Live-Body.png in Resources */ = {isa = PBXBuildFile; fileRef = 28EC92D31FBCA531006BE2F1 /* Live-Body.png */; };
+		28EC92D61FBCB02B006BE2F1 /* settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 28EC92D51FBCB02A006BE2F1 /* settings.png */; };
+		28EC92DC1FBCBF29006BE2F1 /* upload copy.png in Resources */ = {isa = PBXBuildFile; fileRef = 28EC92DB1FBCBF28006BE2F1 /* upload copy.png */; };
+		28EC92E01FBCC08C006BE2F1 /* save.png in Resources */ = {isa = PBXBuildFile; fileRef = 28EC92DF1FBCC08C006BE2F1 /* save.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +44,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		28BB503F1FCC7B9F00B78CF2 /* colony.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = colony.swift; sourceTree = "<group>"; };
+		28BB50411FCC972600B78CF2 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		28EC92971FBC8EC6006BE2F1 /* Mobile-Colonies.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Mobile-Colonies.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		28EC929A1FBC8EC6006BE2F1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		28EC929C1FBC8EC6006BE2F1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -47,6 +59,14 @@
 		28EC92B61FBC8EC6006BE2F1 /* Mobile-ColoniesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Mobile-ColoniesUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		28EC92BA1FBC8EC6006BE2F1 /* Mobile_ColoniesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mobile_ColoniesUITests.swift; sourceTree = "<group>"; };
 		28EC92BC1FBC8EC6006BE2F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		28EC92C91FBC90D4006BE2F1 /* Menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Menu.png; sourceTree = "<group>"; };
+		28EC92CB1FBC93A6006BE2F1 /* Drop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Drop.png; sourceTree = "<group>"; };
+		28EC92CD1FBC943D006BE2F1 /* Gradient-Body.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Gradient-Body.png"; sourceTree = "<group>"; };
+		28EC92CF1FBCA435006BE2F1 /* White-Menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "White-Menu.png"; sourceTree = "<group>"; };
+		28EC92D31FBCA531006BE2F1 /* Live-Body.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Live-Body.png"; sourceTree = "<group>"; };
+		28EC92D51FBCB02A006BE2F1 /* settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings.png; sourceTree = "<group>"; };
+		28EC92DB1FBCBF28006BE2F1 /* upload copy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "upload copy.png"; sourceTree = "<group>"; };
+		28EC92DF1FBCC08C006BE2F1 /* save.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = save.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,12 +117,15 @@
 		28EC92991FBC8EC6006BE2F1 /* Mobile-Colonies */ = {
 			isa = PBXGroup;
 			children = (
+				28EC92C81FBC9000006BE2F1 /* Resources */,
 				28EC929A1FBC8EC6006BE2F1 /* AppDelegate.swift */,
 				28EC929C1FBC8EC6006BE2F1 /* ViewController.swift */,
 				28EC929E1FBC8EC6006BE2F1 /* Main.storyboard */,
 				28EC92A11FBC8EC6006BE2F1 /* Assets.xcassets */,
 				28EC92A31FBC8EC6006BE2F1 /* LaunchScreen.storyboard */,
 				28EC92A61FBC8EC6006BE2F1 /* Info.plist */,
+				28BB503F1FCC7B9F00B78CF2 /* colony.swift */,
+				28BB50411FCC972600B78CF2 /* MainView.swift */,
 			);
 			path = "Mobile-Colonies";
 			sourceTree = "<group>";
@@ -123,6 +146,21 @@
 				28EC92BC1FBC8EC6006BE2F1 /* Info.plist */,
 			);
 			path = "Mobile-ColoniesUITests";
+			sourceTree = "<group>";
+		};
+		28EC92C81FBC9000006BE2F1 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				28EC92C91FBC90D4006BE2F1 /* Menu.png */,
+				28EC92CF1FBCA435006BE2F1 /* White-Menu.png */,
+				28EC92CB1FBC93A6006BE2F1 /* Drop.png */,
+				28EC92CD1FBC943D006BE2F1 /* Gradient-Body.png */,
+				28EC92D31FBCA531006BE2F1 /* Live-Body.png */,
+				28EC92D51FBCB02A006BE2F1 /* settings.png */,
+				28EC92DB1FBCBF28006BE2F1 /* upload copy.png */,
+				28EC92DF1FBCC08C006BE2F1 /* save.png */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -232,9 +270,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28EC92CA1FBC90D4006BE2F1 /* Menu.png in Resources */,
 				28EC92A51FBC8EC6006BE2F1 /* LaunchScreen.storyboard in Resources */,
+				28EC92D01FBCA435006BE2F1 /* White-Menu.png in Resources */,
+				28EC92D41FBCA531006BE2F1 /* Live-Body.png in Resources */,
+				28EC92CC1FBC93A6006BE2F1 /* Drop.png in Resources */,
 				28EC92A21FBC8EC6006BE2F1 /* Assets.xcassets in Resources */,
+				28EC92E01FBCC08C006BE2F1 /* save.png in Resources */,
+				28EC92D61FBCB02B006BE2F1 /* settings.png in Resources */,
+				28EC92DC1FBCBF29006BE2F1 /* upload copy.png in Resources */,
 				28EC92A01FBC8EC6006BE2F1 /* Main.storyboard in Resources */,
+				28EC92CE1FBC943D006BE2F1 /* Gradient-Body.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,7 +306,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				28EC929D1FBC8EC6006BE2F1 /* ViewController.swift in Sources */,
+				28BB50421FCC972600B78CF2 /* MainView.swift in Sources */,
 				28EC929B1FBC8EC6006BE2F1 /* AppDelegate.swift in Sources */,
+				28BB50401FCC7B9F00B78CF2 /* colony.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -433,7 +481,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "VirtualEarth.Mobile-Colonies";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
 		};
@@ -448,7 +496,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "VirtualEarth.Mobile-Colonies";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Release;
 		};
