@@ -9,22 +9,20 @@
 import Foundation
 import UIKit
 
-protocol ItemSelectionDelegate{
-    func itemSelected(newItem: Item)
+protocol GridSelectionDelegate{
+    func gridSelected(newGrid: Grid)
 }
 
 class MasterViewController: UITableViewController{
-    var items = ItemStore()
-    var delegate: ItemSelectionDelegate?
+    var grids = GridStore()
+    var delegate: GridSelectionDelegate?
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        
-        
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int)-> Int{
-        return(items.allItems.count)
+        return(grids.allGrids.count)
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -33,29 +31,28 @@ class MasterViewController: UITableViewController{
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath)-> UITableViewCell{
             // Get a new or recycled cell
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ItemCell", for: indexPath) as! ItemCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "GridCell", for: indexPath) as! GridCell
         
-        let item = items.allItems[indexPath.row]
+        let grid = grids.allGrids[indexPath.row]
         
-        cell.nameL.text = item.name
-        cell.serialL.text = item.serialNumber
-        cell.valueL.text = "$\(item.valueInDollars)"
+        cell.nameL.text = grid.name
+        cell.sizeL.text = "\(grid.size)x\(grid.size)"
         
         return(cell)
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedItem = self.items.allItems[indexPath.row]
-        self.delegate?.itemSelected(newItem: selectedItem)
+        let selectedGrid = self.grids.allGrids[indexPath.row]
+        self.delegate?.gridSelected(newGrid: selectedGrid)
         if let detailViewController = self.delegate as? DetailViewController {
             splitViewController?.showDetailViewController(detailViewController.navigationController!, sender: nil)
         }
     }
     
-    @IBAction func addNewItem(_ sender: UIButton){
-        let newItem = items.createItem()
+    @IBAction func addNewGrid(_ sender: UIButton){
+        let newGrid = grids.createGrid()
         
-        if let index = items.allItems.index(of: newItem){
+        if let index = grids.allGrids.index(of: newGrid){
             let indexPath = IndexPath(row: index, section: 0)
             
             tableView.insertRows(at: [indexPath], with: .automatic)
@@ -76,9 +73,9 @@ class MasterViewController: UITableViewController{
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath){
         if editingStyle == .delete{
-            let item = items.allItems[indexPath.row]
+            let grid = grids.allGrids[indexPath.row]
             
-            let title = "Delete \(item.name)?"
+            let title = "Delete \(grid.name)?"
             let message = "Are you sure you want to delete this item?"
             
             let ac = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
@@ -88,7 +85,7 @@ class MasterViewController: UITableViewController{
             ac.addAction(cancelAction)
             
             let deleteAction = UIAlertAction(title: "Delete", style: .destructive, handler: { (action) -> Void in
-                self.items.removeItem(item)
+                self.grids.removeGrid(grid)
                 
                 self.tableView.deleteRows(at: [indexPath], with: .automatic)})
             

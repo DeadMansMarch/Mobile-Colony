@@ -10,19 +10,19 @@ import Foundation
 import UIKit
 
 class DetailViewController: UIViewController{
-    @IBOutlet var itemName: UILabel!
-    @IBOutlet var itemValue: UILabel!
-    @IBOutlet var itemSerial: UILabel!
+    @IBOutlet var gridName: UILabel!
+    @IBOutlet var gridSize: UILabel!
     @IBOutlet var nameField: UITextField!
-    @IBOutlet var serialNumberField: UITextField!
-    @IBOutlet var valueField: UITextField!
+    @IBOutlet var sizeField: UITextField!
     
-    @IBAction func backgroundTapped(_ sender: UITapGestureRecognizer){
-        
+    @IBAction func backgroundTap(_ sender: UITapGestureRecognizer) {
+        refreshLabel()
+        view.endEditing(true)
     }
+    
 
-    var item: Item? {
-        didSet (newItem) {
+    var grid: Grid? {
+        didSet (newGrid) {
             self.refreshUI()
         }
     }
@@ -33,14 +33,20 @@ class DetailViewController: UIViewController{
     }
     
     func refreshUI() {
-        if (item != nil){
-            itemName?.text = item!.name
-            itemValue?.text = String(item!.valueInDollars)
-            itemSerial?.text = item!.serialNumber
-            nameField?.text = item!.name
-            valueField?.text = String(item!.valueInDollars)
-            serialNumberField?.text = item!.serialNumber
+        if (grid != nil){
+            gridName?.text = grid!.name
+            gridSize?.text = String(grid!.size)
+            nameField?.text = grid!.name
+            sizeField?.text = String(grid!.size)
         }
+    }
+    
+    func refreshLabel(){
+        if (grid != nil){
+            gridName?.text = nameField.text!
+            gridSize?.text = sizeField.text!
+        }
+        print("I did a do")
     }
     
     override func viewDidLoad() {
@@ -48,8 +54,8 @@ class DetailViewController: UIViewController{
     }
 }
 
-extension DetailViewController: ItemSelectionDelegate{
-    func itemSelected(newItem: Item) {
-        item = newItem
+extension DetailViewController: GridSelectionDelegate{
+    func gridSelected(newGrid: Grid) {
+        grid = newGrid
     }
 }

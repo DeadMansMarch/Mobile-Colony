@@ -12,16 +12,16 @@ import UIKit
 //an enum that defines a number of weapon options
 import UIKit
 
-class Item: NSObject{
+class Grid: NSObject{
     var name: String
-    var valueInDollars: Int
-    var serialNumber: String?
+    var size: Int
+    var id: Int
     let dateCreated: Date
     
-    init(name: String, serialNumber: String?, valueInDollars: Int){
+    init(name: String, size: Int){
         self.name = name
-        self.valueInDollars = valueInDollars
-        self.serialNumber = serialNumber
+        self.size = size
+        self.id = id
         self.dateCreated = Date()
         
         super.init()
@@ -39,12 +39,11 @@ class Item: NSObject{
             let randomNoun = nouns[Int(idx)]
             
             let randomName = "\(randomAdjective) \(randomNoun)"
-            let randomValue = Int(arc4random_uniform(100))
-            let randomSerialNumber = UUID().uuidString.components(separatedBy: "-").first!
+            let randomSize = Int(arc4random_uniform(60))
             
-            self.init(name: randomName, serialNumber: randomSerialNumber, valueInDollars: randomValue)
+            self.init(name: randomName, size: randomSize)
         } else {
-            self.init(name: "", serialNumber: nil, valueInDollars: 0)
+            self.init(name: "", size: 0)
         }
     }
 }

@@ -9,9 +9,7 @@
 import Foundation
 import UIKit
 
-class ItemCell: UITableViewCell {
+class GridCell: UITableViewCell {
     @IBOutlet var nameL: UILabel!
-    @IBOutlet var serialL: UILabel!
-    @IBOutlet var valueL: UILabel!
-    
+    @IBOutlet var sizeL: UILabel!
 }

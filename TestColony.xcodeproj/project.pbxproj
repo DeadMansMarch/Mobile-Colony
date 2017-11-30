@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0304F1D51FC272F000BB9ACE /* ItemStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0304F1D41FC272F000BB9ACE /* ItemStore.swift */; };
-		0304F1D71FC35F5800BB9ACE /* ItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0304F1D61FC35F5800BB9ACE /* ItemCell.swift */; };
+		0304F1D51FC272F000BB9ACE /* GridStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0304F1D41FC272F000BB9ACE /* GridStore.swift */; };
+		0304F1D71FC35F5800BB9ACE /* GridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0304F1D61FC35F5800BB9ACE /* GridCell.swift */; };
 		031C923B1FC0A4D0005BF3BD /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031C923A1FC0A4D0005BF3BD /* MasterViewController.swift */; };
 		031C923D1FC0A709005BF3BD /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031C923C1FC0A709005BF3BD /* DetailViewController.swift */; };
-		031C923F1FC0A992005BF3BD /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031C923E1FC0A992005BF3BD /* Item.swift */; };
+		031C923F1FC0A992005BF3BD /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031C923E1FC0A992005BF3BD /* Grid.swift */; };
 		034F41EC1FBCC1A30079AE29 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034F41EB1FBCC1A30079AE29 /* AppDelegate.swift */; };
 		034F41F11FBCC1A30079AE29 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 034F41EF1FBCC1A30079AE29 /* Main.storyboard */; };
 		034F41F31FBCC1A30079AE29 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 034F41F21FBCC1A30079AE29 /* Assets.xcassets */; };
@@ -38,11 +38,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0304F1D41FC272F000BB9ACE /* ItemStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemStore.swift; sourceTree = "<group>"; };
-		0304F1D61FC35F5800BB9ACE /* ItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCell.swift; sourceTree = "<group>"; };
+		0304F1D41FC272F000BB9ACE /* GridStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridStore.swift; sourceTree = "<group>"; };
+		0304F1D61FC35F5800BB9ACE /* GridCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridCell.swift; sourceTree = "<group>"; };
 		031C923A1FC0A4D0005BF3BD /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
 		031C923C1FC0A709005BF3BD /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
-		031C923E1FC0A992005BF3BD /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		031C923E1FC0A992005BF3BD /* Grid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 		034F41E81FBCC1A30079AE29 /* TestColony.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestColony.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		034F41EB1FBCC1A30079AE29 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		034F41F01FBCC1A30079AE29 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -109,9 +109,9 @@
 				034F41EF1FBCC1A30079AE29 /* Main.storyboard */,
 				031C923A1FC0A4D0005BF3BD /* MasterViewController.swift */,
 				031C923C1FC0A709005BF3BD /* DetailViewController.swift */,
-				0304F1D61FC35F5800BB9ACE /* ItemCell.swift */,
-				0304F1D41FC272F000BB9ACE /* ItemStore.swift */,
-				031C923E1FC0A992005BF3BD /* Item.swift */,
+				0304F1D61FC35F5800BB9ACE /* GridCell.swift */,
+				0304F1D41FC272F000BB9ACE /* GridStore.swift */,
+				031C923E1FC0A992005BF3BD /* Grid.swift */,
 				034F41F21FBCC1A30079AE29 /* Assets.xcassets */,
 				034F41F41FBCC1A30079AE29 /* LaunchScreen.storyboard */,
 				034F41F71FBCC1A30079AE29 /* Info.plist */,
@@ -271,11 +271,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				031C923F1FC0A992005BF3BD /* Item.swift in Sources */,
+				031C923F1FC0A992005BF3BD /* Grid.swift in Sources */,
 				031C923D1FC0A709005BF3BD /* DetailViewController.swift in Sources */,
-				0304F1D71FC35F5800BB9ACE /* ItemCell.swift in Sources */,
+				0304F1D71FC35F5800BB9ACE /* GridCell.swift in Sources */,
 				031C923B1FC0A4D0005BF3BD /* MasterViewController.swift in Sources */,
-				0304F1D51FC272F000BB9ACE /* ItemStore.swift in Sources */,
+				0304F1D51FC272F000BB9ACE /* GridStore.swift in Sources */,
 				034F41EC1FBCC1A30079AE29 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
