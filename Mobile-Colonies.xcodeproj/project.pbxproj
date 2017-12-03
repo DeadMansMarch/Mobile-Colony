@@ -7,12 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		038B2D0B1FD3ABE00076893D /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038B2D061FD3ABE00076893D /* MasterViewController.swift */; };
+		038B2D0C1FD3ABE00076893D /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038B2D071FD3ABE00076893D /* DetailViewController.swift */; };
+		038B2D0D1FD3ABE00076893D /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038B2D081FD3ABE00076893D /* Grid.swift */; };
+		038B2D0E1FD3ABE00076893D /* GridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038B2D091FD3ABE00076893D /* GridCell.swift */; };
+		038B2D0F1FD3ABE00076893D /* GridStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038B2D0A1FD3ABE00076893D /* GridStore.swift */; };
 		2896D80C1FCE174E009CD8EF /* border.png in Resources */ = {isa = PBXBuildFile; fileRef = 2896D80B1FCE174E009CD8EF /* border.png */; };
 		2896D80E1FCE1884009CD8EF /* Live-Body copy.png in Resources */ = {isa = PBXBuildFile; fileRef = 2896D80D1FCE1884009CD8EF /* Live-Body copy.png */; };
 		28BB50401FCC7B9F00B78CF2 /* colony.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BB503F1FCC7B9F00B78CF2 /* colony.swift */; };
 		28BB50421FCC972600B78CF2 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BB50411FCC972600B78CF2 /* MainView.swift */; };
 		28EC929B1FBC8EC6006BE2F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EC929A1FBC8EC6006BE2F1 /* AppDelegate.swift */; };
-		28EC929D1FBC8EC6006BE2F1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EC929C1FBC8EC6006BE2F1 /* ViewController.swift */; };
 		28EC92A01FBC8EC6006BE2F1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28EC929E1FBC8EC6006BE2F1 /* Main.storyboard */; };
 		28EC92A21FBC8EC6006BE2F1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 28EC92A11FBC8EC6006BE2F1 /* Assets.xcassets */; };
 		28EC92A51FBC8EC6006BE2F1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28EC92A31FBC8EC6006BE2F1 /* LaunchScreen.storyboard */; };
@@ -46,13 +50,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		038B2D061FD3ABE00076893D /* MasterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
+		038B2D071FD3ABE00076893D /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		038B2D081FD3ABE00076893D /* Grid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
+		038B2D091FD3ABE00076893D /* GridCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridCell.swift; sourceTree = "<group>"; };
+		038B2D0A1FD3ABE00076893D /* GridStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridStore.swift; sourceTree = "<group>"; };
 		2896D80B1FCE174E009CD8EF /* border.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = border.png; sourceTree = "<group>"; };
 		2896D80D1FCE1884009CD8EF /* Live-Body copy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Live-Body copy.png"; sourceTree = "<group>"; };
 		28BB503F1FCC7B9F00B78CF2 /* colony.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = colony.swift; sourceTree = "<group>"; };
 		28BB50411FCC972600B78CF2 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		28EC92971FBC8EC6006BE2F1 /* Mobile-Colonies.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Mobile-Colonies.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		28EC929A1FBC8EC6006BE2F1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		28EC929C1FBC8EC6006BE2F1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		28EC929F1FBC8EC6006BE2F1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		28EC92A11FBC8EC6006BE2F1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		28EC92A41FBC8EC6006BE2F1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -123,13 +131,17 @@
 			children = (
 				28EC92C81FBC9000006BE2F1 /* Resources */,
 				28EC929A1FBC8EC6006BE2F1 /* AppDelegate.swift */,
-				28EC929C1FBC8EC6006BE2F1 /* ViewController.swift */,
 				28EC929E1FBC8EC6006BE2F1 /* Main.storyboard */,
 				28EC92A11FBC8EC6006BE2F1 /* Assets.xcassets */,
 				28EC92A31FBC8EC6006BE2F1 /* LaunchScreen.storyboard */,
 				28EC92A61FBC8EC6006BE2F1 /* Info.plist */,
 				28BB503F1FCC7B9F00B78CF2 /* colony.swift */,
 				28BB50411FCC972600B78CF2 /* MainView.swift */,
+				038B2D061FD3ABE00076893D /* MasterViewController.swift */,
+				038B2D071FD3ABE00076893D /* DetailViewController.swift */,
+				038B2D081FD3ABE00076893D /* Grid.swift */,
+				038B2D091FD3ABE00076893D /* GridCell.swift */,
+				038B2D0A1FD3ABE00076893D /* GridStore.swift */,
 			);
 			path = "Mobile-Colonies";
 			sourceTree = "<group>";
@@ -313,10 +325,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				28EC929D1FBC8EC6006BE2F1 /* ViewController.swift in Sources */,
+				038B2D0B1FD3ABE00076893D /* MasterViewController.swift in Sources */,
 				28BB50421FCC972600B78CF2 /* MainView.swift in Sources */,
+				038B2D0C1FD3ABE00076893D /* DetailViewController.swift in Sources */,
 				28EC929B1FBC8EC6006BE2F1 /* AppDelegate.swift in Sources */,
+				038B2D0D1FD3ABE00076893D /* Grid.swift in Sources */,
 				28BB50401FCC7B9F00B78CF2 /* colony.swift in Sources */,
+				038B2D0F1FD3ABE00076893D /* GridStore.swift in Sources */,
+				038B2D0E1FD3ABE00076893D /* GridCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

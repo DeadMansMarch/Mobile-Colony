@@ -20,8 +20,8 @@ class ColonyView: UIView{
     
     override func draw(_ rect: CGRect){
         if let superpose = superposed{
-            (superpose as! ViewController).colony_width = Double(self.bounds.width);
-            (superpose as! ViewController).superpos();
+            (superpose as! DetailViewController).colony_width = Double(self.bounds.width);
+            (superpose as! DetailViewController).superpos();
         }
     }
     
