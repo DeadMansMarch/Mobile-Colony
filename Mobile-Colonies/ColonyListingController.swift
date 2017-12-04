@@ -97,3 +97,13 @@ class MasterViewController: UITableViewController{
     
 }
 
+extension UISplitViewController {
+    func toggleMasterView() {
+        let current = self.splitViewController?.preferredDisplayMode
+        if current == UISplitViewControllerDisplayMode.allVisible{
+            self.splitViewController?.preferredDisplayMode = UISplitViewControllerDisplayMode.primaryHidden;
+        }else{
+            self.splitViewController?.preferredDisplayMode = UISplitViewControllerDisplayMode.allVisible;
+        }
+    }
+}
