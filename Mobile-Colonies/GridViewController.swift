@@ -51,7 +51,7 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate {
     
     @IBOutlet var colonyBacking: UIView!
     
-    var visualize: ColonyView!;
+    @IBOutlet var ControllerView: UIView!
     
     func loadColony(colony:ColonyData){
         self.currentColony = colony;
@@ -302,12 +302,14 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        refreshUI()
+        ControllerView.layer.cornerRadius = 10;
+        self.splitViewController!.toggleMasterView();
         
         updateColonyXY(x: 0, y: 0);
         UpdateEvolveSpeed();
         
         colonyBacking.layer.zPosition = 2;
+        ControllerView.layer.zPosition = 3;
         
         (colonyBacking as! ColonyView).superposition(of:self);
         updateColonyName();

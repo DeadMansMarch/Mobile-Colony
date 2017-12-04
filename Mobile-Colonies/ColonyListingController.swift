@@ -101,21 +101,21 @@ extension UISplitViewController {
     func toggleMasterView() {
         let current = self.preferredDisplayMode
         if current == UISplitViewControllerDisplayMode.automatic{
-            self.preferredDisplayMode = UISplitViewControllerDisplayMode.primaryHidden;
-            /*
+            //self.preferredDisplayMode = UISplitViewControllerDisplayMode.primaryHidden;
+            
             UIView.animate(withDuration: 0.5, delay: 0, options: [.curveEaseOut], animations: {
                 self.preferredDisplayMode = UISplitViewControllerDisplayMode.primaryHidden;
                 (self.viewControllers[1] as! GridViewController).redraw();
             }, completion: nil);
-            */
+ 
         }else{
-            self.preferredDisplayMode = UISplitViewControllerDisplayMode.automatic;
-            /* Animation looked awful.
+            //self.preferredDisplayMode = UISplitViewControllerDisplayMode.automatic;
+            
             UIView.animate(withDuration: 0.5, delay: 0, options: [.curveEaseOut], animations: {
                self.preferredDisplayMode = UISplitViewControllerDisplayMode.automatic;
                 (self.viewControllers[1] as! GridViewController).redraw();
             }, completion: nil);
-           */
+           
         }
         (self.viewControllers[1] as! GridViewController).redraw();
     }
