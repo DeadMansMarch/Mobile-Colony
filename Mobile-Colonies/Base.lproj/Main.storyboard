@@ -89,7 +89,7 @@
                 <splitViewController id="cQS-f7-0xh" sceneMemberID="viewController">
                     <connections>
                         <segue destination="2De-Ev-mrf" kind="relationship" relationship="masterViewController" id="JxX-SR-iuc"/>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="detailViewController" id="Nr7-vu-ZWD"/>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="detailViewController" id="GwP-cw-sKP"/>
                     </connections>
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dvX-fp-viI" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -201,6 +201,10 @@
                                             <action selector="publish:" destination="BYZ-38-t0r" eventType="touchUpInside" id="2eK-vZ-kU3"/>
                                             <segue destination="n2l-dp-DxU" kind="popoverPresentation" identifier="upload" popoverAnchorView="nKC-UA-MKY" id="bvQ-VL-4nL">
                                                 <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                                <popoverPassthroughViews>
+                                                    <button reference="NVn-wR-FYF"/>
+                                                    <button reference="6fL-9S-WM5"/>
+                                                </popoverPassthroughViews>
                                             </segue>
                                         </connections>
                                     </button>
@@ -215,6 +219,10 @@
                                             <action selector="save:" destination="BYZ-38-t0r" eventType="touchUpInside" id="KTT-gf-xYE"/>
                                             <segue destination="yzv-6C-Jkz" kind="popoverPresentation" identifier="save" popoverAnchorView="6fL-9S-WM5" id="cHM-uB-tiJ">
                                                 <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                                <popoverPassthroughViews>
+                                                    <button reference="nKC-UA-MKY"/>
+                                                    <button reference="NVn-wR-FYF"/>
+                                                </popoverPassthroughViews>
                                             </segue>
                                         </connections>
                                     </button>
@@ -229,6 +237,10 @@
                                             <action selector="settings:" destination="BYZ-38-t0r" eventType="touchUpInside" id="fR0-47-FtD"/>
                                             <segue destination="P5L-gu-CKu" kind="popoverPresentation" identifier="settings" popoverAnchorView="NVn-wR-FYF" id="FV6-Pm-pYZ">
                                                 <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                                <popoverPassthroughViews>
+                                                    <button reference="nKC-UA-MKY"/>
+                                                    <button reference="6fL-9S-WM5"/>
+                                                </popoverPassthroughViews>
                                             </segue>
                                         </connections>
                                     </button>

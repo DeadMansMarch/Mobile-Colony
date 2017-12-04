@@ -316,14 +316,26 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
             return;
         }
         
+        let controller = segue.destination
+        controller.popoverPresentationController!.delegate = self
+        controller.preferredContentSize = CGSize(width: 300, height: 500)
+        
+        let pop = (controller.popoverPresentationController!);
+        
         switch(id){
         case "settings":
-            let controller = segue.destination
-            controller.popoverPresentationController!.delegate = self
-            controller.preferredContentSize = CGSize(width: 300, height: 500)
-            (controller.popoverPresentationController!).sourceRect = publish.bounds.offsetBy(dx: 13, dy: 0)
-            (controller.popoverPresentationController!).backgroundColor = UIColor.black;
+            
+            pop.sourceRect = publish.bounds.offsetBy(dx: 13, dy: 2)
+            pop.backgroundColor = UIColor.black;
 
+            break;
+        case "save":
+            pop.sourceRect = save.bounds.offsetBy(dx: 0, dy: -13)
+            pop.backgroundColor = UIColor.black;
+            break;
+        case "upload":
+            pop.sourceRect = publish.bounds.offsetBy(dx: 0, dy: -10)
+            pop.backgroundColor = UIColor.black;
             break;
         default:
             break;
