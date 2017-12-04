@@ -8,7 +8,7 @@
 
 import UIKit
 
-class GridViewController: UIViewController, UIGestureRecognizerDelegate {
+class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopoverPresentationControllerDelegate {
     
     @IBOutlet var gridName: UILabel!
     @IBOutlet var gridSize: UILabel!
@@ -50,7 +50,6 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet var settings: UIButton!
     
     @IBOutlet var colonyBacking: UIView!
-    
     @IBOutlet var ControllerView: UIView!
     
     func loadColony(colony:ColonyData){
@@ -297,6 +296,42 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate {
     
     @IBAction func toggleMenu(_ sender: UIButton){
         self.splitViewController!.toggleMasterView();
+    }
+    
+    
+    @IBAction func publish(_ sender: Any) {
+    }
+    
+    @IBAction func save(_ sender: Any){
+        
+    }
+    
+    @IBAction func settings(_ sender: Any){
+        
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let id = segue.identifier else{
+            print("segue, no id.");
+            return;
+        }
+        
+        switch(id){
+        case "settings":
+            let controller = segue.destination
+            controller.popoverPresentationController!.delegate = self
+            controller.preferredContentSize = CGSize(width: 300, height: 500)
+            (controller.popoverPresentationController!).sourceRect = publish.bounds.offsetBy(dx: 13, dy: 0)
+            (controller.popoverPresentationController!).backgroundColor = UIColor.black;
+
+            break;
+        default:
+            break;
+        }
+    }
+    
+    func popoverPresentationControllerDidDismissPopover(popoverPresentationController: UIPopoverPresentationController) {
+        //do som stuff from the popover
     }
     
     override func viewDidLoad() {

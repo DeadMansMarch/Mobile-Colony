@@ -89,7 +89,7 @@
                 <splitViewController id="cQS-f7-0xh" sceneMemberID="viewController">
                     <connections>
                         <segue destination="2De-Ev-mrf" kind="relationship" relationship="masterViewController" id="JxX-SR-iuc"/>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="detailViewController" id="Uem-c7-hMl"/>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="detailViewController" id="Nr7-vu-ZWD"/>
                     </connections>
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dvX-fp-viI" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -197,6 +197,12 @@
                                             <constraint firstAttribute="height" constant="44" id="mCG-yO-FYg"/>
                                         </constraints>
                                         <state key="normal" backgroundImage="upload copy.png"/>
+                                        <connections>
+                                            <action selector="publish:" destination="BYZ-38-t0r" eventType="touchUpInside" id="2eK-vZ-kU3"/>
+                                            <segue destination="n2l-dp-DxU" kind="popoverPresentation" identifier="upload" popoverAnchorView="nKC-UA-MKY" id="bvQ-VL-4nL">
+                                                <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                            </segue>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6fL-9S-WM5">
                                         <rect key="frame" x="923" y="26" width="46" height="42"/>
@@ -205,6 +211,12 @@
                                             <constraint firstAttribute="width" constant="46" id="XGS-Pq-G3Q"/>
                                         </constraints>
                                         <state key="normal" backgroundImage="save.png"/>
+                                        <connections>
+                                            <action selector="save:" destination="BYZ-38-t0r" eventType="touchUpInside" id="KTT-gf-xYE"/>
+                                            <segue destination="yzv-6C-Jkz" kind="popoverPresentation" identifier="save" popoverAnchorView="6fL-9S-WM5" id="cHM-uB-tiJ">
+                                                <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                            </segue>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NVn-wR-FYF">
                                         <rect key="frame" x="992" y="12" width="73" height="70"/>
@@ -213,6 +225,12 @@
                                             <constraint firstAttribute="height" constant="70" id="Sma-xd-fMU"/>
                                         </constraints>
                                         <state key="normal" backgroundImage="settings.png"/>
+                                        <connections>
+                                            <action selector="settings:" destination="BYZ-38-t0r" eventType="touchUpInside" id="fR0-47-FtD"/>
+                                            <segue destination="P5L-gu-CKu" kind="popoverPresentation" identifier="settings" popoverAnchorView="NVn-wR-FYF" id="FV6-Pm-pYZ">
+                                                <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                            </segue>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -264,7 +282,7 @@
                         <outlet property="evolveSpeedSlider" destination="TlI-w9-Wgr" id="yAK-YU-KnX"/>
                         <outlet property="menu" destination="SUR-5I-PM1" id="4m7-4h-F8q"/>
                         <outlet property="publish" destination="nKC-UA-MKY" id="3go-fc-1Vv"/>
-                        <outlet property="save" destination="6fL-9S-WM5" id="dRD-Vs-Xzn"/>
+                        <outlet property="save" destination="6fL-9S-WM5" id="4GW-h2-WjV"/>
                         <outlet property="settings" destination="NVn-wR-FYF" id="Emq-Ya-Cp1"/>
                     </connections>
                 </viewController>
@@ -294,6 +312,60 @@
                 </panGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-937.23021582733816" y="-201.43884892086334"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="S7S-aK-yOP">
+            <objects>
+                <viewController id="yzv-6C-Jkz" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Ht9-CL-OZf">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="tlk-6E-GIv"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CWv-fU-jwD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-841" y="573"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="R8v-xc-Nep">
+            <objects>
+                <viewController id="n2l-dp-DxU" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Nrl-QB-Hoa">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="ype-0u-uut"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="936-Rc-pWC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-207" y="578"/>
+        </scene>
+        <!--Settings-->
+        <scene sceneID="V0g-Rq-Kis">
+            <objects>
+                <viewController storyboardIdentifier="Settings" title="Settings" useStoryboardIdentifierAsRestorationIdentifier="YES" id="P5L-gu-CKu" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="b1m-7W-tQX">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="l1A-E8-kp6">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <items>
+                                    <navigationItem title="Settings" id="p90-Qi-FH6"/>
+                                </items>
+                            </navigationBar>
+                        </subviews>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="aNG-eM-hTQ"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="N0j-Gf-hrL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1472" y="576"/>
         </scene>
     </scenes>
     <resources>
