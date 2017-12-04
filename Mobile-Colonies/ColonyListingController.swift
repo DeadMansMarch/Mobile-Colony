@@ -13,7 +13,7 @@ protocol GridSelectionDelegate{
     func gridSelected(newGrid: Grid)
 }
 
-class MasterViewController: UITableViewController{
+class ColonyListingController: UITableViewController{
     var grids = GridStore()
     var delegate: GridSelectionDelegate?
     
@@ -44,12 +44,12 @@ class MasterViewController: UITableViewController{
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedGrid = self.grids.allGrids[indexPath.row]
         self.delegate?.gridSelected(newGrid: selectedGrid)
-        if let detailViewController = self.delegate as? DetailViewController {
+        if let detailViewController = self.delegate as? GridViewController {
             splitViewController?.showDetailViewController(detailViewController.navigationController!, sender: nil)
         }
     }
     
-    @IBAction func addNewGrid(_ sender: UIButton){
+    @IBAction func addNewGrid(){
         let newGrid = grids.createGrid()
         
         if let index = grids.allGrids.index(of: newGrid){
@@ -59,13 +59,13 @@ class MasterViewController: UITableViewController{
         }
     }
     
-    @IBAction func toggleEditingMode(_ sender: UIButton){
+    @IBAction func toggleEditingMode(){
         if isEditing{
-            sender.setTitle("Edit", for: .normal)
+            //sender.setTitle("Edit", for: .normal)
             
             setEditing(false, animated: false)
         } else {
-            sender.setTitle("Done", for: .normal)
+            //sender.setTitle("Done", for: .normal)
             
             setEditing(true, animated: false)
         }
@@ -99,11 +99,24 @@ class MasterViewController: UITableViewController{
 
 extension UISplitViewController {
     func toggleMasterView() {
-        let current = self.splitViewController?.preferredDisplayMode
-        if current == UISplitViewControllerDisplayMode.allVisible{
-            self.splitViewController?.preferredDisplayMode = UISplitViewControllerDisplayMode.primaryHidden;
+        let current = self.preferredDisplayMode
+        if current == UISplitViewControllerDisplayMode.automatic{
+            self.preferredDisplayMode = UISplitViewControllerDisplayMode.primaryHidden;
+            /*
+            UIView.animate(withDuration: 0.5, delay: 0, options: [.curveEaseOut], animations: {
+                self.preferredDisplayMode = UISplitViewControllerDisplayMode.primaryHidden;
+                (self.viewControllers[1] as! GridViewController).redraw();
+            }, completion: nil);
+            */
         }else{
-            self.splitViewController?.preferredDisplayMode = UISplitViewControllerDisplayMode.allVisible;
+            self.preferredDisplayMode = UISplitViewControllerDisplayMode.automatic;
+            /* Animation looked awful.
+            UIView.animate(withDuration: 0.5, delay: 0, options: [.curveEaseOut], animations: {
+               self.preferredDisplayMode = UISplitViewControllerDisplayMode.automatic;
+                (self.viewControllers[1] as! GridViewController).redraw();
+            }, completion: nil);
+           */
         }
+        (self.viewControllers[1] as! GridViewController).redraw();
     }
 }

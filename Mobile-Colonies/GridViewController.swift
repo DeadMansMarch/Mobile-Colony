@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DetailViewController: UIViewController {
+class GridViewController: UIViewController, UIGestureRecognizerDelegate {
     
     @IBOutlet var gridName: UILabel!
     @IBOutlet var gridSize: UILabel!
@@ -23,93 +23,99 @@ class DetailViewController: UIViewController {
     
     @IBOutlet var menu: UIButton!
     
-    @IBOutlet var colony_x: UILabel!
-    @IBOutlet var colony_y: UILabel!
+    @IBOutlet var colonyName: UILabel!
+    @IBOutlet var colonyX: UILabel!
+    @IBOutlet var colonyY: UILabel!
     
-    var colony_topx:Double = 0; // current colony position (top left x is 0)
-    var colony_topy:Double = 0; // current colony position (top left y is 0)
-    var colony_box_zoom:Double = 20; // # of boxes on horizontal axis.
+    var currentColony:ColonyData? = ColonyData(name:"Untitled Colony",size:50,colony:Colony());
+    var colonyWidth:Double!;
     
-    var colony_bounds = (20,20);
-    var display_out = false;
+    var colonyTopX:Double = 0; // current colony position (top left x is 0)
+    var colonyTopY:Double = 0; // current colony position (top left y is 0)
+    var colonyDrawZoom:Double = 20; // # of boxes on horizontal axis.
+    
+    var displayUnboundCells = false;
     var wrapping = false;
     
     var cache = [Cell : UIBezierPath]();
     
-    @IBOutlet var evolve_speed: UISlider!
-    @IBOutlet var evolve_speed_txt: UILabel!
-    var evl_speed:Double = 0;
-    var thread_kill = Set<Double>();
-    var evl_threaded = false;
+    @IBOutlet var evolveSpeedSlider: UISlider!
+    @IBOutlet var evolveSpeedLabel: UILabel!
+    var evolveSpeed:Double = 0;
+    var threadKill = Set<Double>();
+    var threaded = false;
     
     @IBOutlet var publish: UIButton!
     @IBOutlet var save: UIButton!
     @IBOutlet var settings: UIButton!
     
-    @IBOutlet var colony_backing: UIView!
-    
-    var colony_width:Double!;
-
-    
-    var current_colony: Colony?
+    @IBOutlet var colonyBacking: UIView!
     
     var visualize: ColonyView!;
     
-    func update_colony_xy(x:Int, y:Int){
-        colony_x.text = "X: \(x)";
-        colony_y.text = "Y: \(y)";
+    func loadColony(colony:ColonyData){
+        self.currentColony = colony;
+        updateColonyName()
     }
     
-    func update_evl_speed(){
-        evolve_speed_txt.text = "x\(evl_speed)";
+    func updateColonyName(){
+        self.colonyName.text = currentColony!.name;
     }
     
-    @IBAction func evolve_speed_change(_ sender: Any) {
-        if (current_colony != nil){
-            let position = evolve_speed.value;
-            let last_speed = evl_speed;
+    func updateColonyXY(x:Int, y:Int){
+        colonyX.text = "X: \(x)";
+        colonyY.text = "Y: \(y)";
+    }
+    
+    func UpdateEvolveSpeed(){
+        evolveSpeedLabel.text = "x\(evolveSpeed)";
+    }
+    
+    @IBAction func evolveSpeedChanged(_ sender: Any) {
+        let position = evolveSpeedSlider.value;
+        let lastSpeed = evolveSpeed;
+    
+        if position <= 10{
+            evolveSpeed = round(Double(position)) / 10
+        }else{
+            evolveSpeed = floor(Double(position) - 9)
+        }
         
-            if position <= 10{
-                evl_speed = round(Double(position)) / 10
-            }else{
-                evl_speed = floor(Double(position) - 9)
-            }
-        
-            if evl_speed > 0 && !evl_threaded || last_speed < evl_speed{
-                thread_kill.insert(last_speed);
-                evl_threaded = true;
-                let queue = DispatchQueue.global();
-                queue.async{
-                    while self.evl_speed > 0{
-                        let cspeed = self.evl_speed;
-                        usleep(UInt32(1000000 / self.evl_speed))
-                        if (!self.thread_kill.contains(cspeed) && self.evl_speed != 0.0){
-                            OperationQueue.main.addOperation{
-                                self.current_colony!.evolve();
-                                self.redraw();
-                            }
-                        }else{
-                            OperationQueue.main.addOperation{
-                                self.thread_kill.remove(cspeed)
-                            }
-                        
-                            break;
+        if evolveSpeed > 0 && !threaded || lastSpeed < evolveSpeed{
+            threadKill.insert(lastSpeed);
+            threaded = true;
+            let queue = DispatchQueue.global();
+            queue.async{
+                while self.evolveSpeed > 0{
+                    let cspeed = self.evolveSpeed;
+                    usleep(UInt32(1000000 / self.evolveSpeed))
+                    if (!self.threadKill.contains(cspeed) && self.evolveSpeed != 0.0){
+                        OperationQueue.main.addOperation{
+                            self.currentColony!.colony.evolve();
+                            self.redraw();
+                        }
+                    }else{
+                        OperationQueue.main.addOperation{
+                            self.threadKill.remove(cspeed)
                         }
                     
+                        break;
                     }
-                    self.evl_threaded = false;
+                    
                 }
+                self.threaded = false;
             }
-            update_evl_speed();
         }
+        UpdateEvolveSpeed();
+        
     }
     
     func convert(x:Int,y:Int)->Cell{
-        let zoom = self.colony_box_zoom;
-        let size = ((colony_width - 20) - Double(zoom - 1)) / Double(zoom)
+        let zoom = self.colonyDrawZoom;
+        let size = ((colonyWidth - 20) - Double(zoom - 1)) / Double(zoom)
         
-        let xcell = ((Double(x-10)) / size) + 1 + colony_topx
-        let ycell = ((Double(y-10)) / size) + 1 + colony_topy
+        let xcell = ((Double(x-10)) / size) + 1 + colonyTopX
+        let ycell = ((Double(y-10)) / size) + 1 + colonyTopY
         return Cell(
             X: Int(xcell),
             Y: Int(ycell)
@@ -117,37 +123,75 @@ class DetailViewController: UIViewController {
     }
     
     func outOfBounds(_ truex:Double,_ truey:Double)->Bool{
-        return colony_bounds.0 > 0 && colony_bounds.1 > 0 &&
-            (Int(truex) > colony_bounds.0 || Int(truey) > colony_bounds.1 || truex < 0 || truey < 0)
+        return currentColony!.bounds.0 > 0 && currentColony!.bounds.1 > 0 &&
+            (Int(truex) > currentColony!.bounds.0 || Int(truey) > currentColony!.bounds.1 || truex < 0 || truey < 0)
     }
     
     func onBounds(_ truex:Double, _ truey:Double)->Bool{
         return
-            (truex - 1 == Double(colony_bounds.0) && truey <= 1 + Double(colony_bounds.1) && truey > -1) ||
-            (truey - 1 == Double(colony_bounds.1) && truex <= Double(colony_bounds.0) && truex > -1) ||
-            (truex == -1 && truey <= Double(colony_bounds.1) + 1 && truey > -2) ||
-            (truey == -1 && truex <= Double(colony_bounds.0) + 1 && truex > -1)
+            (truex - 1 == Double(currentColony!.bounds.0) && truey <= 1 + Double(currentColony!.bounds.1) && truey > -1) ||
+            (truey - 1 == Double(currentColony!.bounds.1) && truex <= Double(currentColony!.bounds.0) && truex > -1) ||
+            (truex == -1 && truey <= Double(currentColony!.bounds.1) + 1 && truey > -2) ||
+            (truey == -1 && truex <= Double(currentColony!.bounds.0) + 1 && truex > -1)
     }
     
     func superpos(){ //This will be executed in the view's drawing methods.
-        if (current_colony != nil){
-        let topx = self.colony_topx;
-        let topy = self.colony_topy;
-        let zoom = self.colony_box_zoom;
+        let topx = self.colonyTopX;
+        let topy = self.colonyTopY;
+        let zoom = self.colonyDrawZoom;
         
-        let size = ((colony_width - 20) - Double(zoom - 1)) / Double(zoom)
+        let size = ((colonyWidth - 20) - Double(zoom - 1)) / Double(zoom)
         
         let btx = (topx - floor(topx)) * size;
         let bty = (topy - floor(topy)) * size;
         
-        let drawX = Int(ceil(zoom))+Int(zoom / 5);
-        let drawY = Int(ceil(zoom))+Int(zoom / 5);
+        let draw = Double(Int(ceil(zoom))+Int(zoom / 5));
+        let scaledSize = (Double(colonyBacking.bounds.width),Double(colonyBacking.bounds.height))
+        let scaledZero = (10-btx+(size*(0 - floor(topx) - 1)),10-bty+(size*(0 - floor(topy) - 1)));
         
-        for x in -2...drawX{
-            for y in -2...drawY{
+        let scaledMaxX = 0 - floor(topx) + Double(currentColony!.bounds.0);
+        let scaledMaxY = 0 - floor(topy) + Double(currentColony!.bounds.1);
+        let scaledMax:(Double,Double) = (
+            10-btx+(size*(scaledMaxX)),
+            10-bty+(size*(scaledMaxY))
+        );
+        
+        if scaledZero.0 > scaledSize.0 || scaledMax.0 <= 0 || scaledZero.1 > scaledSize.1  || scaledMax.1 <= 0 {
+            let path = UIBezierPath(rect: self.colonyBacking.bounds);
+            UIColor.black.setFill();
+            path.fill();
+            return;
+        }
+        
+        if (scaledZero.0 > 0){
+            let path = UIBezierPath(rect: CGRect(x:0,y:0,width:scaledZero.0,height:scaledSize.1));
+            UIColor.black.setFill();
+            path.fill();
+        }
+        
+        if (scaledZero.1 > 0){
+            let path = UIBezierPath(rect: CGRect(x:0,y:0,width:scaledSize.0,height:scaledZero.1));
+            UIColor.black.setFill();
+            path.fill();
+        }
+        
+        if (scaledMax.0 < scaledSize.0){
+            let path = UIBezierPath(rect: CGRect(x:scaledMax.0,y:0,width:scaledSize.0 - scaledMax.0,height:scaledSize.1));
+            UIColor.black.setFill();
+            path.fill();
+        }
+        
+        if (scaledMax.1 < scaledSize.1){
+            let path = UIBezierPath(rect: CGRect(x:0,y:scaledMax.1,width:scaledSize.0,height:scaledSize.1 - scaledMax.1));
+            UIColor.black.setFill();
+            path.fill();
+        }
+        
+        for x in -2...Int(draw){
+            for y in -2...Int(draw){
                 let truex = Double(x) + floor(topx);
                 let truey = Double(y) + floor(topy);
-                if current_colony!.isCellAlive(X: Int(truex), Y: Int(truey)) || onBounds(truex,truey){
+                if currentColony!.colony.isCellAlive(X: Int(truex), Y: Int(truey)) && !outOfBounds(truex, truey){
                     let cell = CGRect(
                         x:10-btx+(size*Double(x-1)),
                         y:10-bty+(size*Double(y-1)),
@@ -156,99 +200,117 @@ class DetailViewController: UIViewController {
                     let path:UIBezierPath = UIBezierPath(rect: cell);
                     UIColor.white.setStroke();
                     if !wrapping{
-                        if outOfBounds(truex,truey){
-                            UIColor.red.setStroke();
-                            UIColor.red.setFill();
-                            path.fill();
-                        }else{
-                            UIColor.blue.setFill();
-                            path.fill();
-                        }
+                        UIColor.blue.setFill();
+                        path.fill();
                     }else{
                         
                     }
-                    
-                    
+
                     path.lineWidth = 2;
                     path.stroke();
                 }
             }
         }
-    }
- 
+        print("drawn");
     }
     
     func redraw(){
-        colony_backing.setNeedsDisplay();
+        colonyBacking.setNeedsDisplay();
     }
     
     @IBAction func zoom(_ sender: UIPinchGestureRecognizer) {
-        print(sender);
-        if let view = sender.view {
-            let newScale = colony_box_zoom / Double(sender.scale);
+        print("zoomed");
+        if sender.view != nil {
+            let newScale = colonyDrawZoom / Double(sender.scale);
+            let center = sender.location(in: self.view);
+            let ratio = (
+                Double(center.x) / Double(colonyBacking.bounds.width),
+                Double(center.y) / Double(colonyBacking.bounds.height)
+            );
+            
+            let zoom = self.colonyDrawZoom;
+            
             if newScale <= 100 && newScale >= 2{
-                colony_box_zoom = newScale;
+                colonyTopX = colonyTopX + (zoom * ratio.0 * Double(sender.scale - 1))
+                colonyTopY = colonyTopY + (zoom * ratio.1 * Double(sender.scale - 1))
+                
+                colonyDrawZoom = newScale;
             }else if newScale > 100{
-                colony_box_zoom = 100;
+                colonyDrawZoom = 100;
             }else{
-                colony_box_zoom = 2;
+                colonyDrawZoom = 2;
             }
             
             sender.scale = 1;
+            updateColonyXY(x:Int(floor(colonyTopX)),y:Int(floor(colonyTopY)))
             redraw();
         }
     }
     
     @IBAction func pan(_ sender: UIPanGestureRecognizer) {
-        let translation = sender.translation(in: self.view);
-        colony_topx += Double(translation.x) / 100;
-        colony_topy += Double(translation.y) / 100;
-        update_colony_xy(x:Int(floor(colony_topx)),y:Int(floor(colony_topy)))
+        print("pan");
+        let translation = sender.translation(in: self.colonyBacking);
+        colonyTopX -= Double(translation.x) / 25
+        colonyTopY -= Double(translation.y) / 25
+        updateColonyXY(x:Int(floor(colonyTopX)),y:Int(floor(colonyTopY)))
+        sender.setTranslation(CGPoint.init(x: 0, y: 0), in: self.colonyBacking)
         redraw();
     }
     
     @IBAction func singleToggle(_ sender: UITapGestureRecognizer) {
-        if (current_colony != nil){
-            let location = sender.location(in: colony_backing)
-            let cell = convert(x:Int(location.x),y:Int(location.y));
-            print(cell)
-            current_colony!.toggleCellAlive(X:cell.X,Y:cell.Y)
-            redraw();
-        }
+        print("tapped");
+        let location = sender.location(in: colonyBacking)
+        let cell = convert(x:Int(location.x),y:Int(location.y));
+        print(cell)
+        currentColony!.colony.toggleCellAlive(X:cell.X,Y:cell.Y)
+        redraw();
     }
     
     var toggled = Set<Cell>();
     
     @IBAction func multiToggle(_ sender: UIPanGestureRecognizer){
-        if (current_colony != nil){
-            if (sender.state == .ended){
-                toggled.removeAll();
-                return;
-            }
-        
-            let location = sender.location(in: colony_backing);
-            let cell = convert(x:Int(location.x),y:Int(location.y));
-            guard (!toggled.contains(cell)) else{
-                return;
-            }
-        
-            current_colony!.toggleCellAlive(X:cell.X,Y:cell.Y)
-            toggled.insert(cell)
-            redraw();
+        if (sender.state == .ended){
+            toggled.removeAll();
+            return;
         }
+        
+        let location = sender.location(in: colonyBacking);
+        let cell = convert(x:Int(location.x),y:Int(location.y));
+        guard (!toggled.contains(cell)) else{
+            return;
+        }
+        
+        currentColony!.colony.toggleCellAlive(X:cell.X,Y:cell.Y)
+        toggled.insert(cell)
+        redraw();
+        
+    }
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
+                           shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer)
+        -> Bool {
+            if (!otherGestureRecognizer.isKind(of: UIScreenEdgePanGestureRecognizer.classForCoder())){
+                return true;
+            }
+            return false;
+    }
+    
+    @IBAction func toggleMenu(_ sender: UIButton){
+        self.splitViewController!.toggleMasterView();
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         refreshUI()
         
-        update_colony_xy(x: 0, y: 0);
-        update_evl_speed();
+        updateColonyXY(x: 0, y: 0);
+        UpdateEvolveSpeed();
         
-        colony_backing.layer.zPosition = 1;
+        colonyBacking.layer.zPosition = 2;
         
-        (colony_backing as! ColonyView).superposition(of:self);
+        (colonyBacking as! ColonyView).superposition(of:self);
+        updateColonyName();
     }
     
     override func didReceiveMemoryWarning() {
@@ -267,13 +329,13 @@ class DetailViewController: UIViewController {
             gridSize?.text = String(grid!.size)
             nameField?.text = grid!.name
             sizeField?.text = String(grid!.size)
-            current_colony = grid!.colony
+            currentColony!.colony = grid!.colony
             redraw()
         }
     }
 }
 
-extension DetailViewController: GridSelectionDelegate{
+extension GridViewController: GridSelectionDelegate{
     func gridSelected(newGrid: Grid) {
         grid = newGrid
     }

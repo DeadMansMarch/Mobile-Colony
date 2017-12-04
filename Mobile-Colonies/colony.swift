@@ -35,7 +35,7 @@ extension Cell: Hashable{
 }
 
 class Colony: CustomStringConvertible{
-    //let ColonySize: Int;
+    
     var Cells = Set<Cell>();
     var numberLivingCells:Int{ return Cells.count; }
     

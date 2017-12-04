@@ -16,17 +16,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         let splitViewController = self.window!.rootViewController as! UISplitViewController
-        let leftNavController = splitViewController.viewControllers.first as! UINavigationController
-        let masterViewController = leftNavController.topViewController as! MasterViewController
-        let rightNavController = splitViewController.viewControllers.last as! UINavigationController
-        let detailViewController = rightNavController.topViewController as! DetailViewController
+        let ListingController = splitViewController.viewControllers[0] as! ColonyListingController
+        let GameController = splitViewController.viewControllers[1] as! GridViewController
         
+        ListingController.delegate = GameController
         
-        detailViewController.navigationItem.leftItemsSupplementBackButton = true
-        detailViewController.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem
-        
-        masterViewController.delegate = detailViewController
-        
+        splitViewController.presentsWithGesture = false;
         return true
     }
 
