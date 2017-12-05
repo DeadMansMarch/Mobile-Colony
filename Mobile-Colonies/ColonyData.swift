@@ -23,6 +23,9 @@ struct ColonyData : Equatable{
     var name:String;
     var size:Int;
     var colony:Colony;
+    var currentTopX  = 0.0;
+    var currentTopY  = 0.0;
+    var currentCZoom = 20.0;
     
     var dataType:COLONY_DATA_TYPE;
     

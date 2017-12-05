@@ -10,6 +10,8 @@ import UIKit
 
 class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopoverPresentationControllerDelegate {
     
+    var leftController:ColonyListingController?;
+    
     @IBOutlet var menu: UIButton!
     
     @IBOutlet var colonyName: UILabel!
@@ -42,17 +44,27 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
     @IBOutlet var ControllerView: UIView!
     
     func loadColony(colony:ColonyData){
+        currentColony!.currentCZoom = colonyDrawZoom;
+        leftController!.reSave(withData:currentColony!);
+        print(colonyTopX,colonyTopY,colonyDrawZoom);
+        colonyTopX = colony.currentTopX;
+        colonyTopY = colony.currentTopY;
+        colonyDrawZoom = colony.currentCZoom;
+        self.evolveSpeedSlider.value = 0;
+        self.evolveSpeedChanged(self.evolveSpeedSlider);
         self.currentColony = colony;
-        updateColonyName()
+        updateColonyName();
+        updateColonyXY();
+        
     }
     
     func updateColonyName(){
         self.colonyName.text = currentColony!.name;
     }
     
-    func updateColonyXY(x:Int, y:Int){
-        colonyX.text = "X: \(x)";
-        colonyY.text = "Y: \(y)";
+    func updateColonyXY(){
+        colonyX.text = "X: \(Int(floor(colonyTopX)))";
+        colonyY.text = "Y: \(Int(floor(colonyTopY)))";
     }
     
     func UpdateEvolveSpeed(){
@@ -230,7 +242,7 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
             }
             
             sender.scale = 1;
-            updateColonyXY(x:Int(floor(colonyTopX)),y:Int(floor(colonyTopY)))
+            updateColonyXY()
             redraw();
         }
     }
@@ -240,7 +252,7 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
         let translation = sender.translation(in: self.colonyBacking);
         colonyTopX -= Double(translation.x) / 25
         colonyTopY -= Double(translation.y) / 25
-        updateColonyXY(x:Int(floor(colonyTopX)),y:Int(floor(colonyTopY)))
+        updateColonyXY()
         sender.setTranslation(CGPoint.init(x: 0, y: 0), in: self.colonyBacking)
         redraw();
     }
@@ -287,46 +299,53 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
         self.splitViewController!.toggleMasterView();
     }
     
+    func getName(_ prompt: String?,_ callback:@escaping (String)->()){
+        let alert = UIAlertController(title: prompt ?? "Make Template", message: nil, preferredStyle: .alert)
+        alert.addTextField(configurationHandler: { (field:UITextField) in
+            field.placeholder = "Enter Name";
+        })
+        
+        alert.addAction(UIAlertAction(title: "Create", style: .default, handler: { x in
+            let name = alert.textFields![0].text
+            callback(name ?? "");
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler:nil))
+        self.present(alert, animated: true, completion: nil)
+    }
     
     @IBAction func publish(_ sender: Any) {
     }
     
     @IBAction func save(_ sender: Any){
-        
-        
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         let pop = alert.popoverPresentationController!
         pop.delegate = self;
         pop.sourceView = save
-        //pop.backgroundColor = UIColor.lightGray;
-        pop.sourceRect = save.bounds.offsetBy(dx: 0, dy: -13)
-            
-        //controller.preferredContentSize = CGSize(width: 300, height: 500)
         
-        /*
-        alert.addTextField(configurationHandler: { (field:UITextField) in
-            field.placeholder = "Enter Name";
-        })
-        */
-        alert.addAction(UIAlertAction(title: "Save", style: .default, handler: { x in 
-            //
+        pop.sourceRect = save.bounds.offsetBy(dx: 0, dy: -13)
+        alert.addAction(UIAlertAction(title: "Save", style: .default, handler: { x in
+            if (self.currentColony!.name == "Untitled Colony"){
+                self.getName("Name Colony",{ name in
+                    print("new name: \(name)")
+                    self.currentColony!.name = name;
+                    self.updateColonyName();
+                    self.leftController!.addNewSave(withData:self.currentColony!);
+                })
+                
+            }else{
+                //Save;
+            }
+            
+            
         }))
         
         alert.addAction(UIAlertAction(title: "Save As Template", style: .default, handler: { x in
-            let alert = UIAlertController(title: "Make Template", message: nil, preferredStyle: .alert)
-            alert.addTextField(configurationHandler: { (field:UITextField) in
-                field.placeholder = "Enter Name";
+            self.getName(nil,{ x in
+                if (x != ""){
+                    
+                }
             })
-            
-            alert.addAction(UIAlertAction(title: "Create", style: .default, handler: { x in
-                let name = alert.textFields![0].text
-                var template = self.currentColony!
-                template.dataType = .template;
-                
-            }))
-            
-            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler:nil))
-            self.present(alert, animated: true, completion: nil)
         }))
         
         self.present(alert, animated: true, completion: nil)
@@ -379,7 +398,7 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
         ControllerView.layer.cornerRadius = 10;
         self.splitViewController!.toggleMasterView();
         
-        updateColonyXY(x: 0, y: 0);
+        updateColonyXY();
         UpdateEvolveSpeed();
         
         colonyBacking.layer.zPosition = 2;

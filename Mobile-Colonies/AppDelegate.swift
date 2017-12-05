@@ -20,6 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let GameController = splitViewController.viewControllers[1] as! GridViewController
         
         ListingController.gameController = GameController;
+        GameController.leftController = ListingController
         
         splitViewController.presentsWithGesture = false;
         return true

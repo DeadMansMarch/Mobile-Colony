@@ -43,6 +43,7 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
         let selectedColony = self.colonies.allColonies[indexPath.row]
         
         gameController?.loadColony(colony: selectedColony)
+        gameController?.redraw();
     }
     
     func addNewSave(withData:ColonyData){
@@ -50,6 +51,14 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
         
         let indexPath = IndexPath(row: newColony, section: 0)
         tableView.insertRows(at: [indexPath], with: .automatic)
+    }
+    
+    func reSave(withData:ColonyData){
+        let ind = colonies.allColonies.index(of: withData);
+        guard let index = ind else{
+            return;
+        }
+        colonies.allColonies[index] = withData;
     }
     
     @IBAction func toggleEditingMode(_ sender: UIBarButtonItem){
