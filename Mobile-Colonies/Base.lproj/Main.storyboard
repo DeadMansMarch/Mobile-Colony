@@ -11,6 +11,70 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Add Controller-->
+        <scene sceneID="qDW-s6-sIo">
+            <objects>
+                <viewController id="CP5-Iv-APO" customClass="AddController" customModule="Mobile_Colonies" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="caM-Ap-SVV">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Colony Name" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bs7-Yt-L16">
+                                <rect key="frame" x="32" y="36" width="311" height="30"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="100x100" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xom-Eo-sDw">
+                                <rect key="frame" x="103" y="97" width="168" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="100" minValue="20" maxValue="1001" translatesAutoresizingMaskIntoConstraints="NO" id="D4L-8Y-j3B">
+                                <rect key="frame" x="14" y="136" width="347" height="31"/>
+                                <connections>
+                                    <action selector="changeSize:" destination="CP5-Iv-APO" eventType="valueChanged" id="n0r-mD-ahs"/>
+                                </connections>
+                            </slider>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9TF-ga-Qgs">
+                                <rect key="frame" x="16" y="194" width="343" height="30"/>
+                                <color key="backgroundColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="15"/>
+                                <state key="normal" title="Create">
+                                    <color key="titleShadowColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="create" destination="CP5-Iv-APO" eventType="touchUpInside" id="fFr-zi-PBj"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="9TF-ga-Qgs" firstAttribute="leading" secondItem="Po1-FY-Q3j" secondAttribute="leading" constant="16" id="DRn-TV-gGz"/>
+                            <constraint firstItem="bs7-Yt-L16" firstAttribute="top" secondItem="Po1-FY-Q3j" secondAttribute="top" constant="36" id="N6Z-gF-jyH"/>
+                            <constraint firstItem="Po1-FY-Q3j" firstAttribute="trailing" secondItem="9TF-ga-Qgs" secondAttribute="trailing" constant="16" id="Nx9-Si-nDc"/>
+                            <constraint firstItem="D4L-8Y-j3B" firstAttribute="top" secondItem="Xom-Eo-sDw" secondAttribute="bottom" constant="18" id="Oz1-ls-7ls"/>
+                            <constraint firstItem="Po1-FY-Q3j" firstAttribute="trailing" secondItem="D4L-8Y-j3B" secondAttribute="trailing" constant="16" id="QOK-Xv-5fH"/>
+                            <constraint firstItem="bs7-Yt-L16" firstAttribute="leading" secondItem="Po1-FY-Q3j" secondAttribute="leading" constant="32" id="YNm-ia-ZNB"/>
+                            <constraint firstItem="Po1-FY-Q3j" firstAttribute="trailing" secondItem="bs7-Yt-L16" secondAttribute="trailing" constant="32" id="hmk-kT-tOE"/>
+                            <constraint firstItem="9TF-ga-Qgs" firstAttribute="top" secondItem="D4L-8Y-j3B" secondAttribute="bottom" constant="28" id="nKH-96-GA6"/>
+                            <constraint firstItem="Xom-Eo-sDw" firstAttribute="top" secondItem="bs7-Yt-L16" secondAttribute="bottom" constant="31" id="nKj-fN-373"/>
+                            <constraint firstItem="Po1-FY-Q3j" firstAttribute="trailing" secondItem="Xom-Eo-sDw" secondAttribute="trailing" constant="104" id="oUb-em-qcA"/>
+                            <constraint firstItem="D4L-8Y-j3B" firstAttribute="leading" secondItem="Po1-FY-Q3j" secondAttribute="leading" constant="16" id="sYq-JK-X62"/>
+                            <constraint firstItem="Xom-Eo-sDw" firstAttribute="leading" secondItem="Po1-FY-Q3j" secondAttribute="leading" constant="103" id="tYX-yu-DKX"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Po1-FY-Q3j"/>
+                    </view>
+                    <connections>
+                        <outlet property="sizeText" destination="Xom-Eo-sDw" id="DHb-hL-PWc"/>
+                        <outlet property="textInput" destination="bs7-Yt-L16" id="yAC-Rs-xQ8"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6og-u4-dcq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-937.23021582733816" y="-1550.359712230216"/>
+        </scene>
         <!--Colony Listing Controller-->
         <scene sceneID="puP-tv-6Kk">
             <objects>
@@ -20,26 +84,34 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <navigationBar key="tableHeaderView" contentMode="scaleToFill" id="lDL-tS-kJw">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="78"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <items>
-                                <navigationItem title="Colonies" id="gH4-5f-tHm">
-                                    <barButtonItem key="leftBarButtonItem" systemItem="edit" id="Key-Ka-dSZ">
+                                <navigationItem title="Colonies" prompt="     " id="gH4-5f-tHm">
+                                    <barButtonItem key="leftBarButtonItem" title="Edit" id="Key-Ka-dSZ">
                                         <connections>
-                                            <action selector="toggleEditingMode" destination="2De-Ev-mrf" id="ICy-qg-ZJz"/>
+                                            <action selector="toggleEditingMode:" destination="2De-Ev-mrf" id="zfy-Ya-ueZ"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem key="rightBarButtonItem" systemItem="add" id="jvx-mY-QIz">
                                         <connections>
                                             <action selector="addNewGrid" destination="2De-Ev-mrf" id="dg9-eo-NL3"/>
+                                            <segue destination="CP5-Iv-APO" kind="popoverPresentation" identifier="add" popoverAnchorBarButtonItem="jvx-mY-QIz" id="H5p-e2-NYO">
+                                                <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                            </segue>
                                         </connections>
                                     </barButtonItem>
                                 </navigationItem>
                             </items>
                         </navigationBar>
+                        <view key="tableFooterView" contentMode="scaleToFill" id="4BM-M7-OFU">
+                            <rect key="frame" x="0.0" y="151" width="320" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="GridCell" id="TvZ-ix-7H1" customClass="GridCell" customModule="Mobile_Colonies" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="73" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="107" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="TvZ-ix-7H1" id="JJ9-3b-TB7">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
@@ -88,8 +160,8 @@
             <objects>
                 <splitViewController id="cQS-f7-0xh" sceneMemberID="viewController">
                     <connections>
-                        <segue destination="2De-Ev-mrf" kind="relationship" relationship="masterViewController" id="JxX-SR-iuc"/>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="detailViewController" id="GwP-cw-sKP"/>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="detailViewController" id="AlM-OK-SxT"/>
+                        <segue destination="2De-Ev-mrf" kind="relationship" relationship="masterViewController" id="Ejo-yz-asv"/>
                     </connections>
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dvX-fp-viI" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -217,13 +289,6 @@
                                         <state key="normal" backgroundImage="save.png"/>
                                         <connections>
                                             <action selector="save:" destination="BYZ-38-t0r" eventType="touchUpInside" id="KTT-gf-xYE"/>
-                                            <segue destination="yzv-6C-Jkz" kind="popoverPresentation" identifier="save" popoverAnchorView="6fL-9S-WM5" id="cHM-uB-tiJ">
-                                                <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                                                <popoverPassthroughViews>
-                                                    <button reference="nKC-UA-MKY"/>
-                                                    <button reference="NVn-wR-FYF"/>
-                                                </popoverPassthroughViews>
-                                            </segue>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NVn-wR-FYF">
@@ -330,15 +395,36 @@
             <objects>
                 <viewController id="yzv-6C-Jkz" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ht9-CL-OZf">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1112" height="834"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="uKP-IN-6nq">
+                                <rect key="frame" x="2" y="20" width="1108" height="74"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5EV-CB-gpO">
+                                        <rect key="frame" x="0.0" y="0.0" width="1108" height="30"/>
+                                        <state key="normal" title="Button"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JvX-5P-VMo">
+                                        <rect key="frame" x="0.0" y="30" width="1108" height="44"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="26"/>
+                                        <state key="normal" title="Button"/>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="uKP-IN-6nq" firstAttribute="leading" secondItem="tlk-6E-GIv" secondAttribute="leading" constant="2" id="2p6-nd-75R"/>
+                            <constraint firstItem="uKP-IN-6nq" firstAttribute="top" secondItem="tlk-6E-GIv" secondAttribute="top" id="CD6-WH-PqV"/>
+                            <constraint firstItem="tlk-6E-GIv" firstAttribute="trailing" secondItem="uKP-IN-6nq" secondAttribute="trailing" constant="2" id="hJb-A4-2JC"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="tlk-6E-GIv"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CWv-fU-jwD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-841" y="573"/>
+            <point key="canvasLocation" x="-841.1870503597122" y="572.66187050359713"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="R8v-xc-Nep">

@@ -9,9 +9,8 @@
 /* Begin PBXBuildFile section */
 		038B2D0B1FD3ABE00076893D /* ColonyListingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038B2D061FD3ABE00076893D /* ColonyListingController.swift */; };
 		038B2D0C1FD3ABE00076893D /* GridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038B2D071FD3ABE00076893D /* GridViewController.swift */; };
-		038B2D0D1FD3ABE00076893D /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038B2D081FD3ABE00076893D /* Grid.swift */; };
 		038B2D0E1FD3ABE00076893D /* GridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038B2D091FD3ABE00076893D /* GridCell.swift */; };
-		038B2D0F1FD3ABE00076893D /* GridStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038B2D0A1FD3ABE00076893D /* GridStore.swift */; };
+		038B2D0F1FD3ABE00076893D /* ColonyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038B2D0A1FD3ABE00076893D /* ColonyStore.swift */; };
 		2814C7931FD515D8005C6A99 /* ColonyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2814C7921FD515D8005C6A99 /* ColonyData.swift */; };
 		2896D80C1FCE174E009CD8EF /* border.png in Resources */ = {isa = PBXBuildFile; fileRef = 2896D80B1FCE174E009CD8EF /* border.png */; };
 		2896D80E1FCE1884009CD8EF /* Live-Body copy.png in Resources */ = {isa = PBXBuildFile; fileRef = 2896D80D1FCE1884009CD8EF /* Live-Body copy.png */; };
@@ -31,6 +30,7 @@
 		28EC92D61FBCB02B006BE2F1 /* settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 28EC92D51FBCB02A006BE2F1 /* settings.png */; };
 		28EC92DC1FBCBF29006BE2F1 /* upload copy.png in Resources */ = {isa = PBXBuildFile; fileRef = 28EC92DB1FBCBF28006BE2F1 /* upload copy.png */; };
 		28EC92E01FBCC08C006BE2F1 /* save.png in Resources */ = {isa = PBXBuildFile; fileRef = 28EC92DF1FBCC08C006BE2F1 /* save.png */; };
+		28FB7D351FD662FB004CEA08 /* addController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FB7D341FD662FB004CEA08 /* addController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,9 +53,8 @@
 /* Begin PBXFileReference section */
 		038B2D061FD3ABE00076893D /* ColonyListingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColonyListingController.swift; sourceTree = "<group>"; };
 		038B2D071FD3ABE00076893D /* GridViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridViewController.swift; sourceTree = "<group>"; };
-		038B2D081FD3ABE00076893D /* Grid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 		038B2D091FD3ABE00076893D /* GridCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridCell.swift; sourceTree = "<group>"; };
-		038B2D0A1FD3ABE00076893D /* GridStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridStore.swift; sourceTree = "<group>"; };
+		038B2D0A1FD3ABE00076893D /* ColonyStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColonyStore.swift; sourceTree = "<group>"; };
 		2814C7921FD515D8005C6A99 /* ColonyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColonyData.swift; sourceTree = "<group>"; };
 		2896D80B1FCE174E009CD8EF /* border.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = border.png; sourceTree = "<group>"; };
 		2896D80D1FCE1884009CD8EF /* Live-Body copy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Live-Body copy.png"; sourceTree = "<group>"; };
@@ -81,6 +80,7 @@
 		28EC92D51FBCB02A006BE2F1 /* settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings.png; sourceTree = "<group>"; };
 		28EC92DB1FBCBF28006BE2F1 /* upload copy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "upload copy.png"; sourceTree = "<group>"; };
 		28EC92DF1FBCC08C006BE2F1 /* save.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = save.png; sourceTree = "<group>"; };
+		28FB7D341FD662FB004CEA08 /* addController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = addController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,10 +141,10 @@
 				28BB50411FCC972600B78CF2 /* MainView.swift */,
 				038B2D061FD3ABE00076893D /* ColonyListingController.swift */,
 				038B2D071FD3ABE00076893D /* GridViewController.swift */,
-				038B2D081FD3ABE00076893D /* Grid.swift */,
 				038B2D091FD3ABE00076893D /* GridCell.swift */,
-				038B2D0A1FD3ABE00076893D /* GridStore.swift */,
+				038B2D0A1FD3ABE00076893D /* ColonyStore.swift */,
 				2814C7921FD515D8005C6A99 /* ColonyData.swift */,
+				28FB7D341FD662FB004CEA08 /* addController.swift */,
 			);
 			path = "Mobile-Colonies";
 			sourceTree = "<group>";
@@ -332,10 +332,10 @@
 				28BB50421FCC972600B78CF2 /* MainView.swift in Sources */,
 				038B2D0C1FD3ABE00076893D /* GridViewController.swift in Sources */,
 				28EC929B1FBC8EC6006BE2F1 /* AppDelegate.swift in Sources */,
-				038B2D0D1FD3ABE00076893D /* Grid.swift in Sources */,
 				2814C7931FD515D8005C6A99 /* ColonyData.swift in Sources */,
+				28FB7D351FD662FB004CEA08 /* addController.swift in Sources */,
 				28BB50401FCC7B9F00B78CF2 /* colony.swift in Sources */,
-				038B2D0F1FD3ABE00076893D /* GridStore.swift in Sources */,
+				038B2D0F1FD3ABE00076893D /* ColonyStore.swift in Sources */,
 				038B2D0E1FD3ABE00076893D /* GridCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

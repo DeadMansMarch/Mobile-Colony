@@ -10,17 +10,6 @@ import UIKit
 
 class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopoverPresentationControllerDelegate {
     
-    @IBOutlet var gridName: UILabel!
-    @IBOutlet var gridSize: UILabel!
-    @IBOutlet var nameField: UITextField!
-    @IBOutlet var sizeField: UITextField!
-    
-    var grid: Grid? {
-        didSet (newGrid) {
-            self.refreshUI()
-        }
-    }
-    
     @IBOutlet var menu: UIButton!
     
     @IBOutlet var colonyName: UILabel!
@@ -304,6 +293,44 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
     
     @IBAction func save(_ sender: Any){
         
+        
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let pop = alert.popoverPresentationController!
+        pop.delegate = self;
+        pop.sourceView = save
+        //pop.backgroundColor = UIColor.lightGray;
+        pop.sourceRect = save.bounds.offsetBy(dx: 0, dy: -13)
+            
+        //controller.preferredContentSize = CGSize(width: 300, height: 500)
+        
+        /*
+        alert.addTextField(configurationHandler: { (field:UITextField) in
+            field.placeholder = "Enter Name";
+        })
+        */
+        alert.addAction(UIAlertAction(title: "Save", style: .default, handler: { x in 
+            //
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Save As Template", style: .default, handler: { x in
+            let alert = UIAlertController(title: "Make Template", message: nil, preferredStyle: .alert)
+            alert.addTextField(configurationHandler: { (field:UITextField) in
+                field.placeholder = "Enter Name";
+            })
+            
+            alert.addAction(UIAlertAction(title: "Create", style: .default, handler: { x in
+                let name = alert.textFields![0].text
+                var template = self.currentColony!
+                template.dataType = .template;
+                
+            }))
+            
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler:nil))
+            self.present(alert, animated: true, completion: nil)
+        }))
+        
+        self.present(alert, animated: true, completion: nil)
+        
     }
     
     @IBAction func settings(_ sender: Any){
@@ -372,22 +399,6 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
         return(true)
     }
     
-    func refreshUI() {
-        if (grid != nil){
-            gridName?.text = grid!.name
-            gridSize?.text = String(grid!.size)
-            nameField?.text = grid!.name
-            sizeField?.text = String(grid!.size)
-            currentColony!.colony = grid!.colony
-            redraw()
-        }
-    }
-}
-
-extension GridViewController: GridSelectionDelegate{
-    func gridSelected(newGrid: Grid) {
-        grid = newGrid
-    }
 }
 
 

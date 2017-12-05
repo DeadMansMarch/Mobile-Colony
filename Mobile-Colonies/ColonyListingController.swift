@@ -9,90 +9,107 @@
 import Foundation
 import UIKit
 
-protocol GridSelectionDelegate{
-    func gridSelected(newGrid: Grid)
-}
 
-class ColonyListingController: UITableViewController{
-    var grids = GridStore()
-    var delegate: GridSelectionDelegate?
+class ColonyListingController:UITableViewController, UIPopoverPresentationControllerDelegate{
+    var colonies = ColonyStore()
+    
+    var gameController: GridViewController?;
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int)-> Int{
-        return(grids.allGrids.count)
+        return (colonies.allColonies.count)
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return(1)
+        return 1
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath)-> UITableViewCell{
         // Get a new or recycled cell
         let cell = tableView.dequeueReusableCell(withIdentifier: "GridCell", for: indexPath) as! GridCell
         
-        let grid = grids.allGrids[indexPath.row]
+        let colony = colonies.allColonies[indexPath.row]
         
-        cell.nameL.text = grid.name
-        cell.sizeL.text = "\(grid.size)x\(grid.size)"
+        cell.nameL.text = colony.name
+        cell.sizeL.text = "\(colony.size)x\(colony.size)"
         
         return(cell)
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedGrid = self.grids.allGrids[indexPath.row]
-        self.delegate?.gridSelected(newGrid: selectedGrid)
-        if let detailViewController = self.delegate as? GridViewController {
-            splitViewController?.showDetailViewController(detailViewController.navigationController!, sender: nil)
-        }
-    }
-    
-    @IBAction func addNewGrid(){
-        let newGrid = grids.createGrid()
+        let selectedColony = self.colonies.allColonies[indexPath.row]
         
-        if let index = grids.allGrids.index(of: newGrid){
-            let indexPath = IndexPath(row: index, section: 0)
-            
-            tableView.insertRows(at: [indexPath], with: .automatic)
-        }
+        gameController?.loadColony(colony: selectedColony)
     }
     
-    @IBAction func toggleEditingMode(){
+    func addNewSave(withData:ColonyData){
+        let newColony = colonies.createColony(Data:withData)
+        
+        let indexPath = IndexPath(row: newColony, section: 0)
+        tableView.insertRows(at: [indexPath], with: .automatic)
+    }
+    
+    @IBAction func toggleEditingMode(_ sender: UIBarButtonItem){
         if isEditing{
-            //sender.setTitle("Edit", for: .normal)
+            sender.title = "Edit";
             
             setEditing(false, animated: false)
         } else {
-            //sender.setTitle("Done", for: .normal)
-            
+            sender.title = "Done";
             setEditing(true, animated: false)
         }
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath){
         if editingStyle == .delete{
-            let grid = grids.allGrids[indexPath.row]
+            let colony = colonies.allColonies[indexPath.row]
             
-            let title = "Delete \(grid.name)?"
-            let message = "Are you sure you want to delete this item?"
             
-            let ac = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
+            let alert = UIAlertController(
+                title: "Delete \(colony.name)?",
+                message: "Are you sure you want to delete this item?",
+                preferredStyle: .alert);
             
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil));
             
-            ac.addAction(cancelAction)
+            alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { action in
+                self.colonies.removeColony(colony)
+                self.tableView.deleteRows(at: [indexPath], with: .automatic)
+            }));
             
-            let deleteAction = UIAlertAction(title: "Delete", style: .destructive, handler: { (action) -> Void in
-                self.grids.removeGrid(grid)
-                
-                self.tableView.deleteRows(at: [indexPath], with: .automatic)})
             
-            ac.addAction(deleteAction)
             
-            present(ac, animated: true, completion: nil)
+            self.present(alert, animated: true, completion: nil);
         }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let id = segue.identifier else{
+            print("segue, no id.");
+            return;
+        }
+        
+        let controller = segue.destination
+        controller.popoverPresentationController!.delegate = self
+        
+        
+        let pop = (controller.popoverPresentationController!);
+        
+        switch(id){
+            case "add":
+                controller.preferredContentSize = CGSize(width: 300, height: 250)
+                (controller as! AddController).fedCallback = { x in
+                    print("adding new save");
+                    self.addNewSave(withData: x);
+                }
+                break;
+            default:
+                break;
+        }
+        
     }
     
 }
@@ -107,16 +124,20 @@ extension UISplitViewController {
                 self.preferredDisplayMode = UISplitViewControllerDisplayMode.primaryHidden;
                 (self.viewControllers[1] as! GridViewController).redraw();
             }, completion: nil);
- 
+            
         }else{
             //self.preferredDisplayMode = UISplitViewControllerDisplayMode.automatic;
             
             UIView.animate(withDuration: 0.5, delay: 0, options: [.curveEaseOut], animations: {
-               self.preferredDisplayMode = UISplitViewControllerDisplayMode.automatic;
+                self.preferredDisplayMode = UISplitViewControllerDisplayMode.automatic;
                 (self.viewControllers[1] as! GridViewController).redraw();
             }, completion: nil);
-           
+            
         }
         (self.viewControllers[1] as! GridViewController).redraw();
     }
 }
+
+
+
+
