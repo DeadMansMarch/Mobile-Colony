@@ -31,7 +31,7 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
     
     var displayUnboundCells = false;
     var wrapping = false;
-    var drawgrid = true;
+    var drawgrid = false;
     
     var cache = [Cell : UIBezierPath]();
     
