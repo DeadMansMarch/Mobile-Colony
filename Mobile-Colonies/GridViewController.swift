@@ -247,6 +247,10 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
         }
     }
     
+    func readyTemplate(_ template: ColonyData){
+        print("ready!");
+    }
+    
     @IBAction func pan(_ sender: UIPanGestureRecognizer) {
         print("pan");
         let translation = sender.translation(in: self.colonyBacking);
@@ -354,6 +358,14 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
     
     @IBAction func settings(_ sender: Any){
         
+    }
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        print("move");
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        print("ended");
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

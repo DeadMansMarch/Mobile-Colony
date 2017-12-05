@@ -139,6 +139,7 @@
                                         <constraint firstItem="sRj-s9-WwN" firstAttribute="bottom" secondItem="JJ9-3b-TB7" secondAttribute="bottomMargin" id="ykw-IW-OK9"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <gestureRecognizers/>
                                 <connections>
                                     <outlet property="nameL" destination="O1S-2v-nvb" id="vND-VW-4RY"/>
                                     <outlet property="sizeL" destination="sRj-s9-WwN" id="fFb-nL-NKL"/>
@@ -148,10 +149,22 @@
                         <connections>
                             <outlet property="dataSource" destination="2De-Ev-mrf" id="nn8-pt-pf5"/>
                             <outlet property="delegate" destination="2De-Ev-mrf" id="g6K-bA-4lU"/>
+                            <outletCollection property="gestureRecognizers" destination="4ou-Tl-IlM" appends="YES" id="FaE-Ky-kNL"/>
+                            <outletCollection property="gestureRecognizers" destination="Dlp-YL-BIh" appends="YES" id="2yc-pG-6vN"/>
                         </connections>
                     </tableView>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FPr-e7-9Lu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.29999999999999999" id="4ou-Tl-IlM">
+                    <connections>
+                        <action selector="activateTemplate:" destination="2De-Ev-mrf" id="bmt-Bt-WWg"/>
+                    </connections>
+                </pongPressGestureRecognizer>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="Dlp-YL-BIh">
+                    <connections>
+                        <action selector="dragTemplate:" destination="2De-Ev-mrf" id="aTy-CH-Att"/>
+                    </connections>
+                </panGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-937" y="-889"/>
         </scene>
