@@ -150,7 +150,6 @@
                             <outlet property="dataSource" destination="2De-Ev-mrf" id="nn8-pt-pf5"/>
                             <outlet property="delegate" destination="2De-Ev-mrf" id="g6K-bA-4lU"/>
                             <outletCollection property="gestureRecognizers" destination="4ou-Tl-IlM" appends="YES" id="FaE-Ky-kNL"/>
-                            <outletCollection property="gestureRecognizers" destination="Dlp-YL-BIh" appends="YES" id="2yc-pG-6vN"/>
                         </connections>
                     </tableView>
                 </tableViewController>
@@ -160,11 +159,6 @@
                         <action selector="activateTemplate:" destination="2De-Ev-mrf" id="bmt-Bt-WWg"/>
                     </connections>
                 </pongPressGestureRecognizer>
-                <panGestureRecognizer minimumNumberOfTouches="1" id="Dlp-YL-BIh">
-                    <connections>
-                        <action selector="dragTemplate:" destination="2De-Ev-mrf" id="aTy-CH-Att"/>
-                    </connections>
-                </panGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-937" y="-889"/>
         </scene>

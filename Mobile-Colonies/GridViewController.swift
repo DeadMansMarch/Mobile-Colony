@@ -21,9 +21,13 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
     var currentColony:ColonyData? = ColonyData(name:"Untitled Colony",size:50,colony:Colony());
     var colonyWidth:Double!;
     
-    var colonyTopX:Double = 0; // current colony position (top left x is 0)
-    var colonyTopY:Double = 0; // current colony position (top left y is 0)
+    var colonyTopX:Double = 0.5; // current colony position (top left x is 0)
+    var colonyTopY:Double = 0.5; // current colony position (top left y is 0)
     var colonyDrawZoom:Double = 20; // # of boxes on horizontal axis.
+    
+    var activeTemplate:ColonyData?;
+    var activePosition:CGPoint?;
+    var activeTemplateOrigin:Cell?;
     
     var displayUnboundCells = false;
     var wrapping = false;
@@ -135,6 +139,32 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
             (truey == -1 && truex <= Double(currentColony!.bounds.0) + 1 && truex > -1)
     }
     
+    func readyTemplate(_ template: ColonyData,_ sender : UILongPressGestureRecognizer){
+        print("ready!");
+        activeTemplate = template;
+        activePosition = sender.location(in:self.view);
+        redraw();
+    }
+    
+    func passTemplateTransform(_ sender: UILongPressGestureRecognizer,_ ending:Bool=false){
+        guard let template = activeTemplate else{
+            print("no template");
+            return;
+        }
+        
+        activePosition = sender.location(in:self.view)
+        if (ending){
+            let cell = activeTemplateOrigin!
+            let union = currentColony!.colony.Cells.union(template.colony.Cells.map{
+                Cell(X:$0.X+cell.X,Y:$0.Y+cell.Y)
+            });
+            currentColony!.colony.Cells = union;
+            activeTemplate = nil;
+        }
+        redraw();
+    }
+    
+    
     func superpos(){ //This will be executed in the view's drawing methods.
         let topx = self.colonyTopX;
         let topy = self.colonyTopY;
@@ -211,6 +241,38 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
                 }
             }
         }
+        
+        if let template = activeTemplate{
+            print("drawing temp");
+            let origin = activePosition!;
+            
+            for x in 1...template.size{
+                for y in 1...template.size{
+                    if (x == 1 && y == 1){
+                        
+                        let cX = 10 + Double(origin.x) - remainder(Double(origin.x),size);
+                        let cY = 10 + Double(origin.y) - remainder(Double(origin.y),size)
+                        
+                        activeTemplateOrigin = convert(x:Int(cX),y:Int(cY)).transform(-1,-2);
+                    }
+                   
+                    if template.colony.isCellAlive(X: x, Y: y){
+                        let cell = CGRect(
+                            x:10 + Double(origin.x) - remainder(Double(origin.x),size)-btx+(size*Double(x-1)),
+                            y:10 + Double(origin.y) - remainder(Double(origin.y),size)-bty+(size*Double(y-2)),
+                            width: size, height:size);
+                        let path:UIBezierPath = UIBezierPath(rect: cell);
+                        UIColor.white.setStroke();
+                        UIColor.orange.setFill();
+                        path.lineWidth = 2;
+                        path.stroke();
+                        path.fill();
+                    }
+                    
+                }
+            }
+        }
+        
         print("drawn");
     }
     
@@ -246,18 +308,14 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
             redraw();
         }
     }
-    
-    func readyTemplate(_ template: ColonyData){
-        print("ready!");
-    }
-    
+
     @IBAction func pan(_ sender: UIPanGestureRecognizer) {
         print("pan");
         let translation = sender.translation(in: self.colonyBacking);
         colonyTopX -= Double(translation.x) / 25
         colonyTopY -= Double(translation.y) / 25
         updateColonyXY()
-        sender.setTranslation(CGPoint.init(x: 0, y: 0), in: self.colonyBacking)
+        sender.setTranslation(CGPoint.zero, in: self.colonyBacking)
         redraw();
     }
     

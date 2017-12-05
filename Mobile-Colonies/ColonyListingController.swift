@@ -145,7 +145,12 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
                 return;
             }
             self.splitViewController!.toggleMasterView()
-            self.gameController!.readyTemplate(self.templates.allColonies[indexPath!.row]);
+            self.gameController!.readyTemplate(self.templates.allColonies[indexPath!.row],sender);
+            
+        }else if (sender.state == .changed){
+            self.gameController!.passTemplateTransform(sender)
+        }else if (sender.state == .ended){
+            self.gameController!.passTemplateTransform(sender,true)
         }
     }
     
@@ -175,7 +180,13 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
     }
     
     override func viewDidLoad() {
-        addNewTemplate(withData: ColonyData(name:"glider",size:10,colony:Colony()));
+        let glider = Colony();
+        glider.setCellAlive(X:1,Y:3)
+        glider.setCellAlive(X:2,Y:3)
+        glider.setCellAlive(X:3,Y:3)
+        glider.setCellAlive(X:3,Y:2)
+        glider.setCellAlive(X:2,Y:1)
+        addNewTemplate(withData: ColonyData(name:"glider",size:3,colony:glider));
     }
     
 }
