@@ -180,13 +180,101 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
     }
     
     override func viewDidLoad() {
-        let glider = Colony();
-        glider.setCellAlive(X:1,Y:3)
-        glider.setCellAlive(X:2,Y:3)
-        glider.setCellAlive(X:3,Y:3)
-        glider.setCellAlive(X:3,Y:2)
-        glider.setCellAlive(X:2,Y:1)
-        addNewTemplate(withData: ColonyData(name:"glider",size:3,colony:glider));
+        
+        addNewTemplate(withData: ColonyInterpretor.interpret(name:"Blinker",fromDiagram:
+            """
+            *
+            *
+            *
+            """)!);
+        
+        addNewTemplate(withData: ColonyInterpretor.interpret(name:"Toad",fromDiagram:
+            """
+            --*-
+            *  *
+            *  *
+            -*
+            """)!);
+        
+        addNewTemplate(withData: ColonyInterpretor.interpret(name:"Beacon",fromDiagram:
+            """
+            **--
+            *---
+            ---*
+            --**
+            ----
+            """)!);
+        
+        addNewTemplate(withData: ColonyInterpretor.interpret(name:"Pulsar",fromDiagram:
+            """
+            --***----***--
+            --------------
+            *----*--*----*
+            *----*--*----*
+            *----*--*----*
+            --***----***--
+            --------------
+            --***----***--
+            *----*--*----*
+            *----*--*----*
+            *----*--*----*
+            --------------
+            --***----***--
+            """)!);
+        
+        addNewTemplate(withData: ColonyInterpretor.interpret(name:"Pentadecathlon",fromDiagram:
+            """
+            ***
+            *-*
+            ***
+            ***
+            ***
+            ***
+            *-*
+            ***
+            """)!);
+        
+        
+        
+        addNewTemplate(withData: ColonyInterpretor.interpret(name:"Glider",fromDiagram:
+            """
+            -*-
+            --*
+            ***
+            """)!);
+        
+        addNewTemplate(withData: ColonyInterpretor.interpret(name:"Lightweight Spaceship",fromDiagram:
+            """
+            *---*-
+            -----*
+            *----*
+            -*****
+            """)!);
+        
+        addNewTemplate(withData: ColonyInterpretor.interpret(name:"Gosper Glider Gun",fromDiagram:
+            """
+            ------------------------*-----------
+            ----------------------*-*-----------
+            ------------**------**------------**
+            -----------*---*----**------------**
+            **--------*-----*---**--------------
+            **--------*---*-**----*-*-----------
+            ----------*-----*-------*-----------
+            -----------*---*--------------------
+            ------------**----------------------
+            """)!);
+        
+        addNewTemplate(withData: ColonyInterpretor.interpret(name:"Block Switching Engine",fromDiagram:
+            """
+            ***-*
+            *----
+            ---**
+            -**-*
+            *-*-*
+            """)!);
+        
+        
+        
     }
     
 }

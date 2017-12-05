@@ -31,6 +31,7 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
     
     var displayUnboundCells = false;
     var wrapping = false;
+    var drawgrid = true;
     
     var cache = [Cell : UIBezierPath]();
     
@@ -219,9 +220,10 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
         
         for x in -2...Int(draw){
             for y in -2...Int(draw){
-                let truex = Double(x) + floor(topx);
-                let truey = Double(y) + floor(topy);
-                if currentColony!.colony.isCellAlive(X: Int(truex), Y: Int(truey)) && !outOfBounds(truex, truey){
+                let truex  = Double(x) + floor(topx);
+                let truey  = Double(y) + floor(topy);
+                let living = currentColony!.colony.isCellAlive(X: Int(truex), Y: Int(truey));
+                if living || drawgrid && !outOfBounds(truex, truey){
                     let cell = CGRect(
                         x:10-btx+(size*Double(x-1)),
                         y:10-bty+(size*Double(y-1)),
@@ -229,11 +231,11 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
                     
                     let path:UIBezierPath = UIBezierPath(rect: cell);
                     UIColor.white.setStroke();
-                    if !wrapping{
+                    if !wrapping && living{
                         UIColor.blue.setFill();
                         path.fill();
-                    }else{
-                        
+                    }else if !living{
+                        UIColor.black.setStroke();
                     }
 
                     path.lineWidth = 2;
@@ -323,8 +325,10 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
         print("tapped");
         let location = sender.location(in: colonyBacking)
         let cell = convert(x:Int(location.x),y:Int(location.y));
-        print(cell)
         currentColony!.colony.toggleCellAlive(X:cell.X,Y:cell.Y)
+        
+        print("------SEPARATOR------");
+        print(currentColony!.colony)
         redraw();
     }
     
@@ -333,6 +337,8 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
     @IBAction func multiToggle(_ sender: UIPanGestureRecognizer){
         if (sender.state == .ended){
             toggled.removeAll();
+            print("------SEPARATOR------");
+            print(currentColony!.colony)
             return;
         }
         
