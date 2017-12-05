@@ -30,7 +30,12 @@ struct ColonyData : Equatable{
     var dataType:COLONY_DATA_TYPE;
     
     var bounds:(Int,Int){
-        return (size,size);
+        if size <= 1000{
+            return (size,size);
+        }else{
+            return (-1,-1);
+        }
+       
     }
     
     init(name:String,size:Int,colony:Colony,_ save:Bool=true){

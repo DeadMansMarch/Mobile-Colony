@@ -14,6 +14,7 @@
 		2814C7931FD515D8005C6A99 /* ColonyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2814C7921FD515D8005C6A99 /* ColonyData.swift */; };
 		2896D80C1FCE174E009CD8EF /* border.png in Resources */ = {isa = PBXBuildFile; fileRef = 2896D80B1FCE174E009CD8EF /* border.png */; };
 		2896D80E1FCE1884009CD8EF /* Live-Body copy.png in Resources */ = {isa = PBXBuildFile; fileRef = 2896D80D1FCE1884009CD8EF /* Live-Body copy.png */; };
+		28B266881FD7595300457697 /* template.png in Resources */ = {isa = PBXBuildFile; fileRef = 28B266871FD7595300457697 /* template.png */; };
 		28BB50401FCC7B9F00B78CF2 /* colony.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BB503F1FCC7B9F00B78CF2 /* colony.swift */; };
 		28BB50421FCC972600B78CF2 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BB50411FCC972600B78CF2 /* MainView.swift */; };
 		28EC929B1FBC8EC6006BE2F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EC929A1FBC8EC6006BE2F1 /* AppDelegate.swift */; };
@@ -58,6 +59,7 @@
 		2814C7921FD515D8005C6A99 /* ColonyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColonyData.swift; sourceTree = "<group>"; };
 		2896D80B1FCE174E009CD8EF /* border.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = border.png; sourceTree = "<group>"; };
 		2896D80D1FCE1884009CD8EF /* Live-Body copy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Live-Body copy.png"; sourceTree = "<group>"; };
+		28B266871FD7595300457697 /* template.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = template.png; sourceTree = "<group>"; };
 		28BB503F1FCC7B9F00B78CF2 /* colony.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = colony.swift; sourceTree = "<group>"; };
 		28BB50411FCC972600B78CF2 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		28EC92971FBC8EC6006BE2F1 /* Mobile-Colonies.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Mobile-Colonies.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -180,6 +182,7 @@
 				28EC92D51FBCB02A006BE2F1 /* settings.png */,
 				28EC92DB1FBCBF28006BE2F1 /* upload copy.png */,
 				28EC92DF1FBCC08C006BE2F1 /* save.png */,
+				28B266871FD7595300457697 /* template.png */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -292,6 +295,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				28EC92CA1FBC90D4006BE2F1 /* Menu.png in Resources */,
+				28B266881FD7595300457697 /* template.png in Resources */,
 				28EC92A51FBC8EC6006BE2F1 /* LaunchScreen.storyboard in Resources */,
 				28EC92D01FBCA435006BE2F1 /* White-Menu.png in Resources */,
 				28EC92D41FBCA531006BE2F1 /* Live-Body.png in Resources */,

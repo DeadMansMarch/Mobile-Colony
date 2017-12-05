@@ -18,7 +18,7 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
     @IBOutlet var colonyX: UILabel!
     @IBOutlet var colonyY: UILabel!
     
-    var currentColony:ColonyData? = ColonyData(name:"Untitled Colony",size:50,colony:Colony());
+    var currentColony:ColonyData? = ColonyData(name:"My First Colony",size:50,colony:Colony());
     var colonyWidth:Double!;
     
     var colonyTopX:Double = 0.5; // current colony position (top left x is 0)
@@ -49,9 +49,11 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
     @IBOutlet var ControllerView: UIView!
     
     func loadColony(colony:ColonyData){
-        currentColony!.currentCZoom = colonyDrawZoom;
-        leftController!.reSave(withData:currentColony!);
-        print(colonyTopX,colonyTopY,colonyDrawZoom);
+        if var colony = currentColony{
+            colony.currentCZoom = colonyDrawZoom;
+            leftController!.reSave(withData:colony);
+        }
+        
         colonyTopX = colony.currentTopX;
         colonyTopY = colony.currentTopY;
         colonyDrawZoom = colony.currentCZoom;
@@ -60,7 +62,20 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
         self.currentColony = colony;
         updateColonyName();
         updateColonyXY();
+    }
+    
+    func unloadColony(){
+        self.currentColony = nil;
         
+        self.evolveSpeedSlider.value = 0;
+        self.evolveSpeedChanged(self.evolveSpeedSlider);
+        
+        self.colonyTopX = 0;
+        self.colonyTopY = 0;
+        self.colonyName.text = "No Colony Loaded";
+        self.colonyX.text = "";
+        self.colonyY.text = "";
+        redraw();
     }
     
     func updateColonyName(){
@@ -180,6 +195,11 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
         let scaledSize = (Double(colonyBacking.bounds.width),Double(colonyBacking.bounds.height))
         let scaledZero = (10-btx+(size*(0 - floor(topx) - 1)),10-bty+(size*(0 - floor(topy) - 1)));
         
+        guard currentColony != nil else{
+            //Draw "Select or Create a different colony"
+            return;
+        }
+        
         let scaledMaxX = 0 - floor(topx) + Double(currentColony!.bounds.0);
         let scaledMaxY = 0 - floor(topy) + Double(currentColony!.bounds.1);
         let scaledMax:(Double,Double) = (
@@ -187,35 +207,37 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
             10-bty+(size*(scaledMaxY))
         );
         
-        if scaledZero.0 > scaledSize.0 || scaledMax.0 <= 0 || scaledZero.1 > scaledSize.1  || scaledMax.1 <= 0 {
-            let path = UIBezierPath(rect: self.colonyBacking.bounds);
-            UIColor.black.setFill();
-            path.fill();
-            return;
-        }
-        
-        if (scaledZero.0 > 0){
-            let path = UIBezierPath(rect: CGRect(x:0,y:0,width:scaledZero.0,height:scaledSize.1));
-            UIColor.black.setFill();
-            path.fill();
-        }
-        
-        if (scaledZero.1 > 0){
-            let path = UIBezierPath(rect: CGRect(x:0,y:0,width:scaledSize.0,height:scaledZero.1));
-            UIColor.black.setFill();
-            path.fill();
-        }
-        
-        if (scaledMax.0 < scaledSize.0){
-            let path = UIBezierPath(rect: CGRect(x:scaledMax.0,y:0,width:scaledSize.0 - scaledMax.0,height:scaledSize.1));
-            UIColor.black.setFill();
-            path.fill();
-        }
-        
-        if (scaledMax.1 < scaledSize.1){
-            let path = UIBezierPath(rect: CGRect(x:0,y:scaledMax.1,width:scaledSize.0,height:scaledSize.1 - scaledMax.1));
-            UIColor.black.setFill();
-            path.fill();
+        if (currentColony!.size <= 1000){
+            if scaledZero.0 > scaledSize.0 || scaledMax.0 <= 0 || scaledZero.1 > scaledSize.1  || scaledMax.1 <= 0 {
+                let path = UIBezierPath(rect: self.colonyBacking.bounds);
+                UIColor.black.setFill();
+                path.fill();
+                return;
+            }
+            
+            if (scaledZero.0 > 0){
+                let path = UIBezierPath(rect: CGRect(x:0,y:0,width:scaledZero.0,height:scaledSize.1));
+                UIColor.black.setFill();
+                path.fill();
+            }
+            
+            if (scaledZero.1 > 0){
+                let path = UIBezierPath(rect: CGRect(x:0,y:0,width:scaledSize.0,height:scaledZero.1));
+                UIColor.black.setFill();
+                path.fill();
+            }
+            
+            if (scaledMax.0 < scaledSize.0){
+                let path = UIBezierPath(rect: CGRect(x:scaledMax.0,y:0,width:scaledSize.0 - scaledMax.0,height:scaledSize.1));
+                UIColor.black.setFill();
+                path.fill();
+            }
+            
+            if (scaledMax.1 < scaledSize.1){
+                let path = UIBezierPath(rect: CGRect(x:0,y:scaledMax.1,width:scaledSize.0,height:scaledSize.1 - scaledMax.1));
+                UIColor.black.setFill();
+                path.fill();
+            }
         }
         
         for x in -2...Int(draw){
@@ -223,7 +245,7 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
                 let truex  = Double(x) + floor(topx);
                 let truey  = Double(y) + floor(topy);
                 let living = currentColony!.colony.isCellAlive(X: Int(truex), Y: Int(truey));
-                if living || drawgrid && !outOfBounds(truex, truey){
+                if (living || drawgrid) && !outOfBounds(truex, truey){
                     let cell = CGRect(
                         x:10-btx+(size*Double(x-1)),
                         y:10-bty+(size*Double(y-1)),
@@ -245,7 +267,6 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
         }
         
         if let template = activeTemplate{
-            print("drawing temp");
             let origin = activePosition!;
             
             for x in 1...template.size{
@@ -283,7 +304,10 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
     }
     
     @IBAction func zoom(_ sender: UIPinchGestureRecognizer) {
-        print("zoomed");
+        guard currentColony != nil else{
+            return;
+        }
+        
         if sender.view != nil {
             let newScale = colonyDrawZoom / Double(sender.scale);
             let center = sender.location(in: self.view);
@@ -294,13 +318,13 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
             
             let zoom = self.colonyDrawZoom;
             
-            if newScale <= 100 && newScale >= 2{
+            if newScale <= 250 && newScale >= 2{
                 colonyTopX = colonyTopX + (zoom * ratio.0 * Double(sender.scale - 1))
                 colonyTopY = colonyTopY + (zoom * ratio.1 * Double(sender.scale - 1))
                 
                 colonyDrawZoom = newScale;
-            }else if newScale > 100{
-                colonyDrawZoom = 100;
+            }else if newScale > 250{
+                colonyDrawZoom = 250;
             }else{
                 colonyDrawZoom = 2;
             }
@@ -312,17 +336,25 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
     }
 
     @IBAction func pan(_ sender: UIPanGestureRecognizer) {
-        print("pan");
+        guard currentColony != nil else{
+            return;
+        }
+        
+        let zoom = self.colonyDrawZoom;
+        let size = ((colonyWidth - 20) - Double(zoom - 1)) / Double(zoom)
+        
         let translation = sender.translation(in: self.colonyBacking);
-        colonyTopX -= Double(translation.x) / 25
-        colonyTopY -= Double(translation.y) / 25
+        colonyTopX -= Double(translation.x) / size
+        colonyTopY -= Double(translation.y) / size
         updateColonyXY()
         sender.setTranslation(CGPoint.zero, in: self.colonyBacking)
         redraw();
     }
     
     @IBAction func singleToggle(_ sender: UITapGestureRecognizer) {
-        print("tapped");
+        guard currentColony != nil else{
+            return;
+        }
         let location = sender.location(in: colonyBacking)
         let cell = convert(x:Int(location.x),y:Int(location.y));
         currentColony!.colony.toggleCellAlive(X:cell.X,Y:cell.Y)
@@ -335,6 +367,10 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
     var toggled = Set<Cell>();
     
     @IBAction func multiToggle(_ sender: UIPanGestureRecognizer){
+        guard currentColony != nil else{
+            return;
+        }
+        
         if (sender.state == .ended){
             toggled.removeAll();
             print("------SEPARATOR------");
@@ -470,6 +506,10 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if (currentColony!.name == "My First Colony"){
+            leftController?.addNewSave(withData: currentColony!);
+        }
         
         ControllerView.layer.cornerRadius = 10;
         self.splitViewController!.toggleMasterView();

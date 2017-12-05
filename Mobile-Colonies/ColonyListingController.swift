@@ -12,7 +12,10 @@ import UIKit
 
 class ColonyListingController:UITableViewController, UIPopoverPresentationControllerDelegate, UIGestureRecognizerDelegate{
     var colonies = ColonyStore();
+    var usertemplates = ColonyStore();
     var templates = ColonyStore();
+    
+    var currentColony: ColonyData?;
     
     var gameController: GridViewController?;
     
@@ -23,20 +26,24 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int)-> Int{
         if (section == 0){
             return colonies.allColonies.count;
+        }else if section == 1{
+            return usertemplates.allColonies.count
         }else{
             return templates.allColonies.count;
         }
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 2;
+        return 3;
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 0{
             return "Colonies";
+        }else if section == 1{
+            return "User Templates"
         }else{
-            return "Templates"
+            return "System Templates"
         }
     }
     
@@ -46,8 +53,16 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
             let colony = colonies.allColonies[indexPath.row]
             
             cell.nameL.text = colony.name
-            cell.sizeL.text = "\(colony.size)x\(colony.size)"
-            
+            if colony.size <= 1000{
+                cell.sizeL.text = "\(colony.size)x\(colony.size)"
+            }else{
+                cell.sizeL.text = "InfxInf"
+            }
+        }else if indexPath.section == 1{
+            let colony = usertemplates.allColonies[indexPath.row]
+                
+            cell.nameL.text = colony.name
+            cell.sizeL.text = ""
         }else{
             let colony = templates.allColonies[indexPath.row]
             
@@ -62,6 +77,7 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
         if (indexPath.section == 0){
             let selectedColony = self.colonies.allColonies[indexPath.row]
             
+            currentColony = selectedColony;
             gameController?.loadColony(colony: selectedColony)
             gameController?.redraw();
         }else{
@@ -78,10 +94,17 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
         tableView.insertRows(at: [indexPath], with: .automatic)
     }
     
+    func addNewUTemplate(withData:ColonyData){
+        let newColony = usertemplates.createColony(Data:withData)
+        
+        let indexPath = IndexPath(row: newColony, section: 1)
+        tableView.insertRows(at: [indexPath], with: .automatic)
+    }
+    
     func addNewTemplate(withData:ColonyData){
         let newColony = templates.createColony(Data:withData)
         
-        let indexPath = IndexPath(row: newColony, section: 0)
+        let indexPath = IndexPath(row: newColony, section: 2)
         tableView.insertRows(at: [indexPath], with: .automatic)
     }
     
@@ -104,6 +127,13 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
         }
     }
     
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if indexPath.section > 1{
+            return false;
+        }
+        return true;
+    }
+    
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath){
         if editingStyle == .delete{
             let colony = colonies.allColonies[indexPath.row]
@@ -119,6 +149,9 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
             alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { action in
                 self.colonies.removeColony(colony)
                 self.tableView.deleteRows(at: [indexPath], with: .automatic)
+                if (Optional(colony) == self.currentColony || self.tableView(tableView, numberOfRowsInSection: 0) == 0){
+                    self.gameController!.unloadColony();
+                }
             }));
             
             
@@ -134,10 +167,12 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
             let table = (self.view as! UITableView);
             var indexPath:IndexPath?;
             for (index,row) in self.templates.allColonies.enumerated(){
-                var cells = (self.view as! UITableView).rectForRow(at: IndexPath(row:index,section:1));
-                cells = cells.offsetBy(dx:-table.contentOffset.x, dy:-table.contentOffset.y)
-                if cells.contains(location){
-                    indexPath = IndexPath(row:index,section:1);
+                var usercells = (self.view as! UITableView).rectForRow(at: IndexPath(row:index,section:1));
+                var systcells = (self.view as! UITableView).rectForRow(at: IndexPath(row:index,section:2));
+                usercells = usercells.offsetBy(dx:-table.contentOffset.x, dy:-table.contentOffset.y)
+                systcells = systcells.offsetBy(dx:-table.contentOffset.x, dy:-table.contentOffset.y)
+                if usercells.contains(location) || systcells.contains(location) {
+                    indexPath = IndexPath(row:index,section:(usercells.contains(location) ? 1 : 2));
                     break;
                 }
             }
@@ -145,7 +180,7 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
                 return;
             }
             self.splitViewController!.toggleMasterView()
-            self.gameController!.readyTemplate(self.templates.allColonies[indexPath!.row],sender);
+            self.gameController!.readyTemplate((indexPath!.section == 2 ? self.templates : self.usertemplates).allColonies[indexPath!.row],sender);
             
         }else if (sender.state == .changed){
             self.gameController!.passTemplateTransform(sender)

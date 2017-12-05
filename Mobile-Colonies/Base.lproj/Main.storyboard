@@ -167,7 +167,6 @@
             <objects>
                 <splitViewController id="cQS-f7-0xh" sceneMemberID="viewController">
                     <connections>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="detailViewController" id="AlM-OK-SxT"/>
                         <segue destination="2De-Ev-mrf" kind="relationship" relationship="masterViewController" id="Ejo-yz-asv"/>
                     </connections>
                 </splitViewController>
@@ -180,7 +179,7 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="GridViewController" customModule="Mobile_Colonies" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="791.5" height="834"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1112" height="834"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mlF-bn-OET">
@@ -293,7 +292,7 @@
                                             <constraint firstAttribute="height" constant="42" id="HEQ-T3-3SF"/>
                                             <constraint firstAttribute="width" constant="46" id="XGS-Pq-G3Q"/>
                                         </constraints>
-                                        <state key="normal" backgroundImage="save.png"/>
+                                        <state key="normal" backgroundImage="template.png"/>
                                         <connections>
                                             <action selector="save:" destination="BYZ-38-t0r" eventType="touchUpInside" id="KTT-gf-xYE"/>
                                         </connections>
@@ -475,8 +474,8 @@
     </scenes>
     <resources>
         <image name="Menu.png" width="200" height="200"/>
-        <image name="save.png" width="488" height="488"/>
         <image name="settings.png" width="1024" height="1024"/>
+        <image name="template.png" width="512" height="512"/>
         <image name="upload copy.png" width="512" height="512"/>
     </resources>
     <color key="tintColor" red="0.42931439580000003" green="0.58248799529999995" blue="0.83093830960000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
