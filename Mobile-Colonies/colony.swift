@@ -22,6 +22,10 @@ struct Cell: CustomStringConvertible{
 }
 
 class ColonyInterpretor{
+    static var numberFormatter:NumberFormatter = {
+        let formatter = NumberFormatter()
+        return formatter;
+    }()
     static func interpret(name:String,fromDiagram colony:String)->ColonyData?{
         var base = ColonyData(name:name,size:0,colony:Colony());
         
@@ -34,13 +38,90 @@ class ColonyInterpretor{
         
         for (yIndex,line) in lines.enumerated(){
             for (xIndex,character) in line.enumerated(){
-                if character == "*"{
+                if character == "*" || character == "O"{
                     base.colony.setCellAlive(X:xIndex + 1,Y:yIndex + 1)
                 }
             }
         }
         
         return base;
+    }
+    
+    static func interpret(name:String, fromRLE colony: String)->ColonyData?{
+        //Found out that the massive "breeder" file this was for was in high life, not just life.
+        var base = ColonyData(name:name,size:0,colony:Colony());
+        
+        var xPos = 1;
+        var yPos = 1;
+        
+        var skip = 0;
+        
+        for (index,character) in colony.enumerated(){
+            var cell:String? = nil; //False = dead;
+            var cellCount = 0;
+            
+            if (skip > 0){
+                skip-=1;
+                continue;
+            }
+            if character == "$"{
+                yPos += 1;
+                xPos = 1;
+                continue;
+            }else if character == "!"{
+                let width = base.colony.Cells.max(by: { cell1, cell2 in
+                    return cell1.X <= cell2.X;
+                })
+                let height = base.colony.Cells.max(by: { cell1, cell2 in
+                    return cell1.Y <= cell2.Y;
+                })
+                base.size = max(height?.Y ?? 0,width?.X ?? 0);
+                print(base.colony)
+                return base;
+            }
+            
+            if numberFormatter.number(from: String(character)) != nil{
+                var groupLength:Int = 1;
+                for i in 1...5{
+                    let sIndex = colony.index(colony.startIndex, offsetBy: index + i)
+                    if numberFormatter.number(from: String(colony[sIndex])) != nil{
+                        groupLength += 1;
+                    }else{
+                        break;
+                    }
+                }
+                let sIndex = colony.index(colony.startIndex, offsetBy: index)
+                let eIndex = colony.index(colony.startIndex, offsetBy: index + groupLength - 1)
+                let number = numberFormatter.number(from: String(colony[sIndex...eIndex]))
+                
+                
+                cell = String(colony[colony.index(eIndex, offsetBy: 1)]);
+                cellCount = Int(number!);
+                
+                skip = groupLength;
+            }
+            
+            if character == "o" || character == "b"{
+                cellCount = 1;
+            }
+            
+            let cellType = cell ?? "";
+            
+            if character == "o" || character == "b" || cellType != ""{
+                if character == "o" || cellType == "o"{
+                    for x in 1...cellCount{
+                        xPos += 1;
+                        base.colony.setCellAlive(X: xPos, Y: yPos)
+                    }
+                }else if character == "b" || cellType=="b"{
+                    xPos += cellCount
+                }else if cellType == "$"{
+                    yPos += cellCount;
+                    xPos = 1;
+                }
+            }
+        }
+        return nil;
     }
 }
 

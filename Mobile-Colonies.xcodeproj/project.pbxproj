@@ -17,6 +17,7 @@
 		28B266881FD7595300457697 /* template.png in Resources */ = {isa = PBXBuildFile; fileRef = 28B266871FD7595300457697 /* template.png */; };
 		28BB50401FCC7B9F00B78CF2 /* colony.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BB503F1FCC7B9F00B78CF2 /* colony.swift */; };
 		28BB50421FCC972600B78CF2 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BB50411FCC972600B78CF2 /* MainView.swift */; };
+		28CC9B5B1FD89DC200C70396 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CC9B5A1FD89DC200C70396 /* SettingsController.swift */; };
 		28EC929B1FBC8EC6006BE2F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EC929A1FBC8EC6006BE2F1 /* AppDelegate.swift */; };
 		28EC92A01FBC8EC6006BE2F1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28EC929E1FBC8EC6006BE2F1 /* Main.storyboard */; };
 		28EC92A21FBC8EC6006BE2F1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 28EC92A11FBC8EC6006BE2F1 /* Assets.xcassets */; };
@@ -62,6 +63,7 @@
 		28B266871FD7595300457697 /* template.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = template.png; sourceTree = "<group>"; };
 		28BB503F1FCC7B9F00B78CF2 /* colony.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = colony.swift; sourceTree = "<group>"; };
 		28BB50411FCC972600B78CF2 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		28CC9B5A1FD89DC200C70396 /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		28EC92971FBC8EC6006BE2F1 /* Mobile-Colonies.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Mobile-Colonies.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		28EC929A1FBC8EC6006BE2F1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		28EC929F1FBC8EC6006BE2F1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 				038B2D0A1FD3ABE00076893D /* ColonyStore.swift */,
 				2814C7921FD515D8005C6A99 /* ColonyData.swift */,
 				28FB7D341FD662FB004CEA08 /* addController.swift */,
+				28CC9B5A1FD89DC200C70396 /* SettingsController.swift */,
 			);
 			path = "Mobile-Colonies";
 			sourceTree = "<group>";
@@ -338,6 +341,7 @@
 				28EC929B1FBC8EC6006BE2F1 /* AppDelegate.swift in Sources */,
 				2814C7931FD515D8005C6A99 /* ColonyData.swift in Sources */,
 				28FB7D351FD662FB004CEA08 /* addController.swift in Sources */,
+				28CC9B5B1FD89DC200C70396 /* SettingsController.swift in Sources */,
 				28BB50401FCC7B9F00B78CF2 /* colony.swift in Sources */,
 				038B2D0F1FD3ABE00076893D /* ColonyStore.swift in Sources */,
 				038B2D0E1FD3ABE00076893D /* GridCell.swift in Sources */,

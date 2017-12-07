@@ -154,7 +154,7 @@
                     </tableView>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FPr-e7-9Lu" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.29999999999999999" id="4ou-Tl-IlM">
+                <pongPressGestureRecognizer cancelsTouchesInView="NO" delaysTouchesEnded="NO" allowableMovement="10" minimumPressDuration="0.29999999999999999" id="4ou-Tl-IlM">
                     <connections>
                         <action selector="activateTemplate:" destination="2De-Ev-mrf" id="bmt-Bt-WWg"/>
                     </connections>
@@ -168,6 +168,7 @@
                 <splitViewController id="cQS-f7-0xh" sceneMemberID="viewController">
                     <connections>
                         <segue destination="2De-Ev-mrf" kind="relationship" relationship="masterViewController" id="Ejo-yz-asv"/>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="detailViewController" id="00F-UO-Rvf"/>
                     </connections>
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dvX-fp-viI" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -179,7 +180,7 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="GridViewController" customModule="Mobile_Colonies" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="1112" height="834"/>
+                        <rect key="frame" x="0.0" y="0.0" width="791.5" height="834"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mlF-bn-OET">
@@ -450,26 +451,50 @@
         <!--Settings-->
         <scene sceneID="V0g-Rq-Kis">
             <objects>
-                <viewController storyboardIdentifier="Settings" title="Settings" useStoryboardIdentifierAsRestorationIdentifier="YES" id="P5L-gu-CKu" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Settings" title="Settings" useStoryboardIdentifierAsRestorationIdentifier="YES" id="P5L-gu-CKu" customClass="SettingsController" customModule="Mobile_Colonies" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="b1m-7W-tQX">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="l1A-E8-kp6">
+                            <navigationBar contentMode="scaleToFill" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="l1A-E8-kp6">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <items>
                                     <navigationItem title="Settings" id="p90-Qi-FH6"/>
                                 </items>
                             </navigationBar>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="bmd-Uv-5Dn">
+                                <rect key="frame" x="20" y="67" width="335" height="31"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Increase Visibility" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lin-a4-Ccf">
+                                        <rect key="frame" x="0.0" y="0.0" width="236" height="31"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="eCT-aQ-d2P">
+                                        <rect key="frame" x="286" y="0.0" width="51" height="31"/>
+                                        <connections>
+                                            <action selector="toggleVisibility:" destination="P5L-gu-CKu" eventType="valueChanged" id="TCB-2C-XGp"/>
+                                        </connections>
+                                    </switch>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="bmd-Uv-5Dn" firstAttribute="top" secondItem="l1A-E8-kp6" secondAttribute="bottom" constant="23" id="INE-bQ-pVt"/>
+                            <constraint firstItem="l1A-E8-kp6" firstAttribute="top" secondItem="aNG-eM-hTQ" secondAttribute="top" id="JX9-la-uDC"/>
+                            <constraint firstItem="l1A-E8-kp6" firstAttribute="leading" secondItem="aNG-eM-hTQ" secondAttribute="leading" id="Rhg-kD-QRw"/>
+                            <constraint firstItem="aNG-eM-hTQ" firstAttribute="trailing" secondItem="l1A-E8-kp6" secondAttribute="trailing" id="WAs-dh-zou"/>
+                            <constraint firstItem="aNG-eM-hTQ" firstAttribute="trailing" secondItem="bmd-Uv-5Dn" secondAttribute="trailing" constant="20" id="aCR-g8-w4z"/>
+                            <constraint firstItem="bmd-Uv-5Dn" firstAttribute="leading" secondItem="aNG-eM-hTQ" secondAttribute="leading" constant="20" id="ehD-IZ-kEi"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="aNG-eM-hTQ"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="N0j-Gf-hrL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1472" y="576"/>
+            <point key="canvasLocation" x="-1472.4820143884892" y="575.5395683453238"/>
         </scene>
     </scenes>
     <resources>
