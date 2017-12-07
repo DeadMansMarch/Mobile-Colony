@@ -8,12 +8,42 @@
 
 import Foundation
 
-struct Cell: CustomStringConvertible{
+protocol Cell: Hashable{
+    var X: Int {get}
+    var Y: Int {get}
+}
+
+extension Cell{
+    var hashValue: Int{
+        return(X.hashValue ^ Y.hashValue &* 16777619)
+    }
+}
+
+struct nonWrapCell: Cell{
     let X:Int;
     let Y:Int;
     
-    var description: String {
-        return String(self.X) + ":" + String(self.Y);
+    init(_ xCoor: Int, _ yCoor: Int){
+        X = xCoor
+        Y = yCoor
+    }
+    
+    var hashValue: Int{
+        return(X.hashValue ^ Y.hashValue &* 16777619)
+    }
+}
+
+struct WrapCoor: Cell{
+    let X: Int
+    let Y: Int
+    
+    init(_ xCoor: Int, _ yCoor: Int, size: Int){
+        X = xCoor % size
+        Y = yCoor % size
+    }
+    
+    var hashValue: Int{
+        return(X.hashValue ^ Y.hashValue &* 16777619)
     }
 }
 
@@ -26,12 +56,8 @@ struct Bound : CustomStringConvertible{
     }
 }
 
-func == (lhs: Cell, rhs: Cell) -> Bool {
+func == <T: Cell>(lhs: T, rhs: T) -> Bool {
     return lhs.X == rhs.X && lhs.Y == rhs.Y;
-}
-
-extension Cell: Hashable{
-    var hashValue: Int{ return X.hashValue ^ Y.hashValue &* 16777619 }
 }
 
 class Colony: CustomStringConvertible{
