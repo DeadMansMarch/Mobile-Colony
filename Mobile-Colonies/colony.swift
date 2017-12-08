@@ -45,10 +45,6 @@ struct WrapCoor: Cell{
     var hashValue: Int{
         return(X.hashValue ^ Y.hashValue &* 16777619)
     }
-    
-    func transform(_ x:Int,_ y:Int)->Cell{
-        return Cell(X:self.X + x,Y:self.Y + y);
-    }
 }
 
 class ColonyInterpretor{
