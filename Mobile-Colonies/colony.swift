@@ -8,44 +8,28 @@
 
 import Foundation
 
-protocol Cell: Hashable{
-    var X: Int {get}
-    var Y: Int {get}
-}
-
-extension Cell{
-    var hashValue: Int{
-        return(X.hashValue ^ Y.hashValue &* 16777619)
-    }
-}
-
-struct nonWrapCell: Cell{
+struct Cell{
     let X:Int;
     let Y:Int;
     
-    init(_ xCoor: Int, _ yCoor: Int){
-        X = xCoor
-        Y = yCoor
+    init(_ xCoor: Int, _ yCoor: Int, colony: Colony){
+        if (colony.wrapping){
+            X = xCoor % colony.size
+            Y = yCoor % colony.size
+        } else {
+            X = xCoor
+            Y = yCoor
+        }
     }
-    
+}
+
+extension Cell: Hashable{
     var hashValue: Int{
         return(X.hashValue ^ Y.hashValue &* 16777619)
     }
 }
 
-struct WrapCoor: Cell{
-    let X: Int
-    let Y: Int
-    
-    init(_ xCoor: Int, _ yCoor: Int, size: Int){
-        X = xCoor % size
-        Y = yCoor % size
-    }
-    
-    var hashValue: Int{
-        return(X.hashValue ^ Y.hashValue &* 16777619)
-    }
-}
+
 
 class ColonyInterpretor{
     static var numberFormatter:NumberFormatter = {
@@ -53,7 +37,7 @@ class ColonyInterpretor{
         return formatter;
     }()
     static func interpret(name:String,fromDiagram colony:String)->ColonyData?{
-        var base = ColonyData(name:name,size:0,colony:Colony());
+        var base = ColonyData(name:name,size:0,colony:Colony(size: 0));
         
         let lines = colony.split(separator: "\n").map{ String($0) };
         
@@ -75,7 +59,7 @@ class ColonyInterpretor{
     
     static func interpret(name:String, fromRLE colony: String)->ColonyData?{
         //Found out that the massive "breeder" file this was for was in high life, not just life.
-        var base = ColonyData(name:name,size:0,colony:Colony());
+        var base = ColonyData(name:name,size:0,colony:Colony(size: 0));
         
         var xPos = 1;
         var yPos = 1;
@@ -160,7 +144,7 @@ struct Bound : CustomStringConvertible{
     }
 }
 
-func == <T: Cell>(lhs: T, rhs: T) -> Bool {
+func == (lhs: Cell, rhs: Cell) -> Bool {
     return lhs.X == rhs.X && lhs.Y == rhs.Y;
 }
 
@@ -168,13 +152,19 @@ class Colony: CustomStringConvertible{
     
     var Cells = Set<Cell>();
     var numberLivingCells:Int{ return Cells.count; }
+    var wrapping = false
+    var size: Int
     
-    init(){
+    init(size: Int){
+        self.size = size
     }
     
-    func setCellAlive(X: Int, Y: Int){ Cells.insert(Cell(X:X,Y:Y)) }
+    func changeCell(_ cell: Cell){
+    }
     
-    func setCellDead(X: Int, Y: Int){ Cells.remove(Cell(X:X,Y:Y)) }
+    func setCellAlive(X: Int, Y: Int){ Cells.insert(Cell(X, Y, colony: self)) }
+    
+    func setCellDead(X: Int, Y: Int){ Cells.remove(Cell(X, Y, colony: self)) }
     
     func toggleCellAlive(X:Int,Y:Int){
         if isCellAlive(X:X,Y:Y){
@@ -185,7 +175,7 @@ class Colony: CustomStringConvertible{
     }
     
     func isCellAlive(X: Int, Y: Int)-> Bool{
-        return Cells.contains(Cell(X:X,Y:Y))
+        return Cells.contains(Cell(X, Y, colony: self))
     }
     
     func resetColony(){ Cells.removeAll(); }
@@ -254,7 +244,7 @@ class Colony: CustomStringConvertible{
         Cells.forEach({
             for x in $0.X - 1 ... $0.X + 1{
                 for y in $0.Y - 1 ... $0.Y + 1{
-                    queueList.insert(Cell(X:x,Y:y));
+                    queueList.insert(Cell(x, y, colony: self));
                 }
             }
         })

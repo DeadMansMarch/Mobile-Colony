@@ -20,7 +20,7 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
     
     var settingsController:SettingsController?
     
-    var currentColony:ColonyData? = ColonyData(name:"My First Colony",size:50,colony:Colony());
+    var currentColony:ColonyData? = ColonyData(name:"My First Colony",size:50,colony:Colony(size: 50));
     var colonyWidth:Double!;
     
     var colonyTopX:Double = 0.5; // current colony position (top left x is 0)
@@ -139,8 +139,9 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
         let xcell = ((Double(x-10)) / size) + 1 + colonyTopX
         let ycell = ((Double(y-10)) / size) + 1 + colonyTopY
         return Cell(
-            X: Int(xcell),
-            Y: Int(ycell)
+            Int(xcell),
+            Int(ycell),
+            colony: currentColony!.colony
         );
     }
     
@@ -174,7 +175,7 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
         if (ending){
             let cell = activeTemplateOrigin!
             let union = currentColony!.colony.Cells.union(template.colony.Cells.map{
-                Cell(X:$0.X+cell.X,Y:$0.Y+cell.Y)
+                Cell($0.X+cell.X,$0.Y+cell.Y,colony: currentColony!.colony)
             });
             currentColony!.colony.Cells = union;
             activeTemplate = nil;

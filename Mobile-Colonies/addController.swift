@@ -27,7 +27,7 @@ class AddController: UIViewController{
     
     @IBAction func create(){
         if (textInput.text != nil && textInput.text! != ""){
-            let ColonyDat = ColonyData(name:textInput.text!,size:colonySize,colony:Colony());
+            let ColonyDat = ColonyData(name:textInput.text!,size:colonySize,colony:Colony(size: colonySize));
             if fedCallback != nil{
                 self.presentingViewController?.dismiss(animated: true, completion: nil)
                 fedCallback!(ColonyDat);
