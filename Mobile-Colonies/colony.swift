@@ -15,17 +15,6 @@ struct Cell{
         self.X = X;
         self.Y = Y;
     }
- /*
-    init(_ X: Int,_ Y: Int, size: Int, _ wrapping: Bool=true){
-        if (wrapping){
-            self.X = abs(X % size);
-            self.Y = abs(Y % size);
-        }else{
-            self.X = X;
-            self.Y = Y;
-        }
-    }
-    */
     
     init(_ X: Int, _ Y: Int, size: Int){
         if (size != 1001 && size > 1){
@@ -46,6 +35,28 @@ struct Cell{
             self.X = X;
             self.Y = Y;
         }
+    }
+    
+    static func getColonyLoc(_ X:Int, _ Y:Int, size:Int)->(Double,Double){
+        if (size != 1001 && size > 1){
+            var xCol = 0.0;
+            var yCol = 0.0;
+            
+            if X < 0{
+                xCol = (Double(X) / Double(size))
+            }else{
+                xCol = (Double(X) / Double(size))
+            }
+            
+            if Y < 0{
+                yCol = (Double(Y) / Double(size))
+            }else{
+                yCol = Double(Y) / Double(size);
+            }
+            
+            return (xCol,yCol);
+        }
+        return (0,0);
     }
     
     var description: String {

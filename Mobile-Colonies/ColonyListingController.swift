@@ -136,27 +136,49 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath){
         if editingStyle == .delete{
-            let colony = colonies.allColonies[indexPath.row]
-            
-            
-            let alert = UIAlertController(
-                title: "Delete \(colony.name)?",
-                message: "Are you sure you want to delete this item?",
-                preferredStyle: .alert);
-            
-            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil));
-            
-            alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { action in
-                self.colonies.removeColony(colony)
-                self.tableView.deleteRows(at: [indexPath], with: .automatic)
-                if (Optional(colony) == self.currentColony || self.tableView(tableView, numberOfRowsInSection: 0) == 0){
-                    self.gameController!.unloadColony();
-                }
-            }));
-            
-            
-            
-            self.present(alert, animated: true, completion: nil);
+            if (indexPath.section == 0){
+                let colony = colonies.allColonies[indexPath.row]
+                
+                let alert = UIAlertController(
+                    title: "Delete colony \(colony.name)?",
+                    message: "Are you sure you want to delete this colony?",
+                    preferredStyle: .alert);
+                
+                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil));
+                
+                alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { action in
+                    
+                    self.colonies.removeColony(colony)
+                    self.tableView.deleteRows(at: [indexPath], with: .automatic)
+                    if (Optional(colony) == self.currentColony || self.tableView(tableView, numberOfRowsInSection: 0) == 0){
+                        self.gameController!.unloadColony();
+                    }
+                }));
+                
+                
+                
+                self.present(alert, animated: true, completion: nil);
+            }else{
+                let template = usertemplates.allColonies[indexPath.row]
+                
+                let alert = UIAlertController(
+                    title: "Delete \(template.name)?",
+                    message: "Are you sure you want to delete this template?",
+                    preferredStyle: .alert);
+                
+                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil));
+                
+                alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { action in
+                    
+                    self.usertemplates.removeColony(template)
+                    self.tableView.deleteRows(at: [indexPath], with: .automatic)
+                    
+                }));
+                
+                
+                
+                self.present(alert, animated: true, completion: nil);
+            }
         }
     }
     
@@ -180,7 +202,7 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
             tableView.deselectRow(at: indexPath!, animated:true);
             
             self.splitViewController!.toggleMasterView()
-            //print(indexPath);
+            
             self.gameController!.readyTemplate((indexPath!.section == 2 ? self.templates : self.usertemplates).allColonies[indexPath!.row],sender);
             
         }else if (sender.state == .changed){

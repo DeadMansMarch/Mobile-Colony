@@ -397,27 +397,54 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
                 UIColor.green.setFill();
                 path.fill();
             }
-            
+            /*
+            if onBounds(Double(current.X),Double(current.Y)){
+                UIColor.red.setStroke();
+                path.stroke();
+            }
+            */
             path.lineWidth = (visibility ? 1 : 2);
             if colonyDrawZoom < 300{
                 path.stroke();
             }
         }
         
-        var toDraw = currentColony!.colony.Cells.filter{
-            $0.X >= Int(floor(topx))-2 && $0.Y >= Int(floor(topy))-2 && $0.X < Int(floor(topx) + draw) && $0.Y < Int(floor(topy) + draw)
+        var toDraw:Set<Cell>
+        if (prettywrap){
+            for x in -2...Int(draw){
+                for y in -2...Int(draw){
+                    let truex  = Double(x) + floor(topx);
+                    let truey  = Double(y) + floor(topy);
+                    let current = Cell(Int(truex),Int(truey));
+                    let living = currentColony!.colony.isCellAlive(X: Int(truex), Y: Int(truey));
+                    if living || onBounds(truex,truey) && prettywrap{
+                        let path = drawCell(x,y);
+                        modifyPath(path,living:living,truex,truey);
+                    }
+                }
+            }
+            toDraw = Set<Cell>()
+        }else{
+            toDraw = currentColony!.colony.Cells.filter{
+                $0.X >= Int(floor(topx))-2 && $0.Y >= Int(floor(topy))-2 && $0.X < Int(floor(topx) + draw) && $0.Y < Int(floor(topy) + draw)
+            }
         }
         
         toDraw.forEach({
-            let truex = Double($0.X)
-            let truey = Double($0.Y)
             
-            let x = Int(truex) - Int(floor(topx))
-            let y = Int(truey) - Int(floor(topy))
+            if (prettywrap){
+                
+            }else{
+                let truex = Double($0.X)
+                let truey = Double($0.Y)
+                
+                let x = Int(truex) - Int(floor(topx))
+                let y = Int(truey) - Int(floor(topy))
+                
+                let path = drawCell(x,y);
+                modifyPath(path,living:true,truex,truey)
+            }
             
-            let path = drawCell(x,y);
-            
-            modifyPath(path,living:true,truex,truey)
         });
         
         cacheLife += 1;
