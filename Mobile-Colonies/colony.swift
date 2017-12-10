@@ -5,45 +5,14 @@
 //  Created by Liam Pierce on 11/27/17.
 //  Copyright © 2017 Virtual Earth. All rights reserved.
 //
-
 import Foundation
 
-protocol Cell: Hashable{
-    var X: Int {get}
-    var Y: Int {get}
-}
-
-extension Cell{
-    var hashValue: Int{
-        return(X.hashValue ^ Y.hashValue &* 16777619)
-    }
-}
-
-struct nonWrapCell: Cell{
+struct Cell: CustomStringConvertible{
     let X:Int;
     let Y:Int;
     
-    init(_ xCoor: Int, _ yCoor: Int){
-        X = xCoor
-        Y = yCoor
-    }
-    
-    var hashValue: Int{
-        return(X.hashValue ^ Y.hashValue &* 16777619)
-    }
-}
-
-struct WrapCoor: Cell{
-    let X: Int
-    let Y: Int
-    
-    init(_ xCoor: Int, _ yCoor: Int, size: Int){
-        X = xCoor % size
-        Y = yCoor % size
-    }
-    
-    var hashValue: Int{
-        return(X.hashValue ^ Y.hashValue &* 16777619)
+    var description: String {
+        return String(self.X) + ":" + String(self.Y);
     }
     
     func transform(_ x:Int,_ y:Int)->Cell{
@@ -56,6 +25,7 @@ class ColonyInterpretor{
         let formatter = NumberFormatter()
         return formatter;
     }()
+    
     static func interpret(name:String,fromDiagram colony:String)->ColonyData?{
         var base = ColonyData(name:name,size:0,colony:Colony());
         
@@ -106,7 +76,6 @@ class ColonyInterpretor{
                     return cell1.Y <= cell2.Y;
                 })
                 base.size = max(height?.Y ?? 0,width?.X ?? 0);
-                print(base.colony)
                 return base;
             }
             
@@ -164,8 +133,12 @@ struct Bound : CustomStringConvertible{
     }
 }
 
-func == <T: Cell>(lhs: T, rhs: T) -> Bool {
+func == (lhs: Cell, rhs: Cell) -> Bool {
     return lhs.X == rhs.X && lhs.Y == rhs.Y;
+}
+
+extension Cell: Hashable{
+    var hashValue: Int{ return X.hashValue ^ Y.hashValue &* 16777619 }
 }
 
 class Colony: CustomStringConvertible{

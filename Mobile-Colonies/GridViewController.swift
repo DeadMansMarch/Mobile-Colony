@@ -31,6 +31,11 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
     var activePosition:CGPoint?;
     var activeTemplateOrigin:Cell?;
     
+    var templateMode = false;
+    var templateModeCurrent = Set<Cell>();
+    var lastInsertedCell:Cell? = nil;
+    var minX = 0,maxX = 0, minY = 0, maxY = 0
+    
     var displayUnboundCells = false;
     var wrapping = false;
     var drawgrid = false;
@@ -144,6 +149,78 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
         );
     }
     
+    func updateTemplateRanges(_ cell: Cell){
+        
+        let first = templateModeCurrent.count == 0;
+        
+        if first{
+            lastInsertedCell = nil;
+        }
+        
+        if cell.X < minX || first{
+            minX = cell.X;
+        }
+        if cell.X > maxX || first{
+            maxX = cell.X
+        }
+    
+        if cell.Y < minY || first{
+            minY = cell.Y
+        }
+        if cell.Y > maxY || first{
+            maxY = cell.Y
+        }
+        
+        if let last = lastInsertedCell{
+            if abs(cell.X - last.X) >= 1 || (abs(cell.Y - last.Y) >= 1){
+                if (cell.X - last.X != 0){
+                    let slope = Double(cell.Y - last.Y) / Double(cell.X - last.X)
+                    let yInt  = Double(cell.Y) - (slope * Double(cell.X))
+                    
+                    let lowerCoor = (last.X > cell.X) ? cell.X : last.X;
+                    let upperCoor = (last.X > cell.X) ? last.X : cell.X
+                    let getYForX = {
+                        return Int(ceil(($0 * slope) + yInt))
+                    }
+                    
+                    for i in stride(from:Double(lowerCoor),to:Double(upperCoor),by:0.05){
+                        templateModeCurrent.insert(Cell(X:Int(i),Y:getYForX(i)));
+                    }
+                }else{
+                    let lowerCoor = (last.Y > cell.Y) ? cell.Y : last.Y;
+                    let upperCoor = (last.Y > cell.Y) ? last.Y : cell.Y
+                    for i in lowerCoor...upperCoor{
+                        templateModeCurrent.insert(Cell(X:cell.X,Y:i));
+                    }
+                }
+            }
+        }
+        lastInsertedCell = cell;
+        templateModeCurrent.insert(cell);
+    }
+    
+    func cellInDrawnTemplate(_ cell: Cell)->Bool{
+        //Given X,Y of cell, minX,minY,maxX,maxY of templateModeCurrent line set,
+        //cast ray from minX,Y to X,Y, count distinct boundary changes -> xBC.
+        //cast ray from X,minY to X,Y, count distinct boundary changes -> yBC
+        //if both xBC and yBC are odd and non-zero, the cell is within polygon.
+        let ray1 = templateModeCurrent.filter({ $0.Y == cell.Y }).filter{ $0.X <= cell.X }.map{ $0.X }
+        let ray2 = templateModeCurrent.filter({ $0.X == cell.X }).filter{ $0.Y <= cell.Y }.map{ $0.Y }
+        
+        
+        func cast(_ list:[Int])->Int{
+            var last = 0;
+            
+            return list.sorted().reduce(0,{
+                let readLast = last;
+                last = $1
+                return $0 + ((readLast == 0 || readLast+1 != $1) ? 1 : 0)
+            });
+        }
+        
+        return cast(ray1) % 2 != 0 && cast(ray2) % 2 != 0;
+    }
+    
     func outOfBounds(_ truex:Double,_ truey:Double)->Bool{
         return currentColony!.bounds.0 > 0 && currentColony!.bounds.1 > 0 &&
             (Int(truex) > currentColony!.bounds.0 || Int(truey) > currentColony!.bounds.1 || truex < 0 || truey < 0)
@@ -196,12 +273,13 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
         let btx = (topx - floor(topx)) * size;
         let bty = (topy - floor(topy)) * size;
         
-        let draw = Double(Int(ceil(zoom))+Int(zoom / 5));
         let scaledSize = (Double(colonyBacking.bounds.width),Double(colonyBacking.bounds.height))
         let scaledZero = (10-btx+(size*(0 - floor(topx) - 1)),10-bty+(size*(0 - floor(topy) - 1)));
         
+        let draw = ceil(scaledSize.0 / size) + 1
+        
         guard currentColony != nil else{
-            //Draw "Select or Create a different colony"
+            //Draw "Select or Create a different colony"?
             return;
         }
         
@@ -252,8 +330,9 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
             for y in -2...Int(draw){
                 let truex  = Double(x) + floor(topx);
                 let truey  = Double(y) + floor(topy);
+                let current = Cell(X:Int(truex),Y:Int(truey));
                 let living = currentColony!.colony.isCellAlive(X: Int(truex), Y: Int(truey));
-                if (living || drawgrid) && !outOfBounds(truex, truey){
+                if (living || drawgrid) && !outOfBounds(truex, truey) || templateMode && templateModeCurrent.contains(current){
                     let cell = CGRect(
                         x:10-btx+(size*Double(x-1)),
                         y:10-bty+(size*Double(y-1)),
@@ -265,13 +344,23 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
                         UIColor.black.setStroke();
                     }
                     if !wrapping && living{
+                        
                         UIColor.blue.setFill();
-                        if (visibility){
+                        if (templateMode && !cellInDrawnTemplate(current)){
                             UIColor.lightGray.setFill();
                         }
+                        if (visibility && !templateMode){
+                            UIColor.white.setFill();
+                        }
+                        if templateMode && templateModeCurrent.contains(current){
+                            UIColor.green.setFill();
+                        }
                         path.fill();
-                    }else if !living{
+                    }else if !living && !templateMode{
                         UIColor.black.setStroke();
+                    }else if templateMode && templateModeCurrent.contains(current){
+                        UIColor.green.setFill();
+                        path.fill();
                     }
 
                     path.lineWidth = (visibility ? 1 : 2);
@@ -282,7 +371,7 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
             }
         }
         
-        if let template = activeTemplate{
+        if let template = activeTemplate, !templateMode{
             let origin = activePosition!;
             let cX = 10 + Double(origin.x) - remainder(Double(origin.x),size);
             let cY = 10 + Double(origin.y) - remainder(Double(origin.y),size)
@@ -290,9 +379,9 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
             activeTemplateOrigin = convert(x:Int(cX),y:Int(cY)).transform(-1,-2);
             let startX = Double(activeTemplateOrigin!.X) - colonyTopX;
             let startY = Double(activeTemplateOrigin!.Y) - colonyTopY;
-            if startX < colonyDrawZoom && startY < colonyDrawZoom{
-                for x in 1...Int(colonyDrawZoom - startX) + 1{
-                    for y in 1...Int(colonyDrawZoom - startY) + 1{
+            if startX < draw && startY < draw{
+                for x in 1...Int(scaledSize.0 / size - startX) + 1{
+                    for y in 1...Int(scaledSize.0 / size - startY) + 1{
                         
                         if template.colony.isCellAlive(X: x, Y: y){
                             let cell = CGRect(
@@ -375,10 +464,12 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
         }
         let location = sender.location(in: colonyBacking)
         let cell = convert(x:Int(location.x),y:Int(location.y));
-        currentColony!.colony.toggleCellAlive(X:cell.X,Y:cell.Y)
-        
-        print("------SEPARATOR------");
-        print(currentColony!.colony)
+        if templateMode{
+            updateTemplateRanges(cell);
+        }else{
+            currentColony!.colony.toggleCellAlive(X:cell.X,Y:cell.Y)
+        }
+       
         redraw();
     }
     
@@ -391,9 +482,9 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
         
         if (sender.state == .ended){
             toggled.removeAll();
-            print("------SEPARATOR------");
-            print(currentColony!.colony)
             return;
+        }else if sender.state == .began{
+            lastInsertedCell = nil;
         }
         
         let location = sender.location(in: colonyBacking);
@@ -401,9 +492,12 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
         guard (!toggled.contains(cell)) else{
             return;
         }
-        
-        currentColony!.colony.toggleCellAlive(X:cell.X,Y:cell.Y)
-        toggled.insert(cell)
+        if (templateMode){
+            updateTemplateRanges(cell);
+        }else{
+            currentColony!.colony.toggleCellAlive(X:cell.X,Y:cell.Y)
+            toggled.insert(cell)
+        }
         redraw();
         
     }
@@ -440,6 +534,45 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
     }
     
     @IBAction func save(_ sender: Any){
+        if (templateMode){
+            let alert = UIAlertController(title: "Save Template?", message: nil, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Save To User Templates", style: .default, handler: { x in
+                self.getName("Enter Template Name",{ x in
+                    if (x != ""){
+                        self.templateMode = false;
+                        self.redraw();
+                        
+                        let templateData = ColonyData(name:x,size:0,colony:Colony());
+                        
+                        for x in self.minX ... self.maxX{ //This might not be most efficient way...
+                            for y in self.minY...self.maxY{
+                                if (self.cellInDrawnTemplate(Cell(X:x,Y:y)) && self.currentColony!.colony.isCellAlive(X: x, Y: y)){
+                                    templateData.colony.setCellAlive(X: x, Y: y)
+                                }
+                                
+                            }
+                        }
+                        
+                        self.leftController!.addNewUTemplate(withData: templateData)
+                    }else{
+                        self.save(sender)
+                    }
+                })
+            }))
+            
+            alert.addAction(UIAlertAction(title: "Do Not Save", style: .destructive, handler: { x in
+                self.templateMode = false;
+                self.redraw();
+            }))
+            
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            self.present(alert,animated: true,completion: nil);
+        }else{
+            templateMode = true;
+            templateModeCurrent.removeAll();
+            redraw();
+        }
+        /*
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         let pop = alert.popoverPresentationController!
         pop.delegate = self;
@@ -471,21 +604,9 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
         }))
         
         self.present(alert, animated: true, completion: nil)
-        
+        */
     }
-    
-    @IBAction func settings(_ sender: Any){
-        
-    }
-    
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("move");
-    }
-    
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("ended");
-    }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let id = segue.identifier else{
             print("segue, no id.");
@@ -501,15 +622,14 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
         switch(id){
         case "settings":
             
+            if self.settingsController != nil{
+                (controller as! SettingsController).settings = self.settingsController!.settings;
+            }
             self.settingsController = controller as! SettingsController;
             self.settingsController!.linkedDrawController = self;
             pop.sourceRect = publish.bounds.offsetBy(dx: 13, dy: 2)
             pop.backgroundColor = UIColor.black;
 
-            break;
-        case "save":
-            pop.sourceRect = save.bounds.offsetBy(dx: 0, dy: -13)
-            pop.backgroundColor = UIColor.black;
             break;
         case "upload":
             pop.sourceRect = publish.bounds.offsetBy(dx: 0, dy: -10)
