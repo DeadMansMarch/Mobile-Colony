@@ -7,18 +7,56 @@
 //
 import Foundation
 
-struct Cell: CustomStringConvertible{
+struct Cell{
     let X:Int;
     let Y:Int;
     
+    init(_ X: Int,_ Y: Int){
+        self.X = X;
+        self.Y = Y;
+    }
+ /*
+    init(_ X: Int,_ Y: Int, size: Int, _ wrapping: Bool=true){
+        if (wrapping){
+            self.X = abs(X % size);
+            self.Y = abs(Y % size);
+        }else{
+            self.X = X;
+            self.Y = Y;
+        }
+    }
+    */
+    
+    init(_ X: Int, _ Y: Int, size: Int){
+        if (size != 1001 && size > 1){
+            if X < 0{
+                self.X = size - (abs(X) % size)
+            }else{
+                self.X = X % size
+            }
+            
+            if Y < 0{
+                //self.Y = size - (abs(Y) + 5) % size;
+                self.Y = (size) - (abs(Y) % size)
+            }else{
+                self.Y = Y % size;
+            }
+ 
+        }else{
+            self.X = X;
+            self.Y = Y;
+        }
+    }
+    
     var description: String {
-        return String(self.X) + ":" + String(self.Y);
+        return String(X) + ":" + String(Y);
     }
     
     func transform(_ x:Int,_ y:Int)->Cell{
-        return Cell(X:self.X + x,Y:self.Y + y);
+        return Cell(X + x,Y + y);
     }
 }
+
 
 class ColonyInterpretor{
     static var numberFormatter:NumberFormatter = {
@@ -27,7 +65,7 @@ class ColonyInterpretor{
     }()
     
     static func interpret(name:String,fromDiagram colony:String)->ColonyData?{
-        var base = ColonyData(name:name,size:0,colony:Colony());
+        var base = ColonyData(name:name,size:0,colony:Colony(size: 0));
         
         let lines = colony.split(separator: "\n").map{ String($0) };
         
@@ -145,13 +183,22 @@ class Colony: CustomStringConvertible{
     
     var Cells = Set<Cell>();
     var numberLivingCells:Int{ return Cells.count; }
+    var size: Int
     
-    init(){
+    init(size: Int){
+        self.size = size
     }
     
-    func setCellAlive(X: Int, Y: Int){ Cells.insert(Cell(X:X,Y:Y)) }
+    convenience init (){
+        self.init(size:1);
+    }
     
-    func setCellDead(X: Int, Y: Int){ Cells.remove(Cell(X:X,Y:Y)) }
+    func changeCell(_ cell: Cell){
+    }
+    
+    func setCellAlive(X: Int, Y: Int){ Cells.insert(Cell(X, Y, size: size)) }
+    
+    func setCellDead(X: Int, Y: Int){ Cells.remove(Cell(X, Y, size: size)) }
     
     func toggleCellAlive(X:Int,Y:Int){
         if isCellAlive(X:X,Y:Y){
@@ -159,10 +206,12 @@ class Colony: CustomStringConvertible{
         }else{
             setCellAlive(X: X, Y: Y);
         }
+        
+        print("Changing cell state: \(X),\(Y)");
     }
     
     func isCellAlive(X: Int, Y: Int)-> Bool{
-        return Cells.contains(Cell(X:X,Y:Y))
+        return Cells.contains(Cell(X, Y, size: size))
     }
     
     func resetColony(){ Cells.removeAll(); }
@@ -231,7 +280,7 @@ class Colony: CustomStringConvertible{
         Cells.forEach({
             for x in $0.X - 1 ... $0.X + 1{
                 for y in $0.Y - 1 ... $0.Y + 1{
-                    queueList.insert(Cell(X:x,Y:y));
+                    queueList.insert(Cell(x, y, size: size));
                 }
             }
         })

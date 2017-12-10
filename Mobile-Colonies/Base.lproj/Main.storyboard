@@ -73,7 +73,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6og-u4-dcq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-937.23021582733816" y="-1550.359712230216"/>
+            <point key="canvasLocation" x="-938" y="-2109"/>
         </scene>
         <!--Colony Listing Controller-->
         <scene sceneID="puP-tv-6Kk">
@@ -160,7 +160,7 @@
                     </connections>
                 </pongPressGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-937" y="-889"/>
+            <point key="canvasLocation" x="-938" y="-1191"/>
         </scene>
         <!--Split View Controller-->
         <scene sceneID="Pbx-d6-Lvz">
@@ -173,7 +173,7 @@
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dvX-fp-viI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1676" y="-593"/>
+            <point key="canvasLocation" x="-2266" y="-590"/>
         </scene>
         <!--Grid View Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -409,7 +409,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="936-Rc-pWC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-207" y="578"/>
+            <point key="canvasLocation" x="-1749" y="939"/>
         </scene>
         <!--Settings-->
         <scene sceneID="V0g-Rq-Kis">
@@ -457,7 +457,7 @@
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AOS-Xx-r31">
                                                 <rect key="frame" x="286" y="0.0" width="51" height="31"/>
                                                 <connections>
-                                                    <action selector="toggleVisibility:" destination="P5L-gu-CKu" eventType="valueChanged" id="Mkm-CJ-bFw"/>
+                                                    <action selector="togglePrettyWrap:" destination="P5L-gu-CKu" eventType="valueChanged" id="whe-Jx-M5R"/>
                                                 </connections>
                                             </switch>
                                         </subviews>
@@ -471,6 +471,9 @@
                                                 <state key="normal" title="Reset Colony">
                                                     <color key="titleColor" red="0.7772042410714286" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="resetColony:" destination="P5L-gu-CKu" eventType="touchUpInside" id="fDc-iW-ceO"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                     </stackView>
@@ -488,10 +491,14 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="aNG-eM-hTQ"/>
                     </view>
+                    <connections>
+                        <outlet property="prettywrap" destination="AOS-Xx-r31" id="Vdi-Xi-NFx"/>
+                        <outlet property="visibility" destination="eCT-aQ-d2P" id="HN5-aX-emK"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="N0j-Gf-hrL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1472.4820143884892" y="575.5395683453238"/>
+            <point key="canvasLocation" x="-477" y="939"/>
         </scene>
     </scenes>
     <resources>

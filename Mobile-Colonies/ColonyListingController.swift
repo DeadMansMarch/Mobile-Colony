@@ -168,19 +168,6 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
             
             var indexPath:IndexPath? = tableView.indexPathForSelectedRow
             print("Index : \(indexPath)");
-            //return;
-            /*
-            for (index,row) in self.templates.allColonies.enumerated(){
-                var usercells = (self.view as! UITableView).rectForRow(at: IndexPath(row:index,section:1));
-                var systcells = (self.view as! UITableView).rectForRow(at: IndexPath(row:index,section:2));
-                usercells = usercells.offsetBy(dx:-table.contentOffset.x, dy:-table.contentOffset.y)
-                systcells = systcells.offsetBy(dx:-table.contentOffset.x, dy:-table.contentOffset.y)
-                if usercells.contains(location) || systcells.contains(location) {
-                    indexPath = IndexPath(row:index,section:(usercells.contains(location) ? 1 : 2));
-                    break;
-                }
-            }
- */
             
             if indexPath==nil || indexPath!.section == 0{
                 print("Template index not found.");
