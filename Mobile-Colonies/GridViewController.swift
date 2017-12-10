@@ -34,6 +34,8 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
     var templateMode = false;
     var templateModeCurrent = Set<Cell>();
     var lastInsertedCell:Cell? = nil;
+    var inTempCache = [Cell:Bool]();
+    var cacheLife  = 0;
     var minX = 0,maxX = 0, minY = 0, maxY = 0
     
     var displayUnboundCells = false;
@@ -60,6 +62,8 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
             colony.currentCZoom = colonyDrawZoom;
             leftController!.reSave(withData:colony);
         }
+        
+        templateMode = false;
         
         colonyTopX = colony.currentTopX;
         colonyTopY = colony.currentTopY;
@@ -99,6 +103,10 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
     }
     
     @IBAction func evolveSpeedChanged(_ sender: Any) {
+        if templateMode{
+            evolveSpeedSlider.value = 0;
+            return;
+        }
         let position = evolveSpeedSlider.value;
         let lastSpeed = evolveSpeed;
     
@@ -158,7 +166,8 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
     }
     
     func updateTemplateRanges(_ cell: Cell){
-        
+        inTempCache.removeAll();
+        cacheLife = 0;
         let first = templateModeCurrent.count == 0;
         
         if first{
@@ -208,13 +217,23 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
     }
     
     func cellInDrawnTemplate(_ cell: Cell)->Bool{
+        if (inTempCache[cell] != nil){
+            return true;
+        }else if !inTempCache.isEmpty && cacheLife > 0{
+            return false;
+        }
+        
+        print("wasnt cached");
+        
+        if cell.X > maxX || cell.Y > maxY || cell.X < minX || cell.Y < minY{
+            return false;
+        }
         //Given X,Y of cell, minX,minY,maxX,maxY of templateModeCurrent line set,
         //cast ray from minX,Y to X,Y, count distinct boundary changes -> xBC.
         //cast ray from X,minY to X,Y, count distinct boundary changes -> yBC
         //if both xBC and yBC are odd and non-zero, the cell is within polygon.
         let ray1 = templateModeCurrent.filter({ $0.Y == cell.Y }).filter{ $0.X <= cell.X }.map{ $0.X }
         let ray2 = templateModeCurrent.filter({ $0.X == cell.X }).filter{ $0.Y <= cell.Y }.map{ $0.Y }
-        
         
         func cast(_ list:[Int])->Int{
             var last = 0;
@@ -226,7 +245,11 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
             });
         }
         
-        return cast(ray1) % 2 != 0 && cast(ray2) % 2 != 0;
+        let inDrawnTemplate = cast(ray1) % 2 != 0 && cast(ray2) % 2 != 0
+        if (inDrawnTemplate){
+            inTempCache[cell] = true;
+        }
+        return inDrawnTemplate;
     }
     
     func outOfBounds(_ truex:Double,_ truey:Double)->Bool{
@@ -246,7 +269,7 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
     }
     
     func readyTemplate(_ template: ColonyData,_ sender : UILongPressGestureRecognizer){
-        print("ready!");
+        //print("ready!");
         activeTemplate = template;
         activePosition = sender.location(in:self.view);
         redraw();
@@ -308,6 +331,7 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
         
         let visibility = getSetting(for:"visibility");
         let prettywrap = getSetting(for:"prettywrap");
+        let drawgrid = getSetting(for:"drawgrid");
         
         if visibility{
             let path = UIBezierPath(rect: CGRect(x:0,y:0,width:scaledSize.0,height:scaledSize.1));
@@ -343,55 +367,74 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
             }
         }
         
-        for x in -2...Int(draw){
-            for y in -2...Int(draw){
-                let truex  = Double(x) + floor(topx);
-                let truey  = Double(y) + floor(topy);
-                let current = Cell(Int(truex),Int(truey));
-                let living = currentColony!.colony.isCellAlive(X: Int(truex), Y: Int(truey));
-                if (living || drawgrid) && !outOfBounds(truex, truey) || templateMode && templateModeCurrent.contains(current) || onBounds(truex,truey) && prettywrap{
-                    let cell = CGRect(
-                        x:10-btx+(size*Double(x-1)),
-                        y:10-bty+(size*Double(y-1)),
-                        width: size, height:size);
-                    let path:UIBezierPath = UIBezierPath(rect: cell);
-                    UIColor.white.setStroke();
-                    if visibility{
-                        UIColor.black.setStroke();
-                    }
-                    if living{
-                        UIColor.blue.setFill();
-                        if (templateMode && !cellInDrawnTemplate(current)){
-                            UIColor.lightGray.setFill();
-                        }
-                        if (visibility && !templateMode){
-                            UIColor.white.setFill();
-                        }
-                        if templateMode && templateModeCurrent.contains(current){
-                            UIColor.green.setFill();
-                        }
-                        path.fill();
-                    }else if !living && !templateMode{
-                        UIColor.black.setStroke();
-                    }else if templateMode && templateModeCurrent.contains(current){
-                        UIColor.green.setFill();
-                        path.fill();
-                    }
-                    
-                    if (prettywrap && onBounds(truex, truey)){
-                        UIColor.red.setStroke();
-                        
-                    }
-                    if truex == 0 && truey == 0{
-                        UIColor.black.setFill()
-                        path.fill();
-                    }
-
-                    path.lineWidth = (visibility ? 1 : 2);
-                    if colonyDrawZoom < 300{
-                        path.stroke();
-                    }
+        func drawCell(_ localX:Int,_ localY:Int)->UIBezierPath{
+            let cell = CGRect(
+                x:10-btx+(size*Double(localX-1)),
+                y:10-bty+(size*Double(localY-1)),
+                width: size, height:size);
+            return UIBezierPath(rect: cell);
+        }
+        
+        func modifyPath(_ path:UIBezierPath,living:Bool,_ truex:Double,_ truey:Double){
+            let current = Cell(Int(truex),Int(truey));
+            if visibility{
+                UIColor.black.setStroke();
+            }else{
+                UIColor.white.setStroke();
+            }
+            if living{
+                UIColor.blue.setFill();
+                if (templateMode && !cellInDrawnTemplate(current)){
+                    UIColor.lightGray.setFill();
                 }
+                if (visibility && !templateMode){
+                    UIColor.white.setFill();
+                }
+                path.fill();
+            }else if !living && !templateMode{
+                UIColor.black.setStroke();
+            }else if templateMode && templateModeCurrent.contains(current){
+                UIColor.green.setFill();
+                path.fill();
+            }
+            
+            path.lineWidth = (visibility ? 1 : 2);
+            if colonyDrawZoom < 300{
+                path.stroke();
+            }
+        }
+        
+        var toDraw = currentColony!.colony.Cells.filter{
+            $0.X >= Int(floor(topx))-2 && $0.Y >= Int(floor(topy))-2 && $0.X < Int(floor(topx) + draw) && $0.Y < Int(floor(topy) + draw)
+        }
+        
+        toDraw.forEach({
+            let truex = Double($0.X)
+            let truey = Double($0.Y)
+            
+            let x = Int(truex) - Int(floor(topx))
+            let y = Int(truey) - Int(floor(topy))
+            
+            let path = drawCell(x,y);
+            
+            modifyPath(path,living:true,truex,truey)
+        });
+        
+        cacheLife += 1;
+        
+        if (templateMode){
+            toDraw = templateModeCurrent
+            toDraw.forEach{
+                let truex = Double($0.X)
+                let truey = Double($0.Y)
+                
+                let x = Int(truex) - Int(floor(topx))
+                let y = Int(truey) - Int(floor(topy))
+                
+                let path = drawCell(x,y)
+                
+                UIColor.green.setFill();
+                path.fill();
             }
         }
         
@@ -403,29 +446,30 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
             activeTemplateOrigin = convert(x:Int(cX),y:Int(cY)).transform(-1,-2);
             let startX = Double(activeTemplateOrigin!.X) - colonyTopX;
             let startY = Double(activeTemplateOrigin!.Y) - colonyTopY;
+
             if startX < draw && startY < draw{
-                for x in 1...Int(scaledSize.0 / size - startX) + 1{
-                    for y in 1...Int(scaledSize.0 / size - startY) + 1{
-                        
-                        if template.colony.isCellAlive(X: x, Y: y){
-                            let cell = CGRect(
-                                x:10 + Double(origin.x) - remainder(Double(origin.x),size)-btx+(size*Double(x-1)),
-                                y:10 + Double(origin.y) - remainder(Double(origin.y),size)-bty+(size*Double(y-2)),
-                                width: size, height:size);
-                            let path:UIBezierPath = UIBezierPath(rect: cell);
-                            UIColor.white.setStroke();
-                            UIColor.orange.setFill();
-                            path.lineWidth = 2;
-                            path.stroke();
-                            path.fill();
-                        }
-                        
-                    }
+                let toDraw = template.colony.Cells.filter{
+                    $0.X >= Int(floor(topx))-2 && $0.Y >= Int(floor(topy))-2 && $0.X < Int(floor(topx) + draw) && $0.Y < Int(floor(topy) + draw)
                 }
+                
+                toDraw.forEach{
+                    let truex  = $0.X + activeTemplateOrigin!.X
+                    let truey = $0.Y + activeTemplateOrigin!.Y
+                    
+                    let x = Int(truex) - Int(floor(topx))
+                    let y = Int(truey) - Int(floor(topy))
+                    
+                    let path = drawCell(x,y);
+                    
+                    UIColor.white.setStroke();
+                    UIColor.orange.setFill();
+                    path.lineWidth = 2;
+                    path.stroke();
+                    path.fill();
+                }
+                
             }
         }
-        
-        print("drawn");
     }
     
     func redraw(){
@@ -447,13 +491,13 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
             
             let zoom = self.colonyDrawZoom;
             
-            if newScale <= 250 && newScale >= 2 || getSetting(for:"visibility") && newScale <= 1000 && newScale >= 2{
+            if newScale <= 250 && newScale >= 2 || getSetting(for:"visibility") && newScale <= 700 && newScale >= 2{
                 colonyTopX += (zoom * ratio.0 * Double(sender.scale - 1))
                 colonyTopY += (zoom * ratio.1 * Double(sender.scale - 1))
                 
                 colonyDrawZoom = newScale;
-            }else if newScale > 1000 && getSetting(for:"visibility"){
-                colonyDrawZoom = 1000;
+            }else if newScale > 700 && getSetting(for:"visibility"){
+                colonyDrawZoom = 700;
             }else if newScale > 250{
                 colonyDrawZoom = 250;
             }else{
@@ -488,7 +532,6 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
         }
         let location = sender.location(in: colonyBacking)
         let cell = convert(x:Int(location.x),y:Int(location.y));
-        print("TOGGLING ALIVE : \(cell)");
         if templateMode{
             updateTemplateRanges(cell);
         }else{
@@ -600,7 +643,6 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let id = segue.identifier else{
-            print("segue, no id.");
             return;
         }
         

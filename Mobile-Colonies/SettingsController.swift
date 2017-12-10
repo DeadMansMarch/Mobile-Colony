@@ -15,10 +15,12 @@ class SettingsController: UIViewController{
     
     @IBOutlet var visibility: UISwitch!
     @IBOutlet var prettywrap: UISwitch!
+    @IBOutlet var drawgrid: UISwitch!;
     
     var settings = [
         "visibility":false,
-        "prettywrap":true
+        "prettywrap":true,
+        "drawgrid":false
     ]
     
     var links:[String:UISwitch]!;
@@ -40,14 +42,20 @@ class SettingsController: UIViewController{
         changeSetting("prettywrap",to:sender.isOn);
     }
     
+    @IBAction func drawGrid(_ sender: UISwitch){
+        changeSetting("drawgrid",to:sender.isOn);
+    }
+    
     @IBAction func resetColony(_ sender: Any) {
         linkedDrawController?.currentColony!.colony.resetColony()
+        linkedDrawController!.redraw();
     }
     
     override func viewDidLoad() {
         links = [
             "visibility":visibility,
-            "prettywrap":prettywrap
+            "prettywrap":prettywrap,
+            "drawgrid":drawgrid
         ]
         links.forEach{ self.updateBySetting( $0.key )}
     }

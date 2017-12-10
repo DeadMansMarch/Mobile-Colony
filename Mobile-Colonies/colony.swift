@@ -207,7 +207,7 @@ class Colony: CustomStringConvertible{
             setCellAlive(X: X, Y: Y);
         }
         
-        print("Changing cell state: \(X),\(Y)");
+        //print("Changing cell state: \(X),\(Y)");
     }
     
     func isCellAlive(X: Int, Y: Int)-> Bool{

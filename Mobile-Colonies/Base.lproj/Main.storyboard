@@ -426,7 +426,7 @@
                                 </items>
                             </navigationBar>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="xch-Vk-3es">
-                                <rect key="frame" x="20" y="67" width="335" height="135"/>
+                                <rect key="frame" x="20" y="67" width="335" height="186"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="bmd-Uv-5Dn">
                                         <rect key="frame" x="0.0" y="0.0" width="335" height="31"/>
@@ -462,8 +462,25 @@
                                             </switch>
                                         </subviews>
                                     </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="GmW-Vg-nY3">
+                                        <rect key="frame" x="0.0" y="102" width="335" height="31"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Draw Grid" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="usL-k8-X5S">
+                                                <rect key="frame" x="0.0" y="0.0" width="236" height="31"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="irU-GA-uxu">
+                                                <rect key="frame" x="286" y="0.0" width="51" height="31"/>
+                                                <connections>
+                                                    <action selector="drawGrid:" destination="P5L-gu-CKu" eventType="valueChanged" id="y4V-T2-ggy"/>
+                                                </connections>
+                                            </switch>
+                                        </subviews>
+                                    </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="Awk-eW-FwL">
-                                        <rect key="frame" x="0.0" y="102" width="335" height="33"/>
+                                        <rect key="frame" x="0.0" y="153" width="335" height="33"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6gG-hu-GYn">
                                                 <rect key="frame" x="0.0" y="0.0" width="335" height="33"/>
@@ -492,6 +509,7 @@
                         <viewLayoutGuide key="safeArea" id="aNG-eM-hTQ"/>
                     </view>
                     <connections>
+                        <outlet property="drawgrid" destination="irU-GA-uxu" id="i1i-vb-GVL"/>
                         <outlet property="prettywrap" destination="AOS-Xx-r31" id="Vdi-Xi-NFx"/>
                         <outlet property="visibility" destination="eCT-aQ-d2P" id="HN5-aX-emK"/>
                     </connections>
