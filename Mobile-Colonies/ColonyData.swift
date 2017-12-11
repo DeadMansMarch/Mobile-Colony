@@ -13,7 +13,7 @@ enum COLONY_DATA_TYPE{
 }
 
 func == (a:ColonyData,b:ColonyData)->Bool{
-    if a.bounds == b.bounds && a.size == b.size && a.colony.Cells == b.colony.Cells{
+    if a.name == b.name && a.size == b.size && a.colony.Cells == b.colony.Cells{
         return true;
     }
     return false;

@@ -14,6 +14,7 @@
 		2814C7931FD515D8005C6A99 /* ColonyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2814C7921FD515D8005C6A99 /* ColonyData.swift */; };
 		2896D80C1FCE174E009CD8EF /* border.png in Resources */ = {isa = PBXBuildFile; fileRef = 2896D80B1FCE174E009CD8EF /* border.png */; };
 		2896D80E1FCE1884009CD8EF /* Live-Body copy.png in Resources */ = {isa = PBXBuildFile; fileRef = 2896D80D1FCE1884009CD8EF /* Live-Body copy.png */; };
+		289719CB1FDDE6100097F135 /* Copy.png in Resources */ = {isa = PBXBuildFile; fileRef = 289719CA1FDDE6100097F135 /* Copy.png */; };
 		28B266881FD7595300457697 /* template.png in Resources */ = {isa = PBXBuildFile; fileRef = 28B266871FD7595300457697 /* template.png */; };
 		28BB50401FCC7B9F00B78CF2 /* colony.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BB503F1FCC7B9F00B78CF2 /* colony.swift */; };
 		28BB50421FCC972600B78CF2 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BB50411FCC972600B78CF2 /* MainView.swift */; };
@@ -60,6 +61,7 @@
 		2814C7921FD515D8005C6A99 /* ColonyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColonyData.swift; sourceTree = "<group>"; };
 		2896D80B1FCE174E009CD8EF /* border.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = border.png; sourceTree = "<group>"; };
 		2896D80D1FCE1884009CD8EF /* Live-Body copy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Live-Body copy.png"; sourceTree = "<group>"; };
+		289719CA1FDDE6100097F135 /* Copy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Copy.png; sourceTree = "<group>"; };
 		28B266871FD7595300457697 /* template.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = template.png; sourceTree = "<group>"; };
 		28BB503F1FCC7B9F00B78CF2 /* colony.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = colony.swift; sourceTree = "<group>"; };
 		28BB50411FCC972600B78CF2 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -186,6 +188,7 @@
 				28EC92DB1FBCBF28006BE2F1 /* upload copy.png */,
 				28EC92DF1FBCC08C006BE2F1 /* save.png */,
 				28B266871FD7595300457697 /* template.png */,
+				289719CA1FDDE6100097F135 /* Copy.png */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -309,6 +312,7 @@
 				2896D80C1FCE174E009CD8EF /* border.png in Resources */,
 				28EC92D61FBCB02B006BE2F1 /* settings.png in Resources */,
 				28EC92DC1FBCBF29006BE2F1 /* upload copy.png in Resources */,
+				289719CB1FDDE6100097F135 /* Copy.png in Resources */,
 				28EC92A01FBC8EC6006BE2F1 /* Main.storyboard in Resources */,
 				28EC92CE1FBC943D006BE2F1 /* Gradient-Body.png in Resources */,
 			);

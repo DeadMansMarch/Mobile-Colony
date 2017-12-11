@@ -168,7 +168,7 @@
                 <splitViewController id="cQS-f7-0xh" sceneMemberID="viewController">
                     <connections>
                         <segue destination="2De-Ev-mrf" kind="relationship" relationship="masterViewController" id="Ejo-yz-asv"/>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="detailViewController" id="aeb-2h-weU"/>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="detailViewController" id="KT5-Yn-2pb"/>
                     </connections>
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dvX-fp-viI" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -275,16 +275,9 @@
                                             <constraint firstAttribute="width" constant="46" id="6Fm-Ox-Bro"/>
                                             <constraint firstAttribute="height" constant="44" id="mCG-yO-FYg"/>
                                         </constraints>
-                                        <state key="normal" backgroundImage="upload copy.png"/>
+                                        <state key="normal" backgroundImage="Copy.png"/>
                                         <connections>
-                                            <action selector="publish:" destination="BYZ-38-t0r" eventType="touchUpInside" id="2eK-vZ-kU3"/>
-                                            <segue destination="n2l-dp-DxU" kind="popoverPresentation" identifier="upload" popoverAnchorView="nKC-UA-MKY" id="bvQ-VL-4nL">
-                                                <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                                                <popoverPassthroughViews>
-                                                    <button reference="NVn-wR-FYF"/>
-                                                    <button reference="6fL-9S-WM5"/>
-                                                </popoverPassthroughViews>
-                                            </segue>
+                                            <action selector="publish:" destination="BYZ-38-t0r" eventType="touchUpInside" id="udR-Kg-5XL"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6fL-9S-WM5">
@@ -361,11 +354,10 @@
                         <outlet property="colonyName" destination="a6h-a6-Nts" id="aPe-dd-ZgU"/>
                         <outlet property="colonyX" destination="rs3-L2-JlI" id="gKz-Oc-Tqk"/>
                         <outlet property="colonyY" destination="ymD-PC-4mT" id="cfy-Tq-T1P"/>
+                        <outlet property="copyColony" destination="nKC-UA-MKY" id="HqB-cL-t6M"/>
                         <outlet property="evolveSpeedLabel" destination="80Y-Ax-2uL" id="F0I-jw-njc"/>
                         <outlet property="evolveSpeedSlider" destination="TlI-w9-Wgr" id="yAK-YU-KnX"/>
                         <outlet property="menu" destination="SUR-5I-PM1" id="4m7-4h-F8q"/>
-                        <outlet property="publish" destination="nKC-UA-MKY" id="3go-fc-1Vv"/>
-                        <outlet property="save" destination="6fL-9S-WM5" id="4GW-h2-WjV"/>
                         <outlet property="settings" destination="NVn-wR-FYF" id="Emq-Ya-Cp1"/>
                     </connections>
                 </viewController>
@@ -395,21 +387,6 @@
                 </panGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-937.23021582733816" y="-201.43884892086334"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="R8v-xc-Nep">
-            <objects>
-                <viewController id="n2l-dp-DxU" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="Nrl-QB-Hoa">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <viewLayoutGuide key="safeArea" id="ype-0u-uut"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="936-Rc-pWC" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1749" y="939"/>
         </scene>
         <!--Settings-->
         <scene sceneID="V0g-Rq-Kis">
@@ -445,10 +422,27 @@
                                             </switch>
                                         </subviews>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="fBR-Ov-LTu">
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="GmW-Vg-nY3">
                                         <rect key="frame" x="0.0" y="51" width="335" height="31"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stylistic Wraps" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kHg-Yu-O5F">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wrapping" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="usL-k8-X5S">
+                                                <rect key="frame" x="0.0" y="0.0" width="236" height="31"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="irU-GA-uxu">
+                                                <rect key="frame" x="286" y="0.0" width="51" height="31"/>
+                                                <connections>
+                                                    <action selector="wrap:" destination="P5L-gu-CKu" eventType="valueChanged" id="iDu-Za-E15"/>
+                                                </connections>
+                                            </switch>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="fBR-Ov-LTu">
+                                        <rect key="frame" x="0.0" y="102" width="335" height="31"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pretty Wraps" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kHg-Yu-O5F">
                                                 <rect key="frame" x="0.0" y="0.0" width="236" height="31"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                 <nil key="textColor"/>
@@ -458,23 +452,6 @@
                                                 <rect key="frame" x="286" y="0.0" width="51" height="31"/>
                                                 <connections>
                                                     <action selector="togglePrettyWrap:" destination="P5L-gu-CKu" eventType="valueChanged" id="whe-Jx-M5R"/>
-                                                </connections>
-                                            </switch>
-                                        </subviews>
-                                    </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="GmW-Vg-nY3">
-                                        <rect key="frame" x="0.0" y="102" width="335" height="31"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Draw Grid" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="usL-k8-X5S">
-                                                <rect key="frame" x="0.0" y="0.0" width="236" height="31"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="irU-GA-uxu">
-                                                <rect key="frame" x="286" y="0.0" width="51" height="31"/>
-                                                <connections>
-                                                    <action selector="drawGrid:" destination="P5L-gu-CKu" eventType="valueChanged" id="y4V-T2-ggy"/>
                                                 </connections>
                                             </switch>
                                         </subviews>
@@ -509,21 +486,21 @@
                         <viewLayoutGuide key="safeArea" id="aNG-eM-hTQ"/>
                     </view>
                     <connections>
-                        <outlet property="drawgrid" destination="irU-GA-uxu" id="i1i-vb-GVL"/>
                         <outlet property="prettywrap" destination="AOS-Xx-r31" id="Vdi-Xi-NFx"/>
                         <outlet property="visibility" destination="eCT-aQ-d2P" id="HN5-aX-emK"/>
+                        <outlet property="wrap" destination="irU-GA-uxu" id="aZd-Uk-dtY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="N0j-Gf-hrL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-477" y="939"/>
+            <point key="canvasLocation" x="-938" y="567"/>
         </scene>
     </scenes>
     <resources>
+        <image name="Copy.png" width="200" height="200"/>
         <image name="Menu.png" width="200" height="200"/>
         <image name="settings.png" width="1024" height="1024"/>
         <image name="template.png" width="512" height="512"/>
-        <image name="upload copy.png" width="512" height="512"/>
     </resources>
     <color key="tintColor" red="0.42931439580000003" green="0.58248799529999995" blue="0.83093830960000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>

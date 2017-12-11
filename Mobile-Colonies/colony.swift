@@ -16,8 +16,9 @@ struct Cell{
         self.Y = Y;
     }
     
-    init(_ X: Int, _ Y: Int, size: Int){
-        if (size != 1001 && size > 1){
+    init(_ X: Int, _ Y: Int, size: Int,_ wrapping:Bool?=nil){
+        print(size);
+        if wrapping != nil && wrapping! == true && size != 0 || wrapping == nil && size != 1001 && size > 1{
             if X < 0{
                 self.X = size - (abs(X) % size)
             }else{
@@ -25,12 +26,10 @@ struct Cell{
             }
             
             if Y < 0{
-                //self.Y = size - (abs(Y) + 5) % size;
                 self.Y = (size) - (abs(Y) % size)
             }else{
                 self.Y = Y % size;
             }
- 
         }else{
             self.X = X;
             self.Y = Y;
@@ -68,15 +67,37 @@ struct Cell{
     }
 }
 
+struct Bound : CustomStringConvertible{
+    let lBound : Cell;
+    let rBound : Cell;
+    
+    var description:String{
+        return "Lower Left Bound : \(lBound), Upper Right Bound : \(rBound)"
+    }
+}
 
-class ColonyInterpretor{
+func == (lhs: Cell, rhs: Cell) -> Bool {
+    return lhs.X == rhs.X && lhs.Y == rhs.Y;
+}
+
+extension Cell: Hashable{
+    var hashValue: Int{ return X.hashValue ^ Y.hashValue &* 16777619 }
+}
+
+class Colony: CustomStringConvertible{
+    
+    var wrapping = true;
+    var Cells = Set<Cell>();
+    var numberLivingCells:Int{ return Cells.count; }
+    var size: Int = 1;
+    
     static var numberFormatter:NumberFormatter = {
         let formatter = NumberFormatter()
         return formatter;
     }()
     
     static func interpret(name:String,fromDiagram colony:String)->ColonyData?{
-        var base = ColonyData(name:name,size:0,colony:Colony(size: 0));
+        var base = ColonyData(name:name,size:0,colony:Colony(false));
         
         let lines = colony.split(separator: "\n").map{ String($0) };
         
@@ -98,7 +119,7 @@ class ColonyInterpretor{
     
     static func interpret(name:String, fromRLE colony: String)->ColonyData?{
         //Found out that the massive "breeder" file this was for was in high life, not just life.
-        var base = ColonyData(name:name,size:0,colony:Colony());
+        var base = ColonyData(name:name,size:0,colony:Colony(false));
         
         var xPos = 1;
         var yPos = 1;
@@ -171,33 +192,14 @@ class ColonyInterpretor{
         }
         return nil;
     }
-}
-
-struct Bound : CustomStringConvertible{
-    let lBound : Cell;
-    let rBound : Cell;
-    
-    var description:String{
-        return "Lower Left Bound : \(lBound), Upper Right Bound : \(rBound)"
-    }
-}
-
-func == (lhs: Cell, rhs: Cell) -> Bool {
-    return lhs.X == rhs.X && lhs.Y == rhs.Y;
-}
-
-extension Cell: Hashable{
-    var hashValue: Int{ return X.hashValue ^ Y.hashValue &* 16777619 }
-}
-
-class Colony: CustomStringConvertible{
-    
-    var Cells = Set<Cell>();
-    var numberLivingCells:Int{ return Cells.count; }
-    var size: Int
     
     init(size: Int){
         self.size = size
+    }
+    
+    convenience init (_ wrapping: Bool){
+        self.init(size:1);
+        self.wrapping = wrapping;
     }
     
     convenience init (){
@@ -207,9 +209,9 @@ class Colony: CustomStringConvertible{
     func changeCell(_ cell: Cell){
     }
     
-    func setCellAlive(X: Int, Y: Int){ Cells.insert(Cell(X, Y, size: size)) }
+    func setCellAlive(X: Int, Y: Int){ Cells.insert(Cell(X, Y, size: size,wrapping)) }
     
-    func setCellDead(X: Int, Y: Int){ Cells.remove(Cell(X, Y, size: size)) }
+    func setCellDead(X: Int, Y: Int){ Cells.remove(Cell(X, Y, size: size,wrapping)) }
     
     func toggleCellAlive(X:Int,Y:Int){
         if isCellAlive(X:X,Y:Y){
@@ -222,7 +224,7 @@ class Colony: CustomStringConvertible{
     }
     
     func isCellAlive(X: Int, Y: Int)-> Bool{
-        return Cells.contains(Cell(X, Y, size: size))
+        return Cells.contains(Cell(X, Y, size: size,wrapping))
     }
     
     func resetColony(){ Cells.removeAll(); }
@@ -291,7 +293,7 @@ class Colony: CustomStringConvertible{
         Cells.forEach({
             for x in $0.X - 1 ... $0.X + 1{
                 for y in $0.Y - 1 ... $0.Y + 1{
-                    queueList.insert(Cell(x, y, size: size));
+                    queueList.insert(Cell(x, y, size: size,wrapping));
                 }
             }
         })

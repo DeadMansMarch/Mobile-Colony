@@ -239,14 +239,14 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
     
     override func viewDidLoad() {
         
-        addNewTemplate(withData: ColonyInterpretor.interpret(name:"Blinker",fromDiagram:
+        addNewTemplate(withData: Colony.interpret(name:"Blinker",fromDiagram:
             """
             *
             *
             *
             """)!);
         
-        addNewTemplate(withData: ColonyInterpretor.interpret(name:"Toad",fromDiagram:
+        addNewTemplate(withData: Colony.interpret(name:"Toad",fromDiagram:
             """
             --*-
             *  *
@@ -254,7 +254,7 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
             -*
             """)!);
         
-        addNewTemplate(withData: ColonyInterpretor.interpret(name:"Beacon",fromDiagram:
+        addNewTemplate(withData: Colony.interpret(name:"Beacon",fromDiagram:
             """
             **--
             *---
@@ -263,7 +263,7 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
             ----
             """)!);
         
-        addNewTemplate(withData: ColonyInterpretor.interpret(name:"Pulsar",fromDiagram:
+        addNewTemplate(withData: Colony.interpret(name:"Pulsar",fromDiagram:
             """
             --***----***--
             --------------
@@ -280,7 +280,7 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
             --***----***--
             """)!);
         
-        addNewTemplate(withData: ColonyInterpretor.interpret(name:"Pentadecathlon",fromDiagram:
+        addNewTemplate(withData: Colony.interpret(name:"Pentadecathlon",fromDiagram:
             """
             ***
             *-*
@@ -294,14 +294,14 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
         
         
         
-        addNewTemplate(withData: ColonyInterpretor.interpret(name:"Glider",fromDiagram:
+        addNewTemplate(withData: Colony.interpret(name:"Glider",fromDiagram:
             """
             -*-
             --*
             ***
             """)!);
         
-        addNewTemplate(withData: ColonyInterpretor.interpret(name:"Lightweight Spaceship",fromDiagram:
+        addNewTemplate(withData: Colony.interpret(name:"Lightweight Spaceship",fromDiagram:
             """
             *---*-
             -----*
@@ -309,7 +309,7 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
             -*****
             """)!);
         
-        addNewTemplate(withData: ColonyInterpretor.interpret(name:"Block Switching Engine",fromDiagram:
+        addNewTemplate(withData: Colony.interpret(name:"Block Switching Engine",fromDiagram:
             """
             ***-*
             *----
@@ -318,7 +318,7 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
             *-*-*
             """)!);
         
-        addNewTemplate(withData: ColonyInterpretor.interpret(name:"Slow Spaceship",fromDiagram:
+        addNewTemplate(withData: Colony.interpret(name:"Slow Spaceship",fromDiagram:
             """
             -****--------------
             -*---*---------*---
@@ -331,7 +331,7 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
             -****--------------
             """
         )!);
-        addNewTemplate(withData: ColonyInterpretor.interpret(name:"Static Spaceship",fromDiagram:
+        addNewTemplate(withData: Colony.interpret(name:"Static Spaceship",fromDiagram:
             """
             ---***---***---
             ---------------
@@ -346,7 +346,7 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
             -----*---*-----
             """
         )!);
-        addNewTemplate(withData: ColonyInterpretor.interpret(name:"Gosper Glider Gun",fromDiagram:
+        addNewTemplate(withData: Colony.interpret(name:"Gosper Glider Gun",fromDiagram:
             """
             ------------------------*-----------
             ----------------------*-*-----------
@@ -359,7 +359,7 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
             ------------**----------------------
             """)!);
         
-        addNewTemplate(withData: ColonyInterpretor.interpret(name:"Backrake",fromDiagram:
+        addNewTemplate(withData: Colony.interpret(name:"Backrake",fromDiagram:
             """
             .....OOO...........OOO.....
             ....O...O.........O...O....
@@ -382,7 +382,7 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
             """
         )!);
         
-        addNewTemplate(withData: ColonyInterpretor.interpret(name:"Cow",fromDiagram:
+        addNewTemplate(withData: Colony.interpret(name:"Cow",fromDiagram:
             """
             OO.......OO..OO..OO..OO..OO..OO..OO..OO..OO..OO..OO..OO.....
             OO....O.OOO..OO..OO..OO..OO..OO..OO..OO..OO..OO..OO..OO...OO
@@ -394,7 +394,7 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
             """
             )!);
         
-        addNewTemplate(withData: ColonyInterpretor.interpret(name:"Dragon",fromDiagram:
+        addNewTemplate(withData: Colony.interpret(name:"Dragon",fromDiagram:
             """
             .............O..OO......O..OOO
             .....O...OOOO.OOOOOO....O..OOO
@@ -413,7 +413,7 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
             """
             )!);
         
-        addNewTemplate(withData: ColonyInterpretor.interpret(name:"Electric Fence",fromDiagram:
+        addNewTemplate(withData: Colony.interpret(name:"Electric Fence",fromDiagram:
             """
             ..........O..................................................
             .........O.O........................OO.......................
@@ -433,7 +433,7 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
             """
         )!);
         
-        addNewTemplate(withData: ColonyInterpretor.interpret(name:"Enterprise",fromDiagram:
+        addNewTemplate(withData: Colony.interpret(name:"Enterprise",fromDiagram:
             """
             .......OOO...........
             .....O.OO............
@@ -459,7 +459,7 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
             """
             )!);
         
-        addNewTemplate(withData: ColonyInterpretor.interpret(name:"Filter",fromDiagram:
+        addNewTemplate(withData: Colony.interpret(name:"Filter",fromDiagram:
             """
             ..........................
             ................OO........
@@ -484,7 +484,7 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
             """
             )!);
         
-        addNewTemplate(withData: ColonyInterpretor.interpret(name:"Fly",fromDiagram:
+        addNewTemplate(withData: Colony.interpret(name:"Fly",fromDiagram:
             """
             ..O...............................
             .O.O..............................
@@ -509,7 +509,7 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
             """
             )!);
         
-        addNewTemplate(withData: ColonyInterpretor.interpret(name:"Frothing Puffer",fromDiagram:
+        addNewTemplate(withData: Colony.interpret(name:"Frothing Puffer",fromDiagram:
             """
             .......O.................O.......
             ......OOO...............OOO......
@@ -537,7 +537,7 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
             """
             )!);
         
-        addNewTemplate(withData: ColonyInterpretor.interpret(name:"Hammerheads",fromDiagram:
+        addNewTemplate(withData: Colony.interpret(name:"Hammerheads",fromDiagram:
             """
             ................O..
             .OO...........O...O
@@ -560,7 +560,7 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
             """
             )!);
                 
-        addNewTemplate(withData: ColonyInterpretor.interpret(name:"Volcano",fromDiagram:
+        addNewTemplate(withData: Colony.interpret(name:"Volcano",fromDiagram:
             """
             .........O..........................
             ........O.O.........................
@@ -584,7 +584,7 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
             """
             )!);
             
-        addNewTemplate(withData: ColonyInterpretor.interpret(name:"Portraitor",fromDiagram:
+        addNewTemplate(withData: Colony.interpret(name:"Portraitor",fromDiagram:
             """
             ...........OO...........
             ......OO.O....O.OO......
@@ -613,7 +613,7 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
             """
             )!);
             
-        addNewTemplate(withData: ColonyInterpretor.interpret(name:"Puff Suppresor",fromDiagram:
+        addNewTemplate(withData: Colony.interpret(name:"Puff Suppresor",fromDiagram:
             """
             ............O....................
             ..........OO.O...................
@@ -643,7 +643,7 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
             """
         )!);
 
-        addNewTemplate(withData: ColonyInterpretor.interpret(name:"Ring Of Fire",fromDiagram:
+        addNewTemplate(withData: Colony.interpret(name:"Ring Of Fire",fromDiagram:
             """
             ................O.................
             ..............O.O.O...............
@@ -678,7 +678,7 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
             """
         )!);
             
-        addNewTemplate(withData: ColonyInterpretor.interpret(name:"Snail",fromDiagram:
+        addNewTemplate(withData: Colony.interpret(name:"Snail",fromDiagram:
             """
             .O....................................
             .O....................................
@@ -704,7 +704,7 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
             """
         )!);
                 
-        addNewTemplate(withData: ColonyInterpretor.interpret(name:"Spaceship",fromDiagram:
+        addNewTemplate(withData: Colony.interpret(name:"Spaceship",fromDiagram:
             """
             .............OO.....................................
             .....OO....OO.O.O...................................
@@ -762,7 +762,7 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
             )!);
 
             
-        addNewTemplate(withData: ColonyInterpretor.interpret(name:"Wickstretcher",fromDiagram:
+        addNewTemplate(withData: Colony.interpret(name:"Wickstretcher",fromDiagram:
             """
             .................OO..............................
             .............OO....O.............................
@@ -783,7 +783,7 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
             """
             )!);
         
-        addNewTemplate(withData: ColonyInterpretor.interpret(name:"Tubstretcher",fromRLE:
+        addNewTemplate(withData: Colony.interpret(name:"Tubstretcher",fromRLE:
             """
             59b2o$58bo2bo$58bo2b2o$57b3o2bo$57b3o2bob2o$58b2o5b2o$58b2o$59b5ob2o$
             60b5o2$66bo$66b2o$67bo$68b2o$69b2o2bobo$73bob2o$72bo3bo$72b2o$72b2o2b
@@ -810,7 +810,7 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
             """
             )!);
         
-        addNewTemplate(withData: ColonyInterpretor.interpret(name: "Hawk", fromRLE:
+        addNewTemplate(withData: Colony.interpret(name: "Hawk", fromRLE:
         """
         48b3o22b3o$46b2o3bo20bo3b2o109bo24bo$45bo3bo2bo18bo2bo3bo106b4o22b4o$45bo6b
         2obo12bob2o6bo105b2o3bo20bo3b2o$48b3ob2ob2o10b2ob2ob3o107bo5b3o16b3o5bo$45b
@@ -890,7 +890,7 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
         """
         )!)
         
-        addNewTemplate(withData: ColonyInterpretor.interpret(name: "BREEDER", fromRLE:
+        addNewTemplate(withData: Colony.interpret(name: "BREEDER", fromRLE:
         """
     166b6o$165bo5bo95bobo$171bo95bo2bo$165bo4bo42b2o34b4o17b2o51b2o$167b2o
     43bo2bo32b6o14bo3bo48bo4bo62bo$212bobo33b4ob2o14bob3o53bo61b4o$211bo

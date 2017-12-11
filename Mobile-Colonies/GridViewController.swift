@@ -50,8 +50,7 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
     var threadKill = Set<Double>();
     var threaded = false;
     
-    @IBOutlet var publish: UIButton!
-    @IBOutlet var save: UIButton!
+    @IBOutlet var copyColony: UIButton!
     @IBOutlet var settings: UIButton!
     
     @IBOutlet var colonyBacking: UIView!
@@ -253,7 +252,7 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
     }
     
     func outOfBounds(_ truex:Double,_ truey:Double)->Bool{
-        if getSetting(for: "prettywrap"){
+        if getSetting(for: "prettywrap") && getSetting(for:"wrap"){
             return false;
         }
         return currentColony!.bounds.0 > 0 && currentColony!.bounds.1 > 0 &&
@@ -294,8 +293,8 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
     }
     
     var defaults = [
-        "visibility":false,
-        "prettywrap":true
+        "prettywrap":true,
+        "wrap":true
     ]
     
     func getSetting(for tag:String)->Bool{
@@ -330,15 +329,16 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
         );
         
         let visibility = getSetting(for:"visibility");
-        let prettywrap = getSetting(for:"prettywrap");
-        let drawgrid = getSetting(for:"drawgrid");
+        let wrap = getSetting(for:"wrap") && currentColony!.size != 1001;
+        let prettywrap = getSetting(for:"prettywrap") && wrap;
+        
+        currentColony!.colony.wrapping = wrap;
         
         if visibility{
             let path = UIBezierPath(rect: CGRect(x:0,y:0,width:scaledSize.0,height:scaledSize.1));
             UIColor.black.setFill();
             path.fill();
         }
-        
         
         if (currentColony!.size <= 1000 && !prettywrap){
             UIColor.black.setFill();
@@ -397,12 +397,7 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
                 UIColor.green.setFill();
                 path.fill();
             }
-            /*
-            if onBounds(Double(current.X),Double(current.Y)){
-                UIColor.red.setStroke();
-                path.stroke();
-            }
-            */
+            
             path.lineWidth = (visibility ? 1 : 2);
             if colonyDrawZoom < 300{
                 path.stroke();
@@ -411,6 +406,32 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
         
         var toDraw:Set<Cell>
         if (prettywrap){
+            let colonyFit = Double(scaledSize.0) / size / Double(currentColony!.size)
+            print(colonyFit);
+            let colonyStart = Cell(Int(topx),Int(topy),size:currentColony!.size);
+            let startColony = Cell.getColonyLoc(Int(topx), Int(topy), size: currentColony!.size);
+            let endColony  = Cell(Int(topx + draw),Int(topy + draw),size: currentColony!.size);
+            toDraw = currentColony!.colony.Cells.filter{
+                if colonyFit > 1{
+                    return true;
+                }else{
+                    print("B");
+                    print(colonyStart);
+                    
+                    if colonyStart.X >= endColony.X && ($0.X >= colonyStart.X || $0.X <= endColony.X) && ($0.X >= colonyStart.Y || $0.Y <= endColony.Y){
+                        return true;
+                    }else if colonyStart.X <= endColony.X && $0.X >= colonyStart.X && $0.Y >= colonyStart.Y && $0.X <= endColony.X && $0.Y <= endColony.Y{
+                        return true;
+                    }else if colonyStart.Y >= endColony.Y && colonyStart.Y >= endColony.Y && ($0.X >= colonyStart.X || $0.X <= endColony.X) && ($0.Y >= colonyStart.Y || $0.Y <= endColony.Y){
+                        return true;
+                    }else if colonyStart.X <= endColony.X && colonyStart.X <= endColony.X && $0.X >= colonyStart.X && $0.Y >= colonyStart.Y && $0.X <= endColony.X && $0.Y <= endColony.Y{
+                        return true;
+                    }
+                    
+                    return false;
+                }
+            }
+            /*
             for x in -2...Int(draw){
                 for y in -2...Int(draw){
                     let truex  = Double(x) + floor(topx);
@@ -423,18 +444,35 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
                     }
                 }
             }
-            toDraw = Set<Cell>()
+            */
+            toDraw.forEach({
+                
+                let truex = Double($0.X)
+                let truey = Double($0.Y)
+                
+                let x = Int(truex) - Int(floor(topx)) % currentColony!.size
+                let y = Int(truey) - Int(floor(topy)) % currentColony!.size
+                
+                for lx in -1...Int(ceil(colonyFit)){
+                    for ly in -1...Int(ceil(colonyFit)){
+                        let path = drawCell(x + currentColony!.size * lx,y + currentColony!.size * ly);
+                        modifyPath(path,living:true,truex,truey)
+                    }
+                }
+                
+                
+            });
         }else{
             toDraw = currentColony!.colony.Cells.filter{
                 $0.X >= Int(floor(topx))-2 && $0.Y >= Int(floor(topy))-2 && $0.X < Int(floor(topx) + draw) && $0.Y < Int(floor(topy) + draw)
             }
-        }
-        
-        toDraw.forEach({
             
-            if (prettywrap){
+            if (!wrap){
+                toDraw = toDraw.filter({ !outOfBounds(Double($0.X), Double($0.Y)); })
+            }
+            
+            toDraw.forEach({
                 
-            }else{
                 let truex = Double($0.X)
                 let truey = Double($0.Y)
                 
@@ -443,9 +481,9 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
                 
                 let path = drawCell(x,y);
                 modifyPath(path,living:true,truex,truey)
-            }
-            
-        });
+                
+            });
+        }
         
         cacheLife += 1;
         
@@ -564,7 +602,7 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
         }else{
             currentColony!.colony.toggleCellAlive(X:cell.X,Y:cell.Y)
         }
-       
+        
         redraw();
     }
     
@@ -626,6 +664,15 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
     }
     
     @IBAction func publish(_ sender: Any) {
+         self.getName("Enter Copy Name",{ x in
+            if (x != ""){
+                var colony = Colony(size:self.currentColony!.size);
+                colony.Cells = Set<Cell>(self.currentColony!.colony.Cells)
+                self.leftController!.addNewSave(withData: ColonyData(name:x,size:self.currentColony!.size,colony:colony))
+            }else{
+                self.publish(sender)
+            }
+        })
     }
     
     @IBAction func save(_ sender: Any){
@@ -637,7 +684,7 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
                         self.templateMode = false;
                         self.redraw();
                         
-                        let templateData = ColonyData(name:x,size:0,colony:Colony());
+                        let templateData = ColonyData(name:x,size:0,colony:Colony(false));
                         
                         for x in self.minX ... self.maxX{ //This might not be most efficient way...
                             for y in self.minY...self.maxY{
@@ -687,21 +734,13 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
             }
             self.settingsController = controller as! SettingsController;
             self.settingsController!.linkedDrawController = self;
-            pop.sourceRect = publish.bounds.offsetBy(dx: 13, dy: 2)
+            pop.sourceRect = settings.bounds.offsetBy(dx: -3, dy: 2)
             pop.backgroundColor = UIColor.black;
 
-            break;
-        case "upload":
-            pop.sourceRect = publish.bounds.offsetBy(dx: 0, dy: -10)
-            pop.backgroundColor = UIColor.black;
             break;
         default:
             break;
         }
-    }
-    
-    func popoverPresentationControllerDidDismissPopover(popoverPresentationController: UIPopoverPresentationController) {
-        //do som stuff from the popover
     }
     
     override func viewDidLoad() {
