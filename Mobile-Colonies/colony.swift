@@ -17,7 +17,7 @@ struct Cell{
     }
     
     init(_ X: Int, _ Y: Int, size: Int,_ wrapping:Bool?=nil){
-        print(size);
+        //print(size);
         if wrapping != nil && wrapping! == true && size != 0 || wrapping == nil && size != 1001 && size > 1{
             if X < 0{
                 self.X = size - (abs(X) % size)
@@ -96,7 +96,7 @@ class Colony: CustomStringConvertible{
         return formatter;
     }()
     
-    static func interpret(name:String,fromDiagram colony:String)->ColonyData?{
+    static func colonyDataInterpret(name:String,fromDiagram colony:String)->ColonyData?{
         var base = ColonyData(name:name,size:0,colony:Colony(false));
         
         let lines = colony.split(separator: "\n").map{ String($0) };
@@ -117,9 +117,16 @@ class Colony: CustomStringConvertible{
         return base;
     }
     
-    static func interpret(name:String, fromRLE colony: String)->ColonyData?{
+    static func colonyDataInterpret(name:String,fromRLE colony: String)->ColonyData?{
+        guard let interpreted = self.interpret(fromRLE: colony) else{
+            return nil;
+        }
+        return ColonyData(name:name,size:0,colony:interpreted);
+    }
+    
+    static func interpret(fromRLE colony: String)->Colony?{
         //Found out that the massive "breeder" file this was for was in high life, not just life.
-        var base = ColonyData(name:name,size:0,colony:Colony(false));
+        var base = Colony(false);
         
         var xPos = 1;
         var yPos = 1;
@@ -139,10 +146,10 @@ class Colony: CustomStringConvertible{
                 xPos = 1;
                 continue;
             }else if character == "!"{
-                let width = base.colony.Cells.max(by: { cell1, cell2 in
+                let width = base.Cells.max(by: { cell1, cell2 in
                     return cell1.X <= cell2.X;
                 })
-                let height = base.colony.Cells.max(by: { cell1, cell2 in
+                let height = base.Cells.max(by: { cell1, cell2 in
                     return cell1.Y <= cell2.Y;
                 })
                 base.size = max(height?.Y ?? 0,width?.X ?? 0);
@@ -180,7 +187,7 @@ class Colony: CustomStringConvertible{
                 if character == "o" || cellType == "o"{
                     for x in 1...cellCount{
                         xPos += 1;
-                        base.colony.setCellAlive(X: xPos, Y: yPos)
+                        base.setCellAlive(X: xPos - 1, Y: yPos - 1)
                     }
                 }else if character == "b" || cellType=="b"{
                     xPos += cellCount
@@ -202,7 +209,7 @@ class Colony: CustomStringConvertible{
         self.wrapping = wrapping;
     }
     
-    convenience init (){
+    convenience init(){
         self.init(size:1);
     }
     
@@ -229,7 +236,7 @@ class Colony: CustomStringConvertible{
     
     func resetColony(){ Cells.removeAll(); }
     
-    var description: String{
+    var dotSave: String{
         let xWidth = Cells.max(by:{ (a,b) in
             if a.X < b.X{
                 return true;
@@ -256,6 +263,68 @@ class Colony: CustomStringConvertible{
         }
         
         return text;
+    }
+    
+    var runLengthSave: String{
+        var runLength = "";
+        var lastCell: Cell? = nil;
+        var liveCount = 0;
+    
+        Cells.sorted(by:{
+            if ($0.Y > $1.Y){
+                return false
+            }else if ($0.Y < $1.Y){
+                return true;
+            }else{
+                if ($0.X > $1.X){
+                    return false;
+                }else{
+                    return true;
+                }
+            }
+        }).forEach{
+            let distanceX:Int!;
+            let distanceY:Int!;
+            if let last = lastCell{
+                distanceY = $0.Y - last.Y;
+                if distanceY > 0{
+                    distanceX = $0.X
+                }else{
+                    distanceX = $0.X - last.X
+                }
+            }else{
+                distanceX = $0.X
+                distanceY = $0.Y
+            }
+            //print("Working: \($0), Distance {X:\(distanceX),Y:\(distanceY)}");
+            let endInd = runLength.endIndex
+            if (distanceX! == 1 && distanceY! == 0){
+                liveCount += 1;
+            }else{
+                if liveCount > 1{
+                    runLength += "\(liveCount)o"
+                }else if liveCount == 1{
+                    runLength += "o"
+                }
+                liveCount = 0;
+
+                let lDistX = distanceX > 0 ? distanceX - 1 : 0
+                runLength += (distanceY! > 0 ? (distanceY! > 1 ? "\(distanceY!)$" : "$") : "")
+                runLength += (lDistX > 0 ? (lDistX > 1 ? "\(lDistX)b" : "b") : "")
+            }
+            
+            lastCell = $0
+            if liveCount == 0{
+                liveCount = 1;
+            }
+            //print("\t Changes to encoding: ");
+            //print("\t\(runLength[runLength.index(endInd, offsetBy: 0)..<runLength.endIndex])")
+        }
+        return runLength + "!";
+    }
+    
+    var description: String{
+        return dotSave;
     }
     
     //Gets # of cells surrounding given coord.

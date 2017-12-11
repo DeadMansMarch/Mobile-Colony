@@ -12,15 +12,37 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    var ListingController:ColonyListingController!;
+    var GameController:GridViewController!;
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         let splitViewController = self.window!.rootViewController as! UISplitViewController
-        let ListingController = splitViewController.viewControllers[0] as! ColonyListingController
-        let GameController = splitViewController.viewControllers[1] as! GridViewController
+        ListingController = splitViewController.viewControllers[0] as! ColonyListingController
+        GameController = splitViewController.viewControllers[1] as! GridViewController
         
         ListingController.gameController = GameController;
         GameController.leftController = ListingController
+        
+        let colonies = ListingController.loadColonies();
+        print("Loaded from file");
+        if (colonies != nil){
+            if (colonies!.count > 0){
+                GameController.currentColony = colonies!.first!
+            }
+            for colony in colonies!{
+                print(colony);
+                ListingController.colonies.createColony(Data: colony)
+            }
+        }
+        
+        print("Loaded from file");
+        let templates = ListingController.loadTemplates();
+        if (templates != nil){
+            for template in templates!{
+                print(template);
+                ListingController.usertemplates.createColony(Data: template)
+            }
+        }
         
         splitViewController.presentsWithGesture = false;
         return true
@@ -32,8 +54,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        ListingController.saveColonies();
+        ListingController.saveTemplates();
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -45,7 +67,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
-        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        ListingController.saveColonies();
+        ListingController.saveTemplates();
     }
 
 

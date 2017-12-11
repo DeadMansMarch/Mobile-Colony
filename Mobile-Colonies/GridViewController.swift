@@ -12,13 +12,13 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
     
     var leftController:ColonyListingController?;
     
-    @IBOutlet var menu: UIButton!
+    @IBOutlet var menu: UIButton!;
     
-    @IBOutlet var colonyName: UILabel!
-    @IBOutlet var colonyX: UILabel!
-    @IBOutlet var colonyY: UILabel!
+    @IBOutlet var colonyName: UILabel!;
+    @IBOutlet var colonyX: UILabel!;
+    @IBOutlet var colonyY: UILabel!;
     
-    var settingsController:SettingsController?
+    var settingsController:SettingsController?;
     
     var currentColony:ColonyData? = ColonyData(name:"My First Colony",size:50,colony:Colony(size: 50));
     var colonyWidth:Double!;
@@ -47,8 +47,7 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
     @IBOutlet var evolveSpeedSlider: UISlider!
     @IBOutlet var evolveSpeedLabel: UILabel!
     var evolveSpeed:Double = 0;
-    var threadKill = Set<Double>();
-    var threaded = false;
+    var dispatch: Timer?;
     
     @IBOutlet var copyColony: UIButton!
     @IBOutlet var settings: UIButton!
@@ -57,7 +56,7 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
     @IBOutlet var ControllerView: UIView!
     
     func loadColony(colony:ColonyData){
-        if var colony = currentColony{
+        if let colony = currentColony{
             colony.currentCZoom = colonyDrawZoom;
             leftController!.reSave(withData:colony);
         }
@@ -107,37 +106,28 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
             return;
         }
         let position = evolveSpeedSlider.value;
-        let lastSpeed = evolveSpeed;
     
         if position <= 10{
-            evolveSpeed = round(Double(position)) / 10
+            evolveSpeed = round(Double(position)) / 10;
         }else{
-            evolveSpeed = floor(Double(position) - 9)
+            evolveSpeed = floor(Double(position) - 9);
         }
         
-        if evolveSpeed > 0 && !threaded || lastSpeed < evolveSpeed{
-            threadKill.insert(lastSpeed);
-            threaded = true;
-            let queue = DispatchQueue.global();
-            queue.async{
-                while self.evolveSpeed > 0{
-                    let cspeed = self.evolveSpeed;
-                    usleep(UInt32(1000000 / self.evolveSpeed))
-                    if (!self.threadKill.contains(cspeed) && self.evolveSpeed != 0.0){
-                        OperationQueue.main.addOperation{
-                            self.currentColony!.colony.evolve();
-                            self.redraw();
-                        }
-                    }else{
-                        OperationQueue.main.addOperation{
-                            self.threadKill.remove(cspeed)
-                        }
-                    
-                        break;
-                    }
-                    
+        if evolveSpeed > 0{
+            if let currentTimer = self.dispatch {
+                currentTimer.invalidate()
+            }
+            self.dispatch = Timer.scheduledTimer(withTimeInterval:1 / evolveSpeed, repeats: true, block: { _ in
+                if let colony = self.currentColony{
+                    self.currentColony!.colony.evolve();
+                    self.redraw();
+                }else{
+                    self.dispatch?.invalidate();
                 }
-                self.threaded = false;
+            });
+        }else{
+            if let currentTimer = self.dispatch {
+                currentTimer.invalidate();
             }
         }
         UpdateEvolveSpeed();
@@ -196,10 +186,10 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
                     let lowerCoor = (last.X > cell.X) ? cell.X : last.X;
                     let upperCoor = (last.X > cell.X) ? last.X : cell.X
                     let getYForX = {
-                        return Int(ceil(($0 * slope) + yInt))
+                        return Int(($0 * slope) + yInt)
                     }
                     
-                    for i in stride(from:Double(lowerCoor),to:Double(upperCoor),by:0.05){
+                    for i in stride(from:Double(lowerCoor),to:Double(upperCoor),by:(slope > 5) ? 0.01 : 0.2){
                         templateModeCurrent.insert(Cell(Int(i),getYForX(i)));
                     }
                 }else{
@@ -222,7 +212,7 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
             return false;
         }
         
-        print("wasnt cached");
+        //print("wasnt cached");
         
         if cell.X > maxX || cell.Y > maxY || cell.X < minX || cell.Y < minY{
             return false;
@@ -233,9 +223,11 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
         //if both xBC and yBC are odd and non-zero, the cell is within polygon.
         let ray1 = templateModeCurrent.filter({ $0.Y == cell.Y }).filter{ $0.X <= cell.X }.map{ $0.X }
         let ray2 = templateModeCurrent.filter({ $0.X == cell.X }).filter{ $0.Y <= cell.Y }.map{ $0.Y }
-        
+        //print("List ray x, y for cell : \(cell)");
+        //print("\tX: \(ray2)")
+        //print("\tY: \(ray1)")
         func cast(_ list:[Int])->Int{
-            var last = 0;
+            var last = 0
             
             return list.sorted().reduce(0,{
                 let readLast = last;
@@ -276,7 +268,7 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
     
     func passTemplateTransform(_ sender: UILongPressGestureRecognizer,_ ending:Bool=false){
         guard let template = activeTemplate else{
-            print("no template");
+            //print("no template");
             return;
         }
         
@@ -404,19 +396,16 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
             }
         }
         
-        var toDraw:Set<Cell>
         if (prettywrap){
             let colonyFit = Double(scaledSize.0) / size / Double(currentColony!.size)
-            print(colonyFit);
+            //print(colonyFit);
             let colonyStart = Cell(Int(topx),Int(topy),size:currentColony!.size);
             let startColony = Cell.getColonyLoc(Int(topx), Int(topy), size: currentColony!.size);
             let endColony  = Cell(Int(topx + draw),Int(topy + draw),size: currentColony!.size);
-            toDraw = currentColony!.colony.Cells.filter{
+            var toDraw = currentColony!.colony.Cells.filter{
                 if colonyFit > 1{
                     return true;
                 }else{
-                    print("B");
-                    print(colonyStart);
                     
                     if colonyStart.X >= endColony.X && ($0.X >= colonyStart.X || $0.X <= endColony.X) && ($0.X >= colonyStart.Y || $0.Y <= endColony.Y){
                         return true;
@@ -463,7 +452,7 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
                 
             });
         }else{
-            toDraw = currentColony!.colony.Cells.filter{
+            var toDraw = currentColony!.colony.Cells.filter{
                 $0.X >= Int(floor(topx))-2 && $0.Y >= Int(floor(topy))-2 && $0.X < Int(floor(topx) + draw) && $0.Y < Int(floor(topy) + draw)
             }
             
@@ -488,7 +477,7 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
         cacheLife += 1;
         
         if (templateMode){
-            toDraw = templateModeCurrent
+            var toDraw = templateModeCurrent
             toDraw.forEach{
                 let truex = Double($0.X)
                 let truey = Double($0.Y)
@@ -720,9 +709,9 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
             return;
         }
         
-        let controller = segue.destination
-        controller.popoverPresentationController!.delegate = self
-        controller.preferredContentSize = CGSize(width: 300, height: 500)
+        let controller = segue.destination;
+        controller.popoverPresentationController!.delegate = self;
+        controller.preferredContentSize = CGSize(width: 300, height: 500);
         
         let pop = (controller.popoverPresentationController!);
         
@@ -732,7 +721,7 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
             if self.settingsController != nil{
                 (controller as! SettingsController).settings = self.settingsController!.settings;
             }
-            self.settingsController = controller as! SettingsController;
+            self.settingsController = controller as? SettingsController;
             self.settingsController!.linkedDrawController = self;
             pop.sourceRect = settings.bounds.offsetBy(dx: -3, dy: 2)
             pop.backgroundColor = UIColor.black;
@@ -746,8 +735,8 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if (currentColony!.name == "My First Colony"){
-            leftController?.addNewSave(withData: currentColony!);
+        if (!leftController!.colonies.allColonies.contains(currentColony!)){
+            leftController!.addNewSave(withData: currentColony!);
         }
         
         ControllerView.layer.cornerRadius = 10;
