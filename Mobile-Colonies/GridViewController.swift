@@ -420,20 +420,7 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
                     return false;
                 }
             }
-            /*
-            for x in -2...Int(draw){
-                for y in -2...Int(draw){
-                    let truex  = Double(x) + floor(topx);
-                    let truey  = Double(y) + floor(topy);
-                    let current = Cell(Int(truex),Int(truey));
-                    let living = currentColony!.colony.isCellAlive(X: Int(truex), Y: Int(truey));
-                    if living || onBounds(truex,truey) && prettywrap{
-                        let path = drawCell(x,y);
-                        modifyPath(path,living:living,truex,truey);
-                    }
-                }
-            }
-            */
+            
             toDraw.forEach({
                 
                 let truex = Double($0.X)
@@ -501,9 +488,11 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
             let startX = Double(activeTemplateOrigin!.X) - colonyTopX;
             let startY = Double(activeTemplateOrigin!.Y) - colonyTopY;
 
-            if startX < draw && startY < draw{
+            if startX < draw && startY < draw{ // startX < draw && startY < draw
                 let toDraw = template.colony.Cells.filter{
-                    $0.X >= Int(floor(topx))-2 && $0.Y >= Int(floor(topy))-2 && $0.X < Int(floor(topx) + draw) && $0.Y < Int(floor(topy) + draw)
+                    let lX = $0.X + activeTemplateOrigin!.X
+                    let lY = $0.Y + activeTemplateOrigin!.Y
+                    return lX >= Int(floor(topx))-2 && lY >= Int(floor(topy))-2 && lX < Int(floor(topx) + draw) && lY < Int(floor(topy) + draw)
                 }
                 
                 toDraw.forEach{
@@ -595,6 +584,7 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
         redraw();
     }
     
+    var setTo = false;
     var toggled = Set<Cell>();
     
     @IBAction func multiToggle(_ sender: UIPanGestureRecognizer){
@@ -611,13 +601,20 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
         
         let location = sender.location(in: colonyBacking);
         let cell = convert(x:Int(location.x),y:Int(location.y));
+        if sender.state == .began{
+            setTo = currentColony!.colony.isCellAlive(X: cell.X, Y: cell.Y)
+        }
         guard (!toggled.contains(cell)) else{
             return;
         }
         if (templateMode){
             updateTemplateRanges(cell);
         }else{
-            currentColony!.colony.toggleCellAlive(X:cell.X,Y:cell.Y)
+            if setTo{
+                currentColony!.colony.setCellDead(X:cell.X,Y:cell.Y)
+            }else{
+                currentColony!.colony.setCellAlive(X:cell.X,Y:cell.Y)
+            }
             toggled.insert(cell)
         }
         redraw();
@@ -677,8 +674,10 @@ class GridViewController: UIViewController, UIGestureRecognizerDelegate, UIPopov
                         
                         for x in self.minX ... self.maxX{ //This might not be most efficient way...
                             for y in self.minY...self.maxY{
+                                let lX = x - self.minY;
+                                let lY = y - self.minY
                                 if (self.cellInDrawnTemplate(Cell(x,y)) && self.currentColony!.colony.isCellAlive(X: x, Y: y)){
-                                    templateData.colony.setCellAlive(X: x, Y: y)
+                                    templateData.colony.setCellAlive(X: lX, Y: lY)
                                 }
                             }
                         }

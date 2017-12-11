@@ -898,7 +898,14 @@ class ColonyListingController:UITableViewController, UIPopoverPresentationContro
         """
         )!)
         
-        addNewTemplate(withData: Colony.colonyDataInterpret(name: "BREEDER", fromRLE:
+        
+        addNewTemplate(withData: Colony.colonyDataInterpret(name: "tlogtGrowth", fromRLEurl: "https://copy.sh/life/examples/tlogtgrowth.rle")!)
+        
+        addNewTemplate(withData: Colony.colonyDataInterpret(name: "Greyship", fromRLEurl: "https://copy.sh/life/examples/c5greyship.rle")!)
+        
+        addNewTemplate(withData: Colony.colonyDataInterpret(name: "Breeder #1", fromRLEurl: "https://copy.sh/life/examples/breeder1.rle")!)
+        
+        addNewTemplate(withData: Colony.colonyDataInterpret(name: "Breeder #2", fromRLE:
         """
         166b6o$165bo5bo95bobo$171bo95bo2bo$165bo4bo42b2o34b4o17b2o51b2o$167b2o
         43bo2bo32b6o14bo3bo48bo4bo62bo$212bobo33b4ob2o14bob3o53bo61b4o$211bo

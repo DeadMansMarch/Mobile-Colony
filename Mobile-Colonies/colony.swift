@@ -7,6 +7,35 @@
 //
 import Foundation
 
+func Request(_ url:String)->String{
+    var final = false;
+    var resp  = "";
+    
+    var request = URLRequest(url: URL(string: url)!);
+    request.httpMethod = "get"
+    //request.httpBody = requestBody.data(using: String.Encoding.utf8);
+    
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+        guard error == nil else {
+            print(error!)
+            return
+        }
+        guard let data = data else {
+            print("Data is empty")
+            return
+        }
+        
+        resp = String(data: data, encoding: String.Encoding.utf8)!;
+        final = true;
+    }
+    
+    task.resume()
+    while !final{
+        usleep(100);
+    }
+    return resp;
+}
+
 struct Cell{
     let X:Int;
     let Y:Int;
@@ -124,6 +153,13 @@ class Colony: CustomStringConvertible{
         return ColonyData(name:name,size:0,colony:interpreted);
     }
     
+    static func colonyDataInterpret(name:String,fromRLEurl colony: String)->ColonyData?{
+        guard let interpreted = interpret(fromRLEurl: colony) else{
+            return nil;
+        }
+        return ColonyData(name:name,size:0,colony:interpreted);
+    }
+    
     static func interpret(fromRLE colony: String)->Colony?{
         //Found out that the massive "breeder" file this was for was in high life, not just life.
         var base = Colony(false);
@@ -200,6 +236,15 @@ class Colony: CustomStringConvertible{
         return nil;
     }
     
+    static func interpret(fromRLEurl colony: String)->Colony?{
+        let RLE = Request(colony)
+
+        let last = RLE.split(separator:"#").last
+        let lines = last!.split(separator: "\r\n")
+        print(String(lines[1..<lines.count].reduce("",{$0 + $1})))
+        return interpret(fromRLE:String(lines[1..<lines.count].reduce("",{$0 + $1})))
+    }
+    
     init(size: Int){
         self.size = size
     }
@@ -226,8 +271,6 @@ class Colony: CustomStringConvertible{
         }else{
             setCellAlive(X: X, Y: Y);
         }
-        
-        //print("Changing cell state: \(X),\(Y)");
     }
     
     func isCellAlive(X: Int, Y: Int)-> Bool{
@@ -317,8 +360,6 @@ class Colony: CustomStringConvertible{
             if liveCount == 0{
                 liveCount = 1;
             }
-            //print("\t Changes to encoding: ");
-            //print("\t\(runLength[runLength.index(endInd, offsetBy: 0)..<runLength.endIndex])")
         }
         return runLength + "!";
     }
