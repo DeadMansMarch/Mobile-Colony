@@ -10,6 +10,7 @@ import Foundation
 func Request(_ url:String)->String{
     var final = false;
     var resp  = "";
+    var test = 0
     
     var request = URLRequest(url: URL(string: url)!);
     request.httpMethod = "get"
